@@ -1,14 +1,8 @@
-var starfield = STARFIELD;
-var starfieldOptions = {
-    canvas: null,
-    fps: 30,
-    width: 0,
-    height: 0,
-    minVelocity: 15,
-    maxVelocity: 30,
-    stars: 100,
-    intervalId: 0
-};
-starfield.init(starfieldOptions);
-console.log(starfield);
+var StarField = (function () {
+    function StarField(numFps, canvasElem, numWidth, numHeight, numMinVelocity, numMaxVelocity, numStars, numIntervalId) {
+        console.log("made it here.");
+    }
+    return StarField;
+})();
+module.exports = StarField;
 //# sourceMappingURL=starfields.js.map

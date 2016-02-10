@@ -4,6 +4,8 @@ declare module 'starfield' {
 
 declare namespace STARFIELD {
     function init(options: Options): void;
+    function start(o: Options);
+    
     
     
     interface Options{
@@ -16,5 +18,6 @@ declare namespace STARFIELD {
         stars : number;
         intervalId : number;
     }
+    
     
 }

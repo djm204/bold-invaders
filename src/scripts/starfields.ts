@@ -1,20 +1,27 @@
-var starfield = STARFIELD;
+class StarField implements STARFIELD.Options {
+    fps: number;
+    canvas: HTMLCanvasElement;
+    width: number;
+    height: number;
+    minVelocity: number;
+    maxVelocity: number;
+    stars: number;
+    intervalId: number;
 
-var starfieldOptions: STARFIELD.Options ={
-    canvas : null,
-    fps : 30,
-    width : 0,
-    height : 0,
-    minVelocity : 15,
-    maxVelocity : 30,
-    stars : 100,
-    intervalId : 0
+    constructor(numFps: number,
+        canvasElem: HTMLCanvasElement,
+        numWidth: number,
+        numHeight: number,
+        numMinVelocity: number,
+        numMaxVelocity: number,
+        numStars: number,
+        numIntervalId: number) {
+        console.log("made it here.");
+
+    }
+
+
+
 }
 
-
-
-
-starfield.init(starfieldOptions);
-
-
-console.log(starfield);
+module.exports = StarField;

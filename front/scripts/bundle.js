@@ -46,6 +46,8 @@
 
 	__webpack_require__(1);
 	__webpack_require__(5);
+	var starfield = new StarField(30, null, 0, 0, 15, 30, 100, 0);
+	console.log(starfield.fps);
 	//# sourceMappingURL=index.js.map
 
 /***/ },
@@ -402,19 +404,13 @@
 /* 5 */
 /***/ function(module, exports) {
 
-	var starfield = STARFIELD;
-	var starfieldOptions = {
-	    canvas: null,
-	    fps: 30,
-	    width: 0,
-	    height: 0,
-	    minVelocity: 15,
-	    maxVelocity: 30,
-	    stars: 100,
-	    intervalId: 0
-	};
-	starfield.init(starfieldOptions);
-	console.log(starfield);
+	var StarField = (function () {
+	    function StarField(numFps, canvasElem, numWidth, numHeight, numMinVelocity, numMaxVelocity, numStars, numIntervalId) {
+	        console.log("made it here.");
+	    }
+	    return StarField;
+	})();
+	module.exports = StarField;
 	//# sourceMappingURL=starfields.js.map
 
 /***/ }
