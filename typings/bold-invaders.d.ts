@@ -15,7 +15,7 @@ declare namespace STARFIELD {
         height : number
         minVelocity : number;
         maxVelocity : number;
-        stars : number;
+        stars : Array<number>;
         intervalId : number;
     }
     
