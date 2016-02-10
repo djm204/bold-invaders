@@ -7,12 +7,17 @@ class StarField implements STARFIELD.Options {
     height: number;
     minVelocity: number;
     maxVelocity: number;
+<<<<<<< HEAD
     stars: number;
     starList: Array<Star>;
+=======
+    stars: Array<number>;
+>>>>>>> 26a997897f5110f42a30eb7168e82c96269e6b8b
     intervalId: any;
 
     constructor(numFps: number,
         canvasElem: HTMLCanvasElement,
+<<<<<<< HEAD
         width: number,
         height: number,
         minVelocity: number,
@@ -21,6 +26,16 @@ class StarField implements STARFIELD.Options {
         starList: Array<Star>,
         intervalId: any) {
 
+=======
+        numWidth: number,
+        numHeight: number,
+        numMinVelocity: number,
+        numMaxVelocity: number,
+        numStars: Array<number>,
+        numIntervalId: number) {
+        console.log("made it here.");
+        
+>>>>>>> 26a997897f5110f42a30eb7168e82c96269e6b8b
         this.fps = numFps;
         this.canvas = canvasElem;
         this.width = width;
@@ -87,6 +102,7 @@ class StarField implements STARFIELD.Options {
         }, 1000 / this.fps);
     }
 
+<<<<<<< HEAD
     
 
     draw(starList): void {
@@ -110,7 +126,24 @@ class StarField implements STARFIELD.Options {
     ownThisShit() {
         console.log("You Are Going to OWN this shit.");
     }
+=======
+    start() {
+        //	Create the stars.
+        var starAmount = [];
+        for(var i=0; i < this.stars.length; i++) {
+            starAmount[i] = new Star(Math.random()*this.width, Math.random()*this.height, Math.random()*3+1,
+            (Math.random()*(this.maxVelocity - this.minVelocity))+this.minVelocity);
+        }
+        this.stars = starAmount;;
+>>>>>>> 26a997897f5110f42a30eb7168e82c96269e6b8b
 
+        var self = this;
+        //	Start the timer.
+        this.intervalId = setInterval(function() {
+            self.update();
+            self.draw();	
+        }, 1000 / this.fps);
+    }
 
 }
 

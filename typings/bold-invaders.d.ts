@@ -15,6 +15,7 @@ declare namespace STARFIELD {
         height : number
         minVelocity : number;
         maxVelocity : number;
+<<<<<<< HEAD
         stars : number;
         starList: Array<Star>;
         intervalId : any;
@@ -25,6 +26,10 @@ declare namespace STARFIELD {
         y: number;
         size: number;
         velocity: number;
+=======
+        stars : Array<number>;
+        intervalId : number;
+>>>>>>> 26a997897f5110f42a30eb7168e82c96269e6b8b
     }
     
     export class Star implements StarOptions{
