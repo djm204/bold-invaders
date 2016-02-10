@@ -17,6 +17,8 @@ class StarField implements STARFIELD.Options {
         numStars: number,
         numIntervalId: number) {
         console.log("made it here.");
+        
+        this.fps = numFps;
 
     }
 
@@ -24,4 +26,5 @@ class StarField implements STARFIELD.Options {
 
 }
 
-module.exports = StarField;
+
+module.exports = new StarField(30, null, 0, 0, 15, 30, 100, 0);
