@@ -1,0 +1,1 @@
+import('../front/scripts/bundle.js');
