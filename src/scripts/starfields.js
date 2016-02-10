@@ -11,7 +11,6 @@ var StarField = (function () {
         this.starList = starList;
         this.intervalId = intervalId;
     }
-<<<<<<< HEAD
     StarField.prototype.initialize = function (div) {
         var _this = this;
         var containerDiv = div;
@@ -40,7 +39,7 @@ var StarField = (function () {
             star.y += dt * star.velocity;
             //  If the star has moved from the bottom of the screen, spawn it at the top.
             if (star.y > this.height) {
-                this.stars[i] = new Star(Math.random() * this.width, 0, Math.random() * 3 + 1, (Math.random() * (this.maxVelocity - this.minVelocity)) + this.minVelocity);
+                starList[i] = new Star(Math.random() * this.width, 0, Math.random() * 3 + 1, (Math.random() * (this.maxVelocity - this.minVelocity)) + this.minVelocity);
             }
         }
     };
@@ -73,22 +72,6 @@ var StarField = (function () {
     StarField.prototype.ownThisShit = function () {
         console.log("You Are Going to OWN this shit.");
     };
-=======
-    StarField.prototype.start = function () {
-        //	Create the stars.
-        var stars = [];
-        for (var i = 0; i < this.stars; i++) {
-            stars[i] = new Star(Math.random() * this.width, Math.random() * this.height, Math.random() * 3 + 1, (Math.random() * (this.maxVelocity - this.minVelocity)) + this.minVelocity);
-        }
-        this.stars = stars;
-        var self = this;
-        //	Start the timer.
-        this.intervalId = setInterval(function () {
-            self.update();
-            self.draw();
-        }, 1000 / this.fps);
-    };
->>>>>>> 26a997897f5110f42a30eb7168e82c96269e6b8b
     return StarField;
 })();
 module.exports = StarField;

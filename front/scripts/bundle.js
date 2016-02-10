@@ -448,7 +448,7 @@
 	            star.y += dt * star.velocity;
 	            //  If the star has moved from the bottom of the screen, spawn it at the top.
 	            if (star.y > this.height) {
-	                this.stars[i] = new Star(Math.random() * this.width, 0, Math.random() * 3 + 1, (Math.random() * (this.maxVelocity - this.minVelocity)) + this.minVelocity);
+	                starList[i] = new Star(Math.random() * this.width, 0, Math.random() * 3 + 1, (Math.random() * (this.maxVelocity - this.minVelocity)) + this.minVelocity);
 	            }
 	        }
 	    };
