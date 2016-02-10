@@ -55,7 +55,7 @@ class StarField implements STARFIELD.Options {
     
     start() {
         
-        /*  //	Create the stars.
+        //	Create the stars.
           var starAmount = [];
           for(var i=0; i < this.stars.length; i++) {
               starAmount[i] = new Star(Math.random()*this.width, Math.random()*this.height, Math.random()*3+1,
@@ -68,7 +68,7 @@ class StarField implements STARFIELD.Options {
           this.intervalId = setInterval(function() {
               self.update();
               self.draw();
-          }, 1000 / this.fps);*/
+          }, 1000 / this.fps);
     }
     
     draw() {

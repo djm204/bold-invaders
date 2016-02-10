@@ -8,7 +8,7 @@ declare namespace STARFIELD {
     
     
     
-    interface Options{
+    export interface Options{
         fps : number;
         canvas : HTMLCanvasElement;
         width : number
@@ -18,6 +18,11 @@ declare namespace STARFIELD {
         stars : number;
         intervalId : number;
     }
-    
-    
+       
+    export interface StarOptions {
+        x: number;
+        y: number;
+        size: number;
+        velocity: number;
+    }
 }
