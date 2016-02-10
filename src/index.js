@@ -1,3 +1,3 @@
 require('../front/css/style.css');
-require('../front/scripts/bundle.js');
+require('../src/scripts/starfields.js');
 //# sourceMappingURL=index.js.map
