@@ -3,4 +3,4 @@ import StarField = require('./scripts/starfields');
 
 var engine = new StarField(30, null, 0, 0, 15, 30, 100, 0);
 
-console.log(engine.fps);
+console.log(engine.ownThisShit());
