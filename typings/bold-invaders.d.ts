@@ -16,10 +16,17 @@ declare namespace STARFIELD {
         minVelocity : number;
         maxVelocity : number;
         stars : number;
-        intervalId : number;
+        intervalId : any;
     }
        
     export interface StarOptions {
+        x: number;
+        y: number;
+        size: number;
+        velocity: number;
+    }
+    
+    export class Star implements StarOptions{
         x: number;
         y: number;
         size: number;
