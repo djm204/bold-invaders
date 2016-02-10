@@ -39,18 +39,18 @@ declare namespace BOLDINVADERS {
     function init(options: Options): void;
     
     export interface Options{
-        gameWidth: number,
-        gameHeight: number,
-        fps: number
-    }
-    
-    export interface State{
+        config: {
+            gameWidth: number,
+            gameHeight: number,
+            fps: number
+        },
         lives: number,
         width: number,
         height: number,
         gameBounds: any,
-        stateStack: Array<State>,
+        stateStack: Array<any>,
         pressedKeys: Array<number>,
         gameCanvas: HTMLCanvasElement
     }
+    
 }

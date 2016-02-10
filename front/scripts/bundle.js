@@ -46,11 +46,13 @@
 
 	__webpack_require__(1);
 	var StarField = __webpack_require__(5);
-	var engine = new StarField(30, null, 0, 0, 15, 30, 100, null, 0);
+	var BoldInvaders = __webpack_require__(7);
+	var starfield = new StarField(30, null, 0, 0, 15, 30, 100, null, 0);
 	var container = document.getElementById('container');
-	engine.initialize(container);
-	engine.start();
-	console.log(engine.ownThisShit());
+	starfield.initialize(container);
+	starfield.start();
+	var boldInvaders = new BoldInvaders(400, 400, 50);
+	console.log(boldInvaders.fps);
 	//# sourceMappingURL=index.js.map
 
 /***/ },
@@ -478,9 +480,6 @@
 	            ctx.fillRect(star.x, star.y, star.size, star.size);
 	        }
 	    };
-	    StarField.prototype.ownThisShit = function () {
-	        console.log("You Are Going to OWN this shit.");
-	    };
 	    return StarField;
 	})();
 	module.exports = StarField;
@@ -501,6 +500,32 @@
 	})();
 	module.exports = Star;
 	//# sourceMappingURL=star.js.map
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	var BoldInvaders = (function () {
+	    function BoldInvaders(gameWidth, gameHeight, fps) {
+	        this.gameWidth = gameWidth;
+	        this.gameHeight = gameHeight;
+	        this.fps = fps;
+	    }
+	    return BoldInvaders;
+	})();
+	var State = (function () {
+	    function State(live, width, height, gameBounds, stateStack, pressedKeys, gameCanvas) {
+	        this.width = width;
+	        this.height = height;
+	        this.gameBounds = gameBounds;
+	        this.stateStack = stateStack;
+	        this.pressedKeys = pressedKeys;
+	        this.gameCanvas = gameCanvas;
+	    }
+	    return State;
+	})();
+	module.exports = BoldInvaders;
+	//# sourceMappingURL=bold-invaders.js.map
 
 /***/ }
 /******/ ]);

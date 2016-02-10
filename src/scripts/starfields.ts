@@ -108,12 +108,6 @@ class StarField implements STARFIELD.Options {
     }
 
 
-
-    ownThisShit() {
-        console.log("You Are Going to OWN this shit.");
-    }
-   
-
 }
 
 

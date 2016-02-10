@@ -69,9 +69,6 @@ var StarField = (function () {
             ctx.fillRect(star.x, star.y, star.size, star.size);
         }
     };
-    StarField.prototype.ownThisShit = function () {
-        console.log("You Are Going to OWN this shit.");
-    };
     return StarField;
 })();
 module.exports = StarField;

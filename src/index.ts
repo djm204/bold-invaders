@@ -2,10 +2,13 @@ import '../front/css/style.css';
 import StarField = require('./scripts/starfields');
 import BoldInvaders = require('./scripts/bold-invaders');
 
-var engine = new StarField(30, null, 0, 0, 15, 30, 100, null, 0);
+var starfield = new StarField(30, null, 0, 0, 15, 30, 100, null, 0);
 
 var container = document.getElementById('container');
-engine.initialize(container);
-engine.start();
+starfield.initialize(container);
+starfield.start();
 
-console.log(engine.ownThisShit());
+var boldInvaders = new BoldInvaders(400, 400, 50);
+
+console.log(boldInvaders.fps);
+
