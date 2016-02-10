@@ -1,0 +1,30 @@
+{
+  "name": "bold-invaders",
+  "version": "0.0.1",
+  "description": "Bold interpretation on the classic Space Invaders",
+  "main": "front/index.html",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^1.7.5"
+  },
+  "scripts": {
+    "build": "tsc",
+    "postbuild": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/djm204/bold-invaders.git"
+  },
+  "keywords": [
+    "space",
+    "invaders",
+    "bold"
+  ],
+  "author": "David Mendez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/djm204/bold-invaders/issues"
+  },
+  "homepage": "https://github.com/djm204/bold-invaders#readme"
+}
