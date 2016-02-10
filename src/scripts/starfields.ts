@@ -19,6 +19,13 @@ class StarField implements STARFIELD.Options {
         console.log("made it here.");
         
         this.fps = numFps;
+        this.canvas = canvasElem;
+        this.width = numWidth;
+        this.height = numHeight;
+        this.minVelocity = numMinVelocity;
+        this.maxVelocity = numMaxVelocity;
+        this.stars = numStars;
+        this.intervalId = numIntervalId;
 
     }
 
@@ -27,4 +34,4 @@ class StarField implements STARFIELD.Options {
 }
 
 
-module.exports = new StarField(30, null, 0, 0, 15, 30, 100, 0);
+export = StarField;

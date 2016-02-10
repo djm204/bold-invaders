@@ -45,7 +45,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	__webpack_require__(5);
+	var StarField = __webpack_require__(5);
+	var engine = new StarField(30, null, 0, 0, 15, 30, 100, 0);
+	console.log(engine.fps);
 	//# sourceMappingURL=index.js.map
 
 /***/ },
@@ -406,10 +408,17 @@
 	    function StarField(numFps, canvasElem, numWidth, numHeight, numMinVelocity, numMaxVelocity, numStars, numIntervalId) {
 	        console.log("made it here.");
 	        this.fps = numFps;
+	        this.canvas = canvasElem;
+	        this.width = numWidth;
+	        this.height = numHeight;
+	        this.minVelocity = numMinVelocity;
+	        this.maxVelocity = numMaxVelocity;
+	        this.stars = numStars;
+	        this.intervalId = numIntervalId;
 	    }
 	    return StarField;
 	})();
-	module.exports = new StarField(30, null, 0, 0, 15, 30, 100, 0);
+	module.exports = StarField;
 	//# sourceMappingURL=starfields.js.map
 
 /***/ }
