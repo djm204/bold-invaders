@@ -88,7 +88,7 @@
 
 
 	// module
-	exports.push([module.id, "*{\r\n    padding: 0px;\r\n    margin: 0px;\r\n}\r\n#container {\r\n        width: 100%;\r\n        height: 100%;\r\n        position: absolute;\r\n        left: 0px;\r\n        top: 0px;\r\n    }", ""]);
+	exports.push([module.id, "*{\r\n    padding: 0px;\r\n    margin: 0px;\r\n}\r\n\r\nbody, html { \r\n    width: 100%;\r\n    height: 100%;\r\n    margin: 0;\r\n    padding: 0;\r\n    overflow: hidden;\r\n    }\r\n            \r\n#container {\r\n    width: 100%;\r\n    height: 100%;\r\n    z-index: -1;\r\n    position: absolute;\r\n    left: 0px;\r\n    top: 0px;\r\n}", ""]);
 
 	// exports
 

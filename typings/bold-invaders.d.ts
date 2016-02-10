@@ -34,3 +34,23 @@ declare namespace STARFIELD {
         velocity: number;
     }
 }
+
+declare namespace BOLDINVADERS {
+    function init(options: Options): void;
+    
+    export interface Options{
+        gameWidth: number,
+        gameHeight: number,
+        fps: number
+    }
+    
+    export interface State{
+        lives: number,
+        width: number,
+        height: number,
+        gameBounds: any,
+        stateStack: Array<State>,
+        pressedKeys: Array<number>,
+        gameCanvas: HTMLCanvasElement
+    }
+}
