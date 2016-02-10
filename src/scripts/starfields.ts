@@ -8,6 +8,7 @@ class StarField implements STARFIELD.Options {
     minVelocity: number;
     maxVelocity: number;
     stars: number;
+    starList: Array<Star>;
     intervalId: any;
 
     constructor(numFps: number,
@@ -17,6 +18,7 @@ class StarField implements STARFIELD.Options {
         minVelocity: number,
         maxVelocity: number,
         stars: number,
+        starList: Array<Star>,
         intervalId: any) {
 
         this.fps = numFps;
@@ -26,6 +28,7 @@ class StarField implements STARFIELD.Options {
         this.minVelocity = minVelocity;
         this.maxVelocity = maxVelocity;
         this.stars = stars;
+        this.starList = starList;
         this.intervalId = intervalId;
 
     }
@@ -36,7 +39,7 @@ class StarField implements STARFIELD.Options {
         this.width = window.innerWidth;
         this.height = window.innerHeight;
 
-        window.addEventListener('resize', function resize(event) {
+        window.addEventListener('resize', (event) => {
             //resize
             this.width = window.innerWidth;
             this.height = window.innerHeight;
@@ -44,7 +47,7 @@ class StarField implements STARFIELD.Options {
             this.canvas.height = this.height;
             
             //redraw
-            this.draw();
+            this.draw(this.starList);
         });
         
         //create the canvas
@@ -71,16 +74,16 @@ class StarField implements STARFIELD.Options {
     start(): void{
         
         //	Create the stars.
-        var starList = new Array(this.stars);
+        this.starList = new Array(this.stars);
         for (var i = 0; i < this.stars; i++) {
-            starList[i] = new Star(Math.random() * this.width, Math.random() * this.height, Math.random() * 3 + 1,
+            this.starList[i] = new Star(Math.random() * this.width, Math.random() * this.height, Math.random() * 3 + 1,
                 (Math.random() * (this.maxVelocity - this.minVelocity)) + this.minVelocity);
         }
           
         //	Start the timer.
         this.intervalId = setInterval(() => {
-            this.update(starList);
-            this.draw(starList);
+            this.update(this.starList);
+            this.draw(this.starList);
         }, 1000 / this.fps);
     }
 

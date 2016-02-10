@@ -46,7 +46,7 @@
 
 	__webpack_require__(1);
 	var StarField = __webpack_require__(5);
-	var engine = new StarField(30, null, 0, 0, 15, 30, 100, 0);
+	var engine = new StarField(30, null, 0, 0, 15, 30, 100, null, 0);
 	var container = document.getElementById('container');
 	engine.initialize(container);
 	engine.start();
@@ -409,7 +409,7 @@
 
 	var Star = __webpack_require__(6);
 	var StarField = (function () {
-	    function StarField(numFps, canvasElem, width, height, minVelocity, maxVelocity, stars, intervalId) {
+	    function StarField(numFps, canvasElem, width, height, minVelocity, maxVelocity, stars, starList, intervalId) {
 	        this.fps = numFps;
 	        this.canvas = canvasElem;
 	        this.width = width;
@@ -417,20 +417,22 @@
 	        this.minVelocity = minVelocity;
 	        this.maxVelocity = maxVelocity;
 	        this.stars = stars;
+	        this.starList = starList;
 	        this.intervalId = intervalId;
 	    }
 	    StarField.prototype.initialize = function (div) {
+	        var _this = this;
 	        var containerDiv = div;
 	        this.width = window.innerWidth;
 	        this.height = window.innerHeight;
-	        window.addEventListener('resize', function resize(event) {
+	        window.addEventListener('resize', function (event) {
 	            //resize
-	            this.width = window.innerWidth;
-	            this.height = window.innerHeight;
-	            this.canvas.width = this.width;
-	            this.canvas.height = this.height;
+	            _this.width = window.innerWidth;
+	            _this.height = window.innerHeight;
+	            _this.canvas.width = _this.width;
+	            _this.canvas.height = _this.height;
 	            //redraw
-	            this.draw();
+	            _this.draw(_this.starList);
 	        });
 	        //create the canvas
 	        var newCanvas = document.createElement('canvas');
@@ -453,14 +455,14 @@
 	    StarField.prototype.start = function () {
 	        var _this = this;
 	        //	Create the stars.
-	        var starList = new Array(this.stars);
+	        this.starList = new Array(this.stars);
 	        for (var i = 0; i < this.stars; i++) {
-	            starList[i] = new Star(Math.random() * this.width, Math.random() * this.height, Math.random() * 3 + 1, (Math.random() * (this.maxVelocity - this.minVelocity)) + this.minVelocity);
+	            this.starList[i] = new Star(Math.random() * this.width, Math.random() * this.height, Math.random() * 3 + 1, (Math.random() * (this.maxVelocity - this.minVelocity)) + this.minVelocity);
 	        }
 	        //	Start the timer.
 	        this.intervalId = setInterval(function () {
-	            _this.update(starList);
-	            _this.draw(starList);
+	            _this.update(_this.starList);
+	            _this.draw(_this.starList);
 	        }, 1000 / this.fps);
 	    };
 	    StarField.prototype.draw = function (starList) {
