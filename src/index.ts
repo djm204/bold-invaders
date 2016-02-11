@@ -1,10 +1,10 @@
 import '../front/css/style.css';
-import StarField = require('./scripts/starfields');
-import BoldInvaders = require('./scripts/bold-invaders');
+import StarField = require('./classes/starfields');
+import BoldInvaders = require('./classes/bold-invaders');
 
 import StarFieldOptions = StarField.Options;
 import BoldInvadersOptions = BoldInvaders.GameOptions;
-import StateOptions = BoldInvaders.State;
+import StateOptions = BoldInvaders.StateOptions;
 
 var BIOptions: BoldInvadersOptions = {
     gameWidth: 400,

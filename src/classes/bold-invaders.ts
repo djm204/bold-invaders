@@ -1,7 +1,7 @@
 class BoldInvaders {
 
 
-    constructor(public boldOptions: BoldInvaders.GameOptions, public stateOptions: BoldInvaders.State) { }
+    constructor(public boldOptions: BoldInvaders.GameOptions, public stateOptions: BoldInvaders.StateOptions) { }
 
 
 
@@ -22,7 +22,7 @@ class BoldInvaders {
     }
 
     moveToState(state) {
-       /* if (this.currentState()) {
+        if (this.currentState()) {
 
             if (this.currentState().leave) {
                 this.currentState().leave(game);
@@ -37,31 +37,31 @@ class BoldInvaders {
         }
  
         //  Set the current state.
-        this.stateOptions.stateStack.push(state);*/
+        this.stateOptions.stateStack.push(state);
     }
 
     pushState(state) {
-      /*  //  If there's an enter function for the new state, call it.
+        //  If there's an enter function for the new state, call it.
         if (state.enter) {
             state.enter(game);
         }
         //  Set the current state.
-        this.stateOptions.stateStack.push(state);*/
+        this.stateOptions.stateStack.push(state);
     }
     
     popState() {
-       /* if(this.currentState().leave) {
+        if(this.currentState().leave) {
             this.currentState().leave(game);
         }
  
         //  Set the current state.
-        this.stateOptions.stateStack.pop();*/
+        this.stateOptions.stateStack.pop();
 
     }
     
     start(){
-      /*  //  Move into the 'welcome' state.
-        this.moveToState(new WelcomeState());*/
+        //  Move into the 'welcome' state.
+        this.moveToState(new WelcomeState());
     
         //  Set the game variables.
         this.stateOptions.lives = 3;
@@ -69,7 +69,7 @@ class BoldInvaders {
     
         //  Start the game loop.
         var game = this;
-        /*var intervalId = setInterval(function () { gameLoop(game);}, 1000 / this.boldOptions.fps);*/
+        var intervalId = setInterval(function () { gameLoop(game);}, 1000 / this.boldOptions.fps);
  
     }
 

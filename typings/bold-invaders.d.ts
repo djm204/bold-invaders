@@ -1,28 +1,28 @@
 declare namespace StarField {
 
     export interface Options {
-        fps: number;
-        canvas: HTMLCanvasElement;
+        fps: number,
+        canvas: HTMLCanvasElement,
         width: number
         height: number
-        minVelocity: number;
-        maxVelocity: number;
-        starList: Array<Star>;
-        intervalId: any;
+        minVelocity: number,
+        maxVelocity: number,
+        starList: Array<Star>,
+        intervalId: any,
     }
 
     export interface Star {
-        x: number;
-        y: number;
-        size: number;
-        velocity: number;
+        x: number,
+        y: number,
+        size: number,
+        velocity: number,
     }
 }
 
 declare namespace BoldInvaders {
 
     export interface GameOptions {
-        
+
         gameWidth: number,
         gameHeight: number,
         fps: number,
@@ -48,7 +48,7 @@ declare namespace BoldInvaders {
         pointsPerInvader: number
     }
 
-    export interface State {
+    export interface StateOptions {
 
         lives: number,
         width: number,
@@ -74,6 +74,15 @@ declare namespace BoldInvaders {
         audioContext: AudioContext,
         sounds: Array<any>,
         mute: boolean
+    }
+
+    export interface GameState {
+        updateProc: Function,
+        drawProc: Function,
+        keyDown: Function,
+        keyUp: Function,
+        enter: Function,
+        leave: Function
     }
 
 

@@ -3,7 +3,7 @@ const STAR_LIMIT = 100;
 class StarField {
     constructor(public options: StarField.Options) {}
 
-    initialize(div) {
+    initialize(div: HTMLElement) {
         var containerDiv = div;
         
         this.options.starList = [];
