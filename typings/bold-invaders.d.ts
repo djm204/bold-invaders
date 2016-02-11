@@ -23,48 +23,58 @@ declare namespace BoldInvaders {
 
     export interface GameOptions {
         
-        config:{
-            bombRate: number,
-            bombMinVelocity: number,
-            bombMaxVelocity: number,
-            invaderInitialVelocity: number,
-            invaderAcceleration: number,
-            invaderDropDistance: number,
-            rocketVelocity: number,
-            rocketMaxFireRate: number
-            gameWidth: number,
-            gameHeight: number,
-            fps: number,
-            debugMode: boolean,
-            invaderRanks: number,
-            invaderFiles: number,
-            shipSpeed: number,
-            levelDifficultyMultiplier: number,
-            pointsPerInvader: number
-        };
-       state: {
-            lives : number,
-            width : number,
-            height : number,
-            gameBounds : {left: number, top: number, right: number, bottom: number},
-            intervalId : number,
-            score : number,
-            level : number,
-
-            //  The state stack.
-            stateStack : Array<State>,
-
-            //  Input/output
-            pressedKeys : Array<number>,
-            gameCanvas :  HTMLCanvasElement,
-
-            //  All sounds.
-            sounds : Array<Sounds>,
-       }
-        
-        
+        gameWidth: number,
+        gameHeight: number,
+        fps: number,
+        shipSpeed: number,
+        debugMode: boolean,
+        levelDifficultyMultiplier: number
     }
-    
- 
+
+    export interface Player {
+        rocketVelocity: number,
+        rocketMaxFireRate: number
+    }
+
+    export interface Enemy {
+        bombRate: number,
+        bombMinVelocity: number,
+        bombMaxVelocity: number,
+        invaderInitialVelocity: number,
+        invaderAcceleration: number,
+        invaderDropDistance: number,
+        invaderRanks: number,
+        invaderFiles: number,
+        pointsPerInvader: number
+    }
+
+    export interface State {
+
+        lives: number,
+        width: number,
+        height: number,
+        gameBounds: { left: number, top: number, right: number, bottom: number },
+        intervalId: number,
+        score: number,
+        level: number,
+
+        //  The state stack.
+        stateStack: Array<State>,
+
+        //  Input/output
+        pressedKeys: Array<number>,
+        gameCanvas: HTMLCanvasElement,
+
+        //  All sounds.
+        sounds: Array<Sounds>
+    }
+
+
+    export interface Sounds {
+        audioContext: AudioContext,
+        sounds: Array<any>,
+        mute: boolean
+    }
+
 
 }

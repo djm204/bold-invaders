@@ -47,15 +47,34 @@
 	__webpack_require__(1);
 	var StarField = __webpack_require__(5);
 	var BoldInvaders = __webpack_require__(6);
-	var BIOptions = { gameWidth: 400, gameHeight: 400, fps: 50, lives: 3,
-	    width: 0, height: 0, leftGameBounds: 0, topGameBounds: 0, rightGameBounds: 0, bottomGameBounds: 0, stateStack: null, pressedKeys: null, gameCanvas: null };
+	var BIOptions = {
+	    gameWidth: 400,
+	    gameHeight: 300,
+	    fps: 50,
+	    shipSpeed: 120,
+	    debugMode: false,
+	    levelDifficultyMultiplier: 0.2
+	};
+	var BIStateOptions = {
+	    lives: 3,
+	    width: 0,
+	    height: 0,
+	    gameBounds: { left: 0, top: 0, right: 0, bottom: 0 },
+	    intervalId: 0,
+	    score: 0,
+	    level: 1,
+	    stateStack: null,
+	    pressedKeys: null,
+	    gameCanvas: null,
+	    sounds: null
+	};
 	var SFOptions = { fps: 30, canvas: null, width: 0, height: 0, minVelocity: 15, maxVelocity: 30, starList: null, intervalId: 0 };
 	var starfield = new StarField(SFOptions);
 	var container = document.getElementById('container');
 	starfield.initialize(container);
 	starfield.start();
-	var boldInvaders = new BoldInvaders(BIOptions);
-	console.log(boldInvaders.options.fps);
+	var boldInvaders = new BoldInvaders(BIOptions, BIStateOptions);
+	console.log(boldInvaders.boldOptions.fps);
 	//# sourceMappingURL=index.js.map
 
 /***/ },
@@ -497,29 +516,64 @@
 /***/ function(module, exports) {
 
 	var BoldInvaders = (function () {
-	    function BoldInvaders(options) {
-	        this.options = options;
+	    function BoldInvaders(boldOptions, stateOptions) {
+	        this.boldOptions = boldOptions;
+	        this.stateOptions = stateOptions;
 	    }
 	    BoldInvaders.prototype.initialize = function (gameCanvas) {
-	        this.options.height = gameCanvas.height;
-	        this.options.width = gameCanvas.width;
-	        this.options.leftGameBounds = gameCanvas.width / 2 - this.options.gameWidth;
-	        this.options.rightGameBounds = gameCanvas.width / 2 - this.options.gameWidth;
-	        this.options.topGameBounds = gameCanvas.height / 2 - this.options.gameHeight;
-	        this.options.bottomGameBounds = gameCanvas.height / 2 - this.options.gameHeight;
+	        this.stateOptions.height = gameCanvas.height;
+	        this.stateOptions.width = gameCanvas.width;
+	        this.stateOptions.gameBounds.left = gameCanvas.width / 2 - this.boldOptions.gameWidth;
+	        this.stateOptions.gameBounds.right = gameCanvas.width / 2 - this.boldOptions.gameWidth;
+	        this.stateOptions.gameBounds.top = gameCanvas.height / 2 - this.boldOptions.gameHeight;
+	        this.stateOptions.gameBounds.bottom = gameCanvas.height / 2 - this.boldOptions.gameHeight;
 	    };
 	    BoldInvaders.prototype.currentState = function () {
-	        return this.options.stateStack.length > 0 ? this.options.stateStack[this.options.stateStack.length - 1] : null;
+	        return this.stateOptions.stateStack.length > 0 ? this.stateOptions.stateStack[this.stateOptions.stateStack.length - 1] : null;
 	    };
 	    BoldInvaders.prototype.moveToState = function (state) {
 	        /* if (this.currentState()) {
-	             
-	             if(this.currentState().leave){
+	 
+	             if (this.currentState().leave) {
 	                 this.currentState().leave(game);
 	             }
-	             
-	             this.stateStack.pop();
-	         }*/
+	 
+	             this.stateOptions.stateStack.pop();
+	         }
+	         
+	         //  If there's an enter function for the new state, call it.
+	         if (state.enter) {
+	             state.enter(game);
+	         }
+	  
+	         //  Set the current state.
+	         this.stateOptions.stateStack.push(state);*/
+	    };
+	    BoldInvaders.prototype.pushState = function (state) {
+	        /*  //  If there's an enter function for the new state, call it.
+	          if (state.enter) {
+	              state.enter(game);
+	          }
+	          //  Set the current state.
+	          this.stateOptions.stateStack.push(state);*/
+	    };
+	    BoldInvaders.prototype.popState = function () {
+	        /* if(this.currentState().leave) {
+	             this.currentState().leave(game);
+	         }
+	  
+	         //  Set the current state.
+	         this.stateOptions.stateStack.pop();*/
+	    };
+	    BoldInvaders.prototype.start = function () {
+	        /*  //  Move into the 'welcome' state.
+	          this.moveToState(new WelcomeState());*/
+	        //  Set the game variables.
+	        this.stateOptions.lives = 3;
+	        this.boldOptions.debugMode = /debug=true/.test(window.location.href);
+	        //  Start the game loop.
+	        var game = this;
+	        /*var intervalId = setInterval(function () { gameLoop(game);}, 1000 / this.boldOptions.fps);*/
 	    };
 	    return BoldInvaders;
 	})();
