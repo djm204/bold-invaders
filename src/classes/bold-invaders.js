@@ -7,8 +7,8 @@ var BoldInvaders = (function () {
     BoldInvaders.prototype.initialize = function (gameCanvas) {
         this.stateOptions.gameCanvas = gameCanvas;
         console.log(gameCanvas.height);
-        gameCanvas.height = window.innerHeight / 2 + window.innerHeight / 7;
-        gameCanvas.width = window.innerWidth / 2 + window.innerWidth / 7;
+        gameCanvas.height = window.innerHeight / 2;
+        gameCanvas.width = window.innerWidth / 2;
         this.stateOptions.height = gameCanvas.height;
         this.stateOptions.width = gameCanvas.width;
     };

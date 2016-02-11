@@ -18,8 +18,8 @@ var BIOptions = {
 };
 var BIStateOptions = {
     lives: 3,
-    width: 500,
-    height: 500,
+    width: 0,
+    height: 0,
     gameBounds: { left: 0, top: 0, right: 0, bottom: 0 },
     intervalId: 0,
     score: 0,
