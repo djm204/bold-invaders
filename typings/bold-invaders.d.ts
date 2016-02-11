@@ -21,20 +21,50 @@ declare namespace StarField {
 
 declare namespace BoldInvaders {
 
-    export interface Options {
-        gameWidth: number,
-        gameHeight: number,
-        fps: number,
-        lives: number,
-        width: number,
-        height: number,
-        leftGameBounds: number,
-        topGameBounds: number,
-        rightGameBounds: number,
-        bottomGameBounds: number,
-        stateStack: Array<any>,
-        pressedKeys: Array<number>,
-        gameCanvas: HTMLCanvasElement
+    export interface GameOptions {
+        
+        config:{
+            bombRate: number,
+            bombMinVelocity: number,
+            bombMaxVelocity: number,
+            invaderInitialVelocity: number,
+            invaderAcceleration: number,
+            invaderDropDistance: number,
+            rocketVelocity: number,
+            rocketMaxFireRate: number
+            gameWidth: number,
+            gameHeight: number,
+            fps: number,
+            debugMode: boolean,
+            invaderRanks: number,
+            invaderFiles: number,
+            shipSpeed: number,
+            levelDifficultyMultiplier: number,
+            pointsPerInvader: number
+        };
+       state: {
+            lives : number,
+            width : number,
+            height : number,
+            gameBounds : {left: number, top: number, right: number, bottom: number},
+            intervalId : number,
+            score : number,
+            level : number,
+
+            //  The state stack.
+            stateStack : Array<State>,
+
+            //  Input/output
+            pressedKeys : Array<number>,
+            gameCanvas :  HTMLCanvasElement,
+
+            //  All sounds.
+            sounds : Array<Sounds>,
+       }
+        
+        
     }
+    
+ 
 
 }
