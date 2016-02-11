@@ -64,16 +64,16 @@
 	};
 	var BIStateOptions = {
 	    lives: 3,
-	    width: 0,
-	    height: 0,
+	    width: 400,
+	    height: 300,
 	    gameBounds: { left: 0, top: 0, right: 0, bottom: 0 },
 	    intervalId: 0,
 	    score: 0,
 	    level: 1,
-	    stateStack: null,
-	    pressedKeys: null,
+	    stateStack: [],
+	    pressedKeys: [],
 	    gameCanvas: null,
-	    sounds: null
+	    sounds: []
 	};
 	var canvas = document.getElementById("gameCanvas");
 	var boldInvaders = new BoldInvaders(BIOptions, BIStateOptions);
@@ -85,11 +85,11 @@
 	    if (keycode == 37 || keycode == 39 || keycode == 32) {
 	        e.preventDefault();
 	    }
-	    this.keyDown(keycode);
+	    boldInvaders.keyDown(keycode);
 	});
 	window.addEventListener("keyup", function keydown(e) {
 	    var keycode = e.which || e.keyCode;
-	    this.keyUp(keycode);
+	    boldInvaders.keyUp(keycode);
 	});
 	console.log(boldInvaders.boldOptions.fps);
 	//# sourceMappingURL=index.js.map
@@ -540,12 +540,30 @@
 	    }
 	    BoldInvaders.prototype.initialize = function (gameCanvas) {
 	        this.stateOptions.gameCanvas = gameCanvas;
+	        console.log(gameCanvas.height);
 	        this.stateOptions.height = gameCanvas.height;
 	        this.stateOptions.width = gameCanvas.width;
-	        this.stateOptions.gameBounds.left = gameCanvas.width / 2 - this.boldOptions.gameWidth;
-	        this.stateOptions.gameBounds.right = gameCanvas.width / 2 - this.boldOptions.gameWidth;
-	        this.stateOptions.gameBounds.top = gameCanvas.height / 2 - this.boldOptions.gameHeight;
-	        this.stateOptions.gameBounds.bottom = gameCanvas.height / 2 - this.boldOptions.gameHeight;
+	        this.stateOptions.gameBounds.left = gameCanvas.width - this.boldOptions.gameWidth;
+	        this.stateOptions.gameBounds.right = gameCanvas.width - this.boldOptions.gameWidth;
+	        this.stateOptions.gameBounds.top = gameCanvas.height - this.boldOptions.gameHeight;
+	        this.stateOptions.gameBounds.bottom = gameCanvas.height - this.boldOptions.gameHeight;
+	    };
+	    BoldInvaders.prototype.gameLoop = function (game) {
+	        var currentState = game.currentState();
+	        if (currentState) {
+	            //  Delta t is the time to update/draw.
+	            var dt = 1 / game.boldOptions.fps;
+	            //  Get the drawing context.
+	            var ctx = game.stateOptions.gameCanvas.getContext("2d");
+	            //  Update if we have an update function. Also draw
+	            //  if we have a draw function.
+	            if (currentState.update) {
+	                currentState.update(game, dt);
+	            }
+	            if (currentState.draw) {
+	                currentState.draw(game, dt, ctx);
+	            }
+	        }
 	    };
 	    BoldInvaders.prototype.currentState = function () {
 	        return this.stateOptions.stateStack.length > 0 ? this.stateOptions.stateStack[this.stateOptions.stateStack.length - 1] : null;
@@ -580,14 +598,15 @@
 	        this.stateOptions.stateStack.pop();
 	    };
 	    BoldInvaders.prototype.start = function () {
-	        var gameLoop = __webpack_require__(8);
+	        var canvas = this.stateOptions.gameCanvas;
+	        var ctx = canvas.getContext("2d");
 	        //  Move into the 'welcome' state.
-	        this.moveToState(new welcomeState(this, 1 / this.boldOptions.fps, this.stateOptions.gameCanvas.getContext("2d")));
+	        this.moveToState(new welcomeState(this, 1 / (this.boldOptions.fps), ctx));
 	        //  Set the game variables.
 	        this.stateOptions.lives = 3;
 	        this.boldOptions.debugMode = /debug=true/.test(window.location.href);
 	        //  Start the game loop.
-	        var intervalId = setInterval(function () { gameLoop(this); }, 1000 / this.boldOptions.fps);
+	        var intervalId = setInterval(this.gameLoop(this), 1000 / this.boldOptions.fps);
 	    };
 	    BoldInvaders.prototype.keyDown = function (keyCode) {
 	        this.stateOptions.pressedKeys[keyCode] = true;
@@ -615,17 +634,15 @@
 	var WelcomeState = (function () {
 	    function WelcomeState(game, dt, ctx) {
 	        //  Clear the background.
-	    }
-	    WelcomeState.prototype.draw = function (game, ctx) {
 	        ctx.clearRect(0, 0, game.stateOptions.width, game.stateOptions.height);
 	        ctx.font = "30px Arial";
 	        ctx.fillStyle = '#ffffff';
 	        ctx.textBaseline = "center";
 	        ctx.textAlign = "center";
-	        ctx.fillText("Space Invaders", game.stateOptions.width / 2, game.stateOptions.height / 2 - 40);
+	        ctx.fillText("Bold Invaders", game.stateOptions.width / 2, game.stateOptions.height / 2 - 40);
 	        ctx.font = "16px Arial";
 	        ctx.fillText("Press 'Space' to start.", game.stateOptions.width / 2, game.stateOptions.height / 2);
-	    };
+	    }
 	    WelcomeState.prototype.keyDown = function (game, keyCode) {
 	        if (keyCode == 32) {
 	            //  Space starts the game.
@@ -636,29 +653,6 @@
 	})();
 	module.exports = WelcomeState;
 	//# sourceMappingURL=welcome-state.js.map
-
-/***/ },
-/* 8 */
-/***/ function(module, exports) {
-
-	module.exports = function (game) {
-	    var currentState = game.CurrentState();
-	    if (currentState) {
-	        //  Delta t is the time to update/draw.
-	        var dt = 1 / game.config.fps;
-	        //  Get the drawing context.
-	        var ctx = game.gameCanvas.getContext("2d");
-	        //  Update if we have an update function. Also draw
-	        //  if we have a draw function.
-	        if (currentState.update) {
-	            currentState.update(game, dt);
-	        }
-	        if (currentState.draw) {
-	            currentState.draw(game, dt, ctx);
-	        }
-	    }
-	};
-	//# sourceMappingURL=game-loop.js.map
 
 /***/ }
 /******/ ]);

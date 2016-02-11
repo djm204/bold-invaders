@@ -29,16 +29,16 @@ var BIOptions: BoldInvadersOptions = {
 
 var BIStateOptions: StateOptions = {
     lives: 3,
-    width: 0,
-    height: 0,
+    width: 400,
+    height: 300,
     gameBounds: { left: 0, top: 0, right: 0, bottom: 0 },
     intervalId: 0,
     score: 0,
     level: 1,
-    stateStack: null,
-    pressedKeys: null,
+    stateStack: [],
+    pressedKeys: [],
     gameCanvas: null,
-    sounds: null
+    sounds: []
 }
 
 var canvas = document.getElementById("gameCanvas");
@@ -55,11 +55,11 @@ window.addEventListener("keydown", function keydown(e) {
     if(keycode == 37 || keycode == 39 || keycode == 32) {
         e.preventDefault();
     }
-    this.keyDown(keycode);
+    boldInvaders.keyDown(keycode);
 });
 window.addEventListener("keyup", function keydown(e) {
     var keycode = e.which || e.keyCode;
-    this.keyUp(keycode);
+    boldInvaders.keyUp(keycode);
 }); 
 
 

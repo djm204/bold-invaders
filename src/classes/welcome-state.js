@@ -1,17 +1,15 @@
 var WelcomeState = (function () {
     function WelcomeState(game, dt, ctx) {
         //  Clear the background.
-    }
-    WelcomeState.prototype.draw = function (game, ctx) {
         ctx.clearRect(0, 0, game.stateOptions.width, game.stateOptions.height);
         ctx.font = "30px Arial";
         ctx.fillStyle = '#ffffff';
         ctx.textBaseline = "center";
         ctx.textAlign = "center";
-        ctx.fillText("Space Invaders", game.stateOptions.width / 2, game.stateOptions.height / 2 - 40);
+        ctx.fillText("Bold Invaders", game.stateOptions.width / 2, game.stateOptions.height / 2 - 40);
         ctx.font = "16px Arial";
         ctx.fillText("Press 'Space' to start.", game.stateOptions.width / 2, game.stateOptions.height / 2);
-    };
+    }
     WelcomeState.prototype.keyDown = function (game, keyCode) {
         if (keyCode == 32) {
             //  Space starts the game.

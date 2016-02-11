@@ -6,12 +6,30 @@ var BoldInvaders = (function () {
     }
     BoldInvaders.prototype.initialize = function (gameCanvas) {
         this.stateOptions.gameCanvas = gameCanvas;
+        console.log(gameCanvas.height);
         this.stateOptions.height = gameCanvas.height;
         this.stateOptions.width = gameCanvas.width;
-        this.stateOptions.gameBounds.left = gameCanvas.width / 2 - this.boldOptions.gameWidth;
-        this.stateOptions.gameBounds.right = gameCanvas.width / 2 - this.boldOptions.gameWidth;
-        this.stateOptions.gameBounds.top = gameCanvas.height / 2 - this.boldOptions.gameHeight;
-        this.stateOptions.gameBounds.bottom = gameCanvas.height / 2 - this.boldOptions.gameHeight;
+        this.stateOptions.gameBounds.left = gameCanvas.width - this.boldOptions.gameWidth;
+        this.stateOptions.gameBounds.right = gameCanvas.width - this.boldOptions.gameWidth;
+        this.stateOptions.gameBounds.top = gameCanvas.height - this.boldOptions.gameHeight;
+        this.stateOptions.gameBounds.bottom = gameCanvas.height - this.boldOptions.gameHeight;
+    };
+    BoldInvaders.prototype.gameLoop = function (game) {
+        var currentState = game.currentState();
+        if (currentState) {
+            //  Delta t is the time to update/draw.
+            var dt = 1 / game.boldOptions.fps;
+            //  Get the drawing context.
+            var ctx = game.stateOptions.gameCanvas.getContext("2d");
+            //  Update if we have an update function. Also draw
+            //  if we have a draw function.
+            if (currentState.update) {
+                currentState.update(game, dt);
+            }
+            if (currentState.draw) {
+                currentState.draw(game, dt, ctx);
+            }
+        }
     };
     BoldInvaders.prototype.currentState = function () {
         return this.stateOptions.stateStack.length > 0 ? this.stateOptions.stateStack[this.stateOptions.stateStack.length - 1] : null;
@@ -46,14 +64,15 @@ var BoldInvaders = (function () {
         this.stateOptions.stateStack.pop();
     };
     BoldInvaders.prototype.start = function () {
-        var gameLoop = require('../modules/game-loop');
+        var canvas = this.stateOptions.gameCanvas;
+        var ctx = canvas.getContext("2d");
         //  Move into the 'welcome' state.
-        this.moveToState(new welcomeState(this, 1 / this.boldOptions.fps, this.stateOptions.gameCanvas.getContext("2d")));
+        this.moveToState(new welcomeState(this, 1 / (this.boldOptions.fps), ctx));
         //  Set the game variables.
         this.stateOptions.lives = 3;
         this.boldOptions.debugMode = /debug=true/.test(window.location.href);
         //  Start the game loop.
-        var intervalId = setInterval(function () { gameLoop(this); }, 1000 / this.boldOptions.fps);
+        var intervalId = setInterval(this.gameLoop(this), 1000 / this.boldOptions.fps);
     };
     BoldInvaders.prototype.keyDown = function (keyCode) {
         this.stateOptions.pressedKeys[keyCode] = true;

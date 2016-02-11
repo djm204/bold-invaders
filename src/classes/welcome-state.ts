@@ -3,21 +3,19 @@ class WelcomeState {
 
     constructor(game: boldInvaders, dt: number, ctx: CanvasRenderingContext2D) {
         //  Clear the background.
-        
-    }
-    
-    draw(game, ctx){
         ctx.clearRect(0, 0, game.stateOptions.width, game.stateOptions.height);
 
         ctx.font = "30px Arial";
         ctx.fillStyle = '#ffffff';
         ctx.textBaseline = "center";
         ctx.textAlign = "center";
-        ctx.fillText("Space Invaders", game.stateOptions.width / 2, game.stateOptions.height / 2 - 40);
+        ctx.fillText("Bold Invaders", game.stateOptions.width / 2, game.stateOptions.height / 2 - 40);
         ctx.font = "16px Arial";
 
         ctx.fillText("Press 'Space' to start.", game.stateOptions.width / 2, game.stateOptions.height / 2);
     }
+    
+   
 
     keyDown(game: boldInvaders, keyCode: number) {
         if (keyCode == 32) /*space*/ {
