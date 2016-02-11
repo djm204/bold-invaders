@@ -43,7 +43,7 @@ class StarField {
                     size: Math.random() * 3 + 1,
                     velocity: (Math.random() * (this.options.maxVelocity - this.options.minVelocity)) + this.options.minVelocity
                 };
-                this.options.starList.push(newStar);
+                this.options.starList[i] = newStar;
             }
         }
     }

@@ -2,51 +2,43 @@ var STAR_LIMIT = 100;
 var StarField = (function () {
     function StarField(options) {
         this.options = options;
-        this.fps = options.fps;
-        this.canvas = options.canvas;
-        this.width = options.width;
-        this.height = options.height;
-        this.minVelocity = options.minVelocity;
-        this.maxVelocity = options.maxVelocity;
-        this.starList = options.starList;
-        this.intervalId = options.intervalId;
     }
     StarField.prototype.initialize = function (div) {
         var _this = this;
         var containerDiv = div;
-        this.starList = [];
-        this.width = window.innerWidth;
-        this.height = window.innerHeight;
+        this.options.starList = [];
+        this.options.width = window.innerWidth;
+        this.options.height = window.innerHeight;
         window.addEventListener('resize', function (event) {
             //resize
-            _this.width = window.innerWidth;
-            _this.height = window.innerHeight;
-            _this.canvas.width = _this.width;
-            _this.canvas.height = _this.height;
+            _this.options.width = window.innerWidth;
+            _this.options.height = window.innerHeight;
+            _this.options.canvas.width = _this.options.width;
+            _this.options.canvas.height = _this.options.height;
             //redraw
             _this.draw();
         });
         //create the canvas
         var newCanvas = document.createElement('canvas');
         div.appendChild(newCanvas);
-        this.canvas = newCanvas;
-        this.canvas.width = this.width;
-        this.canvas.height = this.height;
+        this.options.canvas = newCanvas;
+        this.options.canvas.width = this.options.width;
+        this.options.canvas.height = this.options.height;
     };
     StarField.prototype.update = function () {
-        var dt = 1 / this.fps;
+        var dt = 1 / this.options.fps;
         for (var i = 0; i < STAR_LIMIT; i++) {
-            var star = this.starList[i];
+            var star = this.options.starList[i];
             star.y += dt * star.velocity;
             //  If the star has moved from the bottom of the screen, spawn it at the top.
-            if (star.y > this.height) {
+            if (star.y > this.options.height) {
                 var newStar = {
-                    x: Math.random() * this.width,
+                    x: Math.random() * this.options.width,
                     y: 0,
                     size: Math.random() * 3 + 1,
-                    velocity: (Math.random() * (this.maxVelocity - this.minVelocity)) + this.minVelocity
+                    velocity: (Math.random() * (this.options.maxVelocity - this.options.minVelocity)) + this.options.minVelocity
                 };
-                this.starList.push(newStar);
+                this.options.starList[i] = newStar;
             }
         }
     };
@@ -55,29 +47,29 @@ var StarField = (function () {
         //	Create the stars.
         for (var i = 0; i < STAR_LIMIT; i++) {
             var newStar = {
-                x: Math.random() * this.width,
-                y: 0,
+                x: Math.random() * this.options.width,
+                y: Math.random() * this.options.height,
                 size: Math.random() * 3 + 1,
-                velocity: (Math.random() * (this.maxVelocity - this.minVelocity)) + this.minVelocity
+                velocity: (Math.random() * (this.options.maxVelocity - this.options.minVelocity)) + this.options.minVelocity
             };
-            this.starList.push(newStar);
+            this.options.starList.push(newStar);
         }
         //	Start the timer.
-        this.intervalId = setInterval(function () {
+        this.options.intervalId = setInterval(function () {
             _this.update();
             _this.draw();
-        }, 1000 / this.fps);
+        }, 1000 / this.options.fps);
     };
     StarField.prototype.draw = function () {
         //  Get the drawing context.
-        var ctx = this.canvas.getContext("2d");
+        var ctx = this.options.canvas.getContext("2d");
         // Draw the background.
         ctx.fillStyle = '#000000';
-        ctx.fillRect(0, 0, this.width, this.height);
+        ctx.fillRect(0, 0, this.options.width, this.options.height);
         //  Draw stars.
         ctx.fillStyle = '#ffffff';
-        for (var i = 0; i < this.starList.length; i++) {
-            var star = this.starList[i];
+        for (var i = 0; i < this.options.starList.length; i++) {
+            var star = this.options.starList[i];
             ctx.fillRect(star.x, star.y, star.size, star.size);
         }
     };
