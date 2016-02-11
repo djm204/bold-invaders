@@ -40,6 +40,25 @@ class BoldInvaders {
         this.options.stateStack.push(state);
     }
 
+    pushState(state) {
+        //  If there's an enter function for the new state, call it.
+        if (state.enter) {
+            state.enter(game);
+        }
+        //  Set the current state.
+        this.options.stateStack.push(state);
+    }
+    
+    popState() {
+        if(this.currentState().leave) {
+            this.currentState().leave(game);
+        }
+ 
+        //  Set the current state.
+        this.options.stateStack.pop();
+
+    }
+
 }
 
 
