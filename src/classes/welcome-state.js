@@ -1,3 +1,4 @@
+var levelIntroState = require('./level-intro-state');
 var WelcomeState = (function () {
     function WelcomeState(game, dt, ctx) {
     }
@@ -21,8 +22,8 @@ var WelcomeState = (function () {
     };
     WelcomeState.prototype.keyDown = function (game, keyCode) {
         if (keyCode == 32) {
-            //  Space starts the game.
-            console.log("will Intro LEvel here"); //game.moveToState(new LevelIntroState(game.level));
+            //  Space starts the game.  
+            game.moveToState(new levelIntroState(game, game.stateOptions.level, 1 / (game.boldOptions.fps), game.stateOptions.gameCanvas.getContext("2d")));
         }
     };
     return WelcomeState;

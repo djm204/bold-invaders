@@ -1,4 +1,5 @@
 import boldInvaders = require('./bold-invaders');
+import levelIntroState = require('./level-intro-state');
 class WelcomeState {
 
     constructor(game: boldInvaders, dt: number, ctx: CanvasRenderingContext2D) { }
@@ -29,10 +30,10 @@ class WelcomeState {
 
 
 
-    keyDown(game: boldInvaders, keyCode: number) {
+    keyDown(game: boldInvaders,keyCode: number) {
         if (keyCode == 32) /*space*/ {
-            //  Space starts the game.
-            console.log("will Intro LEvel here");//game.moveToState(new LevelIntroState(game.level));
+            //  Space starts the game.  
+            game.moveToState(new levelIntroState(game, game.stateOptions.level, 1 / (game.boldOptions.fps), game.stateOptions.gameCanvas.getContext("2d")));
         }
     }
 }
