@@ -2,18 +2,31 @@ import boldInvaders = require('./bold-invaders');
 class WelcomeState {
 
     constructor(game: boldInvaders, dt: number, ctx: CanvasRenderingContext2D) {
+        
+        var boldLogo = new Image();
+        var invadersLogo = new Image();
+        
+        invadersLogo.src = "../front/images/invaders.png";
+        
+        
+        boldLogo.src = "../front/images/welcomeLogo.png";
+        var invaders = document.getElementById("invadersLogo");
         //  Clear the background.
         ctx.clearRect(0, 0, game.stateOptions.width, game.stateOptions.height);
 
-        ctx.font = "30px Arial";
         ctx.fillStyle = '#ffffff';
-        ctx.textBaseline = "center";
+        ctx.textBaseline = "bottom";
         ctx.textAlign = "center";
-        ctx.fillText("Bold Invaders", game.stateOptions.width / 2, game.stateOptions.height / 2 - 40);
+        
+        
         ctx.font = "16px Arial";
 
         ctx.fillText("Press 'Space' to start.", game.stateOptions.width / 2, game.stateOptions.height / 2);
-    }
+        ctx.drawImage(boldLogo, ctx.canvas.width / 2, 25, 250, 125);
+        ctx.drawImage(invadersLogo, ctx.canvas.width / 2, 125, 250, 75);
+        
+       
+}
     
    
 

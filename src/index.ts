@@ -19,8 +19,8 @@ starfield.start();
 
 //Bold Invaders 
 var BIOptions: BoldInvadersOptions = {
-    gameWidth: 400,
-    gameHeight: 300,
+    gameWidth: 0,
+    gameHeight: 0,
     fps: 50,
     shipSpeed: 120,
     debugMode: false,
@@ -29,8 +29,8 @@ var BIOptions: BoldInvadersOptions = {
 
 var BIStateOptions: StateOptions = {
     lives: 3,
-    width: 400,
-    height: 300,
+    width: 500,
+    height: 500,
     gameBounds: { left: 0, top: 0, right: 0, bottom: 0 },
     intervalId: 0,
     score: 0,

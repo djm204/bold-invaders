@@ -10,14 +10,12 @@ class BoldInvaders {
         this.stateOptions.gameCanvas = gameCanvas;
         
         console.log(gameCanvas.height);
+        gameCanvas.height = window.innerHeight / 2 + window.innerHeight / 7;
+        gameCanvas.width = window.innerWidth / 2 + window.innerWidth / 7;
         this.stateOptions.height = gameCanvas.height;
         this.stateOptions.width = gameCanvas.width;
 
-        this.stateOptions.gameBounds.left = gameCanvas.width  - this.boldOptions.gameWidth;
-        this.stateOptions.gameBounds.right = gameCanvas.width  - this.boldOptions.gameWidth;
-        this.stateOptions.gameBounds.top = gameCanvas.height  - this.boldOptions.gameHeight;
-        this.stateOptions.gameBounds.bottom = gameCanvas.height - this.boldOptions.gameHeight;
-
+    
     }
     gameLoop(game) {
         var currentState = game.currentState(); 

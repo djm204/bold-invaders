@@ -55,8 +55,8 @@
 	starfield.start();
 	//Bold Invaders 
 	var BIOptions = {
-	    gameWidth: 400,
-	    gameHeight: 300,
+	    gameWidth: 0,
+	    gameHeight: 0,
 	    fps: 50,
 	    shipSpeed: 120,
 	    debugMode: false,
@@ -64,8 +64,8 @@
 	};
 	var BIStateOptions = {
 	    lives: 3,
-	    width: 400,
-	    height: 300,
+	    width: 500,
+	    height: 500,
 	    gameBounds: { left: 0, top: 0, right: 0, bottom: 0 },
 	    intervalId: 0,
 	    score: 0,
@@ -541,12 +541,10 @@
 	    BoldInvaders.prototype.initialize = function (gameCanvas) {
 	        this.stateOptions.gameCanvas = gameCanvas;
 	        console.log(gameCanvas.height);
+	        gameCanvas.height = window.innerHeight / 2 + window.innerHeight / 7;
+	        gameCanvas.width = window.innerWidth / 2 + window.innerWidth / 7;
 	        this.stateOptions.height = gameCanvas.height;
 	        this.stateOptions.width = gameCanvas.width;
-	        this.stateOptions.gameBounds.left = gameCanvas.width - this.boldOptions.gameWidth;
-	        this.stateOptions.gameBounds.right = gameCanvas.width - this.boldOptions.gameWidth;
-	        this.stateOptions.gameBounds.top = gameCanvas.height - this.boldOptions.gameHeight;
-	        this.stateOptions.gameBounds.bottom = gameCanvas.height - this.boldOptions.gameHeight;
 	    };
 	    BoldInvaders.prototype.gameLoop = function (game) {
 	        var currentState = game.currentState();
@@ -633,15 +631,20 @@
 
 	var WelcomeState = (function () {
 	    function WelcomeState(game, dt, ctx) {
+	        var boldLogo = new Image();
+	        var invadersLogo = new Image();
+	        invadersLogo.src = "../front/images/invaders.png";
+	        boldLogo.src = "../front/images/welcomeLogo.png";
+	        var invaders = document.getElementById("invadersLogo");
 	        //  Clear the background.
 	        ctx.clearRect(0, 0, game.stateOptions.width, game.stateOptions.height);
-	        ctx.font = "30px Arial";
 	        ctx.fillStyle = '#ffffff';
-	        ctx.textBaseline = "center";
+	        ctx.textBaseline = "bottom";
 	        ctx.textAlign = "center";
-	        ctx.fillText("Bold Invaders", game.stateOptions.width / 2, game.stateOptions.height / 2 - 40);
 	        ctx.font = "16px Arial";
 	        ctx.fillText("Press 'Space' to start.", game.stateOptions.width / 2, game.stateOptions.height / 2);
+	        ctx.drawImage(boldLogo, ctx.canvas.width / 2, 25, 250, 125);
+	        ctx.drawImage(invadersLogo, ctx.canvas.width / 2, 125, 250, 75);
 	    }
 	    WelcomeState.prototype.keyDown = function (game, keyCode) {
 	        if (keyCode == 32) {
