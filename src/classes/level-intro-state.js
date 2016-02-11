@@ -32,7 +32,6 @@ var LevelIntroState = (function () {
             //  Move to the next level, popping this state.
             //game.moveToState(new PlayState(game.config, this.level));
             console.log("counted to zero");
-            return;
         }
         console.log(this.countdown + " message: " + this.countDownMessage);
         this.draw(game, dt, ctx);

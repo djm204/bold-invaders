@@ -638,8 +638,8 @@
 	    WelcomeState.prototype.draw = function (game, dt, ctx) {
 	        var boldLogo = new Image();
 	        var invadersLogo = new Image();
-	        boldLogo.src = "../front/images/welcomeLogo.png";
-	        invadersLogo.src = "../front/images/invaders.png";
+	        boldLogo.src = "../images/welcomeLogo.png";
+	        invadersLogo.src = "../images/invaders.png";
 	        var invaders = document.getElementById("invadersLogo");
 	        //  Clear the background.
 	        ctx.clearRect(0, 0, game.stateOptions.width, game.stateOptions.height);
@@ -705,7 +705,6 @@
 	            //  Move to the next level, popping this state.
 	            //game.moveToState(new PlayState(game.config, this.level));
 	            console.log("counted to zero");
-	            return;
 	        }
 	        console.log(this.countdown + " message: " + this.countDownMessage);
 	        this.draw(game, dt, ctx);
