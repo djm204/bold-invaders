@@ -59,10 +59,10 @@ declare namespace BoldInvaders {
         level: number,
 
         //  The state stack.
-        stateStack: Array<State>,
+        stateStack: Array<any>,
 
         //  Input/output
-        pressedKeys: Array<number>,
+        pressedKeys: Array<boolean>,
         gameCanvas: HTMLCanvasElement,
 
         //  All sounds.

@@ -19,3 +19,8 @@ body, html {
     left: 0px;
     top: 0px;
 }
+
+#gamecontainer{
+    width: 800px;
+    margin: auto;
+}

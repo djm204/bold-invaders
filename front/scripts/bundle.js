@@ -47,6 +47,13 @@
 	__webpack_require__(1);
 	var StarField = __webpack_require__(5);
 	var BoldInvaders = __webpack_require__(6);
+	//Starfield 
+	var SFOptions = { fps: 30, canvas: null, width: 0, height: 0, minVelocity: 15, maxVelocity: 30, starList: null, intervalId: 0 };
+	var starfield = new StarField(SFOptions);
+	var container = document.getElementById('container');
+	starfield.initialize(container);
+	starfield.start();
+	//Bold Invaders 
 	var BIOptions = {
 	    gameWidth: 400,
 	    gameHeight: 300,
@@ -68,12 +75,22 @@
 	    gameCanvas: null,
 	    sounds: null
 	};
-	var SFOptions = { fps: 30, canvas: null, width: 0, height: 0, minVelocity: 15, maxVelocity: 30, starList: null, intervalId: 0 };
-	var starfield = new StarField(SFOptions);
-	var container = document.getElementById('container');
-	starfield.initialize(container);
-	starfield.start();
+	var canvas = document.getElementById("gameCanvas");
 	var boldInvaders = new BoldInvaders(BIOptions, BIStateOptions);
+	boldInvaders.initialize(canvas);
+	boldInvaders.start();
+	window.addEventListener("keydown", function keydown(e) {
+	    var keycode = e.which || e.keyCode;
+	    //  Supress further processing of left/right/space (37/29/32)
+	    if (keycode == 37 || keycode == 39 || keycode == 32) {
+	        e.preventDefault();
+	    }
+	    this.keyDown(keycode);
+	});
+	window.addEventListener("keyup", function keydown(e) {
+	    var keycode = e.which || e.keyCode;
+	    this.keyUp(keycode);
+	});
 	console.log(boldInvaders.boldOptions.fps);
 	//# sourceMappingURL=index.js.map
 
@@ -112,7 +129,7 @@
 
 
 	// module
-	exports.push([module.id, "*{\r\n    padding: 0px;\r\n    margin: 0px;\r\n}\r\n\r\nbody, html { \r\n    width: 100%;\r\n    height: 100%;\r\n    margin: 0;\r\n    padding: 0;\r\n    overflow: hidden;\r\n    }\r\n            \r\n#container {\r\n    width: 100%;\r\n    height: 100%;\r\n    z-index: -1;\r\n    position: absolute;\r\n    left: 0px;\r\n    top: 0px;\r\n}", ""]);
+	exports.push([module.id, "*{\r\n    padding: 0px;\r\n    margin: 0px;\r\n}\r\n\r\nbody, html { \r\n    width: 100%;\r\n    height: 100%;\r\n    margin: 0;\r\n    padding: 0;\r\n    overflow: hidden;\r\n    }\r\n            \r\n#container {\r\n    width: 100%;\r\n    height: 100%;\r\n    z-index: -1;\r\n    position: absolute;\r\n    left: 0px;\r\n    top: 0px;\r\n}\r\n\r\n#gamecontainer{\r\n    width: 800px;\r\n    margin: auto;\r\n}", ""]);
 
 	// exports
 
@@ -513,14 +530,16 @@
 
 /***/ },
 /* 6 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
+	var welcomeState = __webpack_require__(7);
 	var BoldInvaders = (function () {
 	    function BoldInvaders(boldOptions, stateOptions) {
 	        this.boldOptions = boldOptions;
 	        this.stateOptions = stateOptions;
 	    }
 	    BoldInvaders.prototype.initialize = function (gameCanvas) {
+	        this.stateOptions.gameCanvas = gameCanvas;
 	        this.stateOptions.height = gameCanvas.height;
 	        this.stateOptions.width = gameCanvas.width;
 	        this.stateOptions.gameBounds.left = gameCanvas.width / 2 - this.boldOptions.gameWidth;
@@ -532,53 +551,114 @@
 	        return this.stateOptions.stateStack.length > 0 ? this.stateOptions.stateStack[this.stateOptions.stateStack.length - 1] : null;
 	    };
 	    BoldInvaders.prototype.moveToState = function (state) {
-	        /* if (this.currentState()) {
-	 
-	             if (this.currentState().leave) {
-	                 this.currentState().leave(game);
-	             }
-	 
-	             this.stateOptions.stateStack.pop();
-	         }
-	         
-	         //  If there's an enter function for the new state, call it.
-	         if (state.enter) {
-	             state.enter(game);
-	         }
-	  
-	         //  Set the current state.
-	         this.stateOptions.stateStack.push(state);*/
+	        if (this.currentState()) {
+	            if (this.currentState().leave) {
+	                this.currentState().leave(this);
+	            }
+	            this.stateOptions.stateStack.pop();
+	        }
+	        //  If there's an enter function for the new state, call it.
+	        if (state.enter) {
+	            state.enter(this);
+	        }
+	        //  Set the current state.
+	        this.stateOptions.stateStack.push(state);
 	    };
 	    BoldInvaders.prototype.pushState = function (state) {
-	        /*  //  If there's an enter function for the new state, call it.
-	          if (state.enter) {
-	              state.enter(game);
-	          }
-	          //  Set the current state.
-	          this.stateOptions.stateStack.push(state);*/
+	        //  If there's an enter function for the new state, call it.
+	        if (state.enter) {
+	            state.enter(this);
+	        }
+	        //  Set the current state.
+	        this.stateOptions.stateStack.push(state);
 	    };
 	    BoldInvaders.prototype.popState = function () {
-	        /* if(this.currentState().leave) {
-	             this.currentState().leave(game);
-	         }
-	  
-	         //  Set the current state.
-	         this.stateOptions.stateStack.pop();*/
+	        if (this.currentState().leave) {
+	            this.currentState().leave(this);
+	        }
+	        //  Set the current state.
+	        this.stateOptions.stateStack.pop();
 	    };
 	    BoldInvaders.prototype.start = function () {
-	        /*  //  Move into the 'welcome' state.
-	          this.moveToState(new WelcomeState());*/
+	        var gameLoop = __webpack_require__(8);
+	        //  Move into the 'welcome' state.
+	        this.moveToState(new welcomeState(this, 1 / this.boldOptions.fps, this.stateOptions.gameCanvas.getContext("2d")));
 	        //  Set the game variables.
 	        this.stateOptions.lives = 3;
 	        this.boldOptions.debugMode = /debug=true/.test(window.location.href);
 	        //  Start the game loop.
-	        var game = this;
-	        /*var intervalId = setInterval(function () { gameLoop(game);}, 1000 / this.boldOptions.fps);*/
+	        var intervalId = setInterval(function () { gameLoop(this); }, 1000 / this.boldOptions.fps);
+	    };
+	    BoldInvaders.prototype.keyDown = function (keyCode) {
+	        this.stateOptions.pressedKeys[keyCode] = true;
+	        //  Delegate to the current state too.
+	        if (this.currentState() && this.currentState().keyDown) {
+	            this.currentState().keyDown(this, keyCode);
+	        }
+	    };
+	    BoldInvaders.prototype.keyUp = function (keyCode) {
+	        delete this.stateOptions.pressedKeys[keyCode];
+	        //  Delegate to the current state too.
+	        if (this.currentState() && this.currentState().keyUp) {
+	            this.currentState().keyUp(this, keyCode);
+	        }
 	    };
 	    return BoldInvaders;
 	})();
 	module.exports = BoldInvaders;
 	//# sourceMappingURL=bold-invaders.js.map
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	var WelcomeState = (function () {
+	    function WelcomeState(game, dt, ctx) {
+	        //  Clear the background.
+	    }
+	    WelcomeState.prototype.draw = function (game, ctx) {
+	        ctx.clearRect(0, 0, game.stateOptions.width, game.stateOptions.height);
+	        ctx.font = "30px Arial";
+	        ctx.fillStyle = '#ffffff';
+	        ctx.textBaseline = "center";
+	        ctx.textAlign = "center";
+	        ctx.fillText("Space Invaders", game.stateOptions.width / 2, game.stateOptions.height / 2 - 40);
+	        ctx.font = "16px Arial";
+	        ctx.fillText("Press 'Space' to start.", game.stateOptions.width / 2, game.stateOptions.height / 2);
+	    };
+	    WelcomeState.prototype.keyDown = function (game, keyCode) {
+	        if (keyCode == 32) {
+	            //  Space starts the game.
+	            console.log("will Intro LEvel here"); //game.moveToState(new LevelIntroState(game.level));
+	        }
+	    };
+	    return WelcomeState;
+	})();
+	module.exports = WelcomeState;
+	//# sourceMappingURL=welcome-state.js.map
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	module.exports = function (game) {
+	    var currentState = game.CurrentState();
+	    if (currentState) {
+	        //  Delta t is the time to update/draw.
+	        var dt = 1 / game.config.fps;
+	        //  Get the drawing context.
+	        var ctx = game.gameCanvas.getContext("2d");
+	        //  Update if we have an update function. Also draw
+	        //  if we have a draw function.
+	        if (currentState.update) {
+	            currentState.update(game, dt);
+	        }
+	        if (currentState.draw) {
+	            currentState.draw(game, dt, ctx);
+	        }
+	    }
+	};
+	//# sourceMappingURL=game-loop.js.map
 
 /***/ }
 /******/ ]);

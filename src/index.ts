@@ -6,6 +6,18 @@ import StarFieldOptions = StarField.Options;
 import BoldInvadersOptions = BoldInvaders.GameOptions;
 import StateOptions = BoldInvaders.StateOptions;
 
+
+
+//Starfield 
+var SFOptions: StarFieldOptions = { fps: 30, canvas: null, width: 0, height: 0, minVelocity: 15, maxVelocity: 30, starList: null, intervalId: 0 };
+var starfield = new StarField(SFOptions);
+
+var container = document.getElementById('container');
+starfield.initialize(container);
+starfield.start();
+
+
+//Bold Invaders 
 var BIOptions: BoldInvadersOptions = {
     gameWidth: 400,
     gameHeight: 300,
@@ -29,16 +41,29 @@ var BIStateOptions: StateOptions = {
     sounds: null
 }
 
-var SFOptions: StarFieldOptions = { fps: 30, canvas: null, width: 0, height: 0, minVelocity: 15, maxVelocity: 30, starList: null, intervalId: 0 };
-
-
-var starfield = new StarField(SFOptions);
-
-var container = document.getElementById('container');
-starfield.initialize(container);
-starfield.start();
+var canvas = document.getElementById("gameCanvas");
 
 var boldInvaders = new BoldInvaders(BIOptions, BIStateOptions);
+
+boldInvaders.initialize(canvas);
+
+boldInvaders.start();
+
+window.addEventListener("keydown", function keydown(e) {
+    var keycode = e.which || e.keyCode;
+    //  Supress further processing of left/right/space (37/29/32)
+    if(keycode == 37 || keycode == 39 || keycode == 32) {
+        e.preventDefault();
+    }
+    this.keyDown(keycode);
+});
+window.addEventListener("keyup", function keydown(e) {
+    var keycode = e.which || e.keyCode;
+    this.keyUp(keycode);
+}); 
+
+
+
 
 console.log(boldInvaders.boldOptions.fps);
 
