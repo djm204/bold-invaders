@@ -20,7 +20,6 @@ declare namespace StarField {
 }
 
 declare namespace BoldInvaders {
-    function init(options: Options): void;
 
     export interface Options {
         gameWidth: number,

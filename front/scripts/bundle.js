@@ -47,13 +47,15 @@
 	__webpack_require__(1);
 	var StarField = __webpack_require__(5);
 	var BoldInvaders = __webpack_require__(6);
+	var BIOptions = { gameWidth: 400, gameHeight: 400, fps: 50, lives: 3,
+	    width: 0, height: 0, leftGameBounds: 0, topGameBounds: 0, rightGameBounds: 0, bottomGameBounds: 0, stateStack: null, pressedKeys: null, gameCanvas: null };
 	var SFOptions = { fps: 30, canvas: null, width: 0, height: 0, minVelocity: 15, maxVelocity: 30, starList: null, intervalId: 0 };
 	var starfield = new StarField(SFOptions);
 	var container = document.getElementById('container');
 	starfield.initialize(container);
 	starfield.start();
-	var boldInvaders = new BoldInvaders(400, 400, 50, 3, 0, 0, 0, 0, 0, 0, [], [], null);
-	console.log(boldInvaders.fps);
+	var boldInvaders = new BoldInvaders(BIOptions);
+	console.log(boldInvaders.options.fps);
 	//# sourceMappingURL=index.js.map
 
 /***/ },
@@ -495,31 +497,19 @@
 /***/ function(module, exports) {
 
 	var BoldInvaders = (function () {
-	    function BoldInvaders(gameWidth, gameHeight, fps, lives, width, height, leftGameBounds, topGameBounds, rightGameBounds, bottomGameBounds, stateStack, pressedKeys, gameCanvas) {
-	        this.gameWidth = gameWidth;
-	        this.gameHeight = gameHeight;
-	        this.fps = fps;
-	        this.lives = lives;
-	        this.width = width;
-	        this.height = height;
-	        this.leftGameBounds = leftGameBounds;
-	        this.rightGameBounds = rightGameBounds;
-	        this.topGameBounds = topGameBounds;
-	        this.bottomGameBounds = bottomGameBounds;
-	        this.stateStack = stateStack;
-	        this.pressedKeys = pressedKeys;
-	        this.gameCanvas = gameCanvas;
+	    function BoldInvaders(options) {
+	        this.options = options;
 	    }
 	    BoldInvaders.prototype.initialize = function (gameCanvas) {
-	        this.height = gameCanvas.height;
-	        this.width = gameCanvas.width;
-	        this.leftGameBounds = gameCanvas.width / 2 - this.gameWidth;
-	        this.rightGameBounds = gameCanvas.width / 2 - this.gameWidth;
-	        this.topGameBounds = gameCanvas.height / 2 - this.gameHeight;
-	        this.bottomGameBounds = gameCanvas.height / 2 - this.gameHeight;
+	        this.options.height = gameCanvas.height;
+	        this.options.width = gameCanvas.width;
+	        this.options.leftGameBounds = gameCanvas.width / 2 - this.options.gameWidth;
+	        this.options.rightGameBounds = gameCanvas.width / 2 - this.options.gameWidth;
+	        this.options.topGameBounds = gameCanvas.height / 2 - this.options.gameHeight;
+	        this.options.bottomGameBounds = gameCanvas.height / 2 - this.options.gameHeight;
 	    };
 	    BoldInvaders.prototype.currentState = function () {
-	        return this.stateStack.length > 0 ? this.stateStack[this.stateStack.length - 1] : null;
+	        return this.options.stateStack.length > 0 ? this.options.stateStack[this.options.stateStack.length - 1] : null;
 	    };
 	    BoldInvaders.prototype.moveToState = function (state) {
 	        /* if (this.currentState()) {
