@@ -8,6 +8,7 @@
     "browserify": "^13.0.0",
     "css-loader": "^0.23.1",
     "style-loader": "^0.13.0",
+    "typescript": "^1.7.5",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.13"
   },
