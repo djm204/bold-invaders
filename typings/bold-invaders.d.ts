@@ -1,33 +1,17 @@
-declare module 'starfield' {
-    export = STARFIELD;
-}
+declare namespace StarField {
 
-declare namespace STARFIELD {
-    function init(options: Options): void;
-    function start(o: Options);
-    
-    
-    
-    export interface Options{
-        fps : number;
-        canvas : HTMLCanvasElement;
-        width : number
-        height : number
-        minVelocity : number;
-        maxVelocity : number;
-        stars : number;
+    export interface Options {
+        fps: number;
+        canvas: HTMLCanvasElement;
+        width: number
+        height: number
+        minVelocity: number;
+        maxVelocity: number;
         starList: Array<Star>;
-        intervalId : any;
+        intervalId: any;
     }
-       
-    export interface StarOptions {
-        x: number;
-        y: number;
-        size: number;
-        velocity: number;
-    }
-    
-    export class Star implements StarOptions{
+
+    export interface Star {
         x: number;
         y: number;
         size: number;
@@ -35,22 +19,23 @@ declare namespace STARFIELD {
     }
 }
 
-declare namespace BOLDINVADERS {
+declare namespace BoldInvaders {
     function init(options: Options): void;
-    
-    export interface Options{
-        config: {
-            gameWidth: number,
-            gameHeight: number,
-            fps: number
-        },
+
+    export interface Options {
+        gameWidth: number,
+        gameHeight: number,
+        fps: number,
         lives: number,
         width: number,
         height: number,
-        gameBounds: any,
+        leftGameBounds: number,
+        topGameBounds: number,
+        rightGameBounds: number,
+        bottomGameBounds: number,
         stateStack: Array<any>,
         pressedKeys: Array<number>,
         gameCanvas: HTMLCanvasElement
     }
-    
+
 }

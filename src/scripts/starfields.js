@@ -1,19 +1,20 @@
-var Star = require('./star');
+var STAR_LIMIT = 100;
 var StarField = (function () {
-    function StarField(numFps, canvasElem, width, height, minVelocity, maxVelocity, stars, starList, intervalId) {
-        this.fps = numFps;
-        this.canvas = canvasElem;
-        this.width = width;
-        this.height = height;
-        this.minVelocity = minVelocity;
-        this.maxVelocity = maxVelocity;
-        this.stars = stars;
-        this.starList = starList;
-        this.intervalId = intervalId;
+    function StarField(options) {
+        this.options = options;
+        this.fps = options.fps;
+        this.canvas = options.canvas;
+        this.width = options.width;
+        this.height = options.height;
+        this.minVelocity = options.minVelocity;
+        this.maxVelocity = options.maxVelocity;
+        this.starList = options.starList;
+        this.intervalId = options.intervalId;
     }
     StarField.prototype.initialize = function (div) {
         var _this = this;
         var containerDiv = div;
+        this.starList = [];
         this.width = window.innerWidth;
         this.height = window.innerHeight;
         window.addEventListener('resize', function (event) {
@@ -23,7 +24,7 @@ var StarField = (function () {
             _this.canvas.width = _this.width;
             _this.canvas.height = _this.height;
             //redraw
-            _this.draw(_this.starList);
+            _this.draw();
         });
         //create the canvas
         var newCanvas = document.createElement('canvas');
@@ -32,31 +33,42 @@ var StarField = (function () {
         this.canvas.width = this.width;
         this.canvas.height = this.height;
     };
-    StarField.prototype.update = function (starList) {
+    StarField.prototype.update = function () {
         var dt = 1 / this.fps;
-        for (var i = 0; i < starList.length; i++) {
-            var star = starList[i];
+        for (var i = 0; i < STAR_LIMIT; i++) {
+            var star = this.starList[i];
             star.y += dt * star.velocity;
             //  If the star has moved from the bottom of the screen, spawn it at the top.
             if (star.y > this.height) {
-                starList[i] = new Star(Math.random() * this.width, 0, Math.random() * 3 + 1, (Math.random() * (this.maxVelocity - this.minVelocity)) + this.minVelocity);
+                var newStar = {
+                    x: Math.random() * this.width,
+                    y: 0,
+                    size: Math.random() * 3 + 1,
+                    velocity: (Math.random() * (this.maxVelocity - this.minVelocity)) + this.minVelocity
+                };
+                this.starList.push(newStar);
             }
         }
     };
     StarField.prototype.start = function () {
         var _this = this;
         //	Create the stars.
-        this.starList = new Array(this.stars);
-        for (var i = 0; i < this.stars; i++) {
-            this.starList[i] = new Star(Math.random() * this.width, Math.random() * this.height, Math.random() * 3 + 1, (Math.random() * (this.maxVelocity - this.minVelocity)) + this.minVelocity);
+        for (var i = 0; i < STAR_LIMIT; i++) {
+            var newStar = {
+                x: Math.random() * this.width,
+                y: 0,
+                size: Math.random() * 3 + 1,
+                velocity: (Math.random() * (this.maxVelocity - this.minVelocity)) + this.minVelocity
+            };
+            this.starList.push(newStar);
         }
         //	Start the timer.
         this.intervalId = setInterval(function () {
-            _this.update(_this.starList);
-            _this.draw(_this.starList);
+            _this.update();
+            _this.draw();
         }, 1000 / this.fps);
     };
-    StarField.prototype.draw = function (starList) {
+    StarField.prototype.draw = function () {
         //  Get the drawing context.
         var ctx = this.canvas.getContext("2d");
         // Draw the background.
@@ -64,8 +76,8 @@ var StarField = (function () {
         ctx.fillRect(0, 0, this.width, this.height);
         //  Draw stars.
         ctx.fillStyle = '#ffffff';
-        for (var i = 0; i < this.stars; i++) {
-            var star = starList[i];
+        for (var i = 0; i < this.starList.length; i++) {
+            var star = this.starList[i];
             ctx.fillRect(star.x, star.y, star.size, star.size);
         }
     };

@@ -1,42 +1,33 @@
-import Star = require('./star');
+const STAR_LIMIT = 100;
 
-class StarField implements STARFIELD.Options {
+class StarField {
+    constructor(public options: StarField.Options) {
+
+        this.fps = options.fps;
+        this.canvas = options.canvas;
+        this.width = options.width;
+        this.height = options.height;
+        this.minVelocity = options.minVelocity;
+        this.maxVelocity = options.maxVelocity;
+        this.starList = options.starList;
+        this.intervalId = options.intervalId;
+
+    }
+
     fps: number;
     canvas: HTMLCanvasElement;
     width: number;
     height: number;
     minVelocity: number;
     maxVelocity: number;
-    stars: number;
-    starList: Array<Star>;
-
-
+    starList: Array<StarField.Star>;
     intervalId: any;
 
-    constructor(numFps: number,
-        canvasElem: HTMLCanvasElement,
-        width: number,
-        height: number,
-        minVelocity: number,
-        maxVelocity: number,
-        stars: number,
-        starList: Array<Star>,
-        intervalId: any) {
-
-        this.fps = numFps;
-        this.canvas = canvasElem;
-        this.width = width;
-        this.height = height;
-        this.minVelocity = minVelocity;
-        this.maxVelocity = maxVelocity;
-        this.stars = stars;
-        this.starList = starList;
-        this.intervalId = intervalId;
-
-    }
 
     initialize(div) {
         var containerDiv = div;
+        
+        this.starList = [];
 
         this.width = window.innerWidth;
         this.height = window.innerHeight;
@@ -49,7 +40,7 @@ class StarField implements STARFIELD.Options {
             this.canvas.height = this.height;
             
             //redraw
-            this.draw(this.starList);
+            this.draw();
         });
         
         //create the canvas
@@ -59,39 +50,48 @@ class StarField implements STARFIELD.Options {
         this.canvas.width = this.width;
         this.canvas.height = this.height;
     }
-    
-    update(starList): void{
+
+    update(): void {
         var dt = 1 / this.fps;
-        for (var i = 0; i < starList.length; i++) {
-            var star = starList[i];
+        for (var i = 0; i < STAR_LIMIT; i++) {
+            var star: StarField.Star = this.starList[i];
             star.y += dt * star.velocity;
             //  If the star has moved from the bottom of the screen, spawn it at the top.
             if (star.y > this.height) {
-                starList[i] = new Star(Math.random() * this.width, 0, Math.random() * 3 + 1,
-                    (Math.random() * (this.maxVelocity - this.minVelocity)) + this.minVelocity);
+                var newStar = {
+                    x: Math.random() * this.width,
+                    y: 0, 
+                    size: Math.random() * 3 + 1,
+                    velocity: (Math.random() * (this.maxVelocity - this.minVelocity)) + this.minVelocity
+                };
+                this.starList.push(newStar);
             }
         }
     }
 
-    start(): void{
+    start(): void {
         
         //	Create the stars.
-        this.starList = new Array(this.stars);
-        for (var i = 0; i < this.stars; i++) {
-            this.starList[i] = new Star(Math.random() * this.width, Math.random() * this.height, Math.random() * 3 + 1,
-                (Math.random() * (this.maxVelocity - this.minVelocity)) + this.minVelocity);
+        for (var i = 0; i < STAR_LIMIT; i++) {
+            var newStar = {
+                    x: Math.random() * this.width,
+                    y: 0, 
+                    size: Math.random() * 3 + 1,
+                    velocity: (Math.random() * (this.maxVelocity - this.minVelocity)) + this.minVelocity
+                };
+                this.starList.push(newStar);
         }
           
         //	Start the timer.
         this.intervalId = setInterval(() => {
-            this.update(this.starList);
-            this.draw(this.starList);
+            this.update();
+            this.draw();
         }, 1000 / this.fps);
     }
 
-    
 
-    draw(starList): void {
+
+    draw(): void {
         //  Get the drawing context.
         var ctx = this.canvas.getContext("2d");
     
@@ -101,8 +101,8 @@ class StarField implements STARFIELD.Options {
     
         //  Draw stars.
         ctx.fillStyle = '#ffffff';
-        for (var i = 0; i < this.stars; i++) {
-            var star = starList[i];
+        for (var i = 0; i < this.starList.length; i++) {
+            var star = this.starList[i];
             ctx.fillRect(star.x, star.y, star.size, star.size);
         }
     }
