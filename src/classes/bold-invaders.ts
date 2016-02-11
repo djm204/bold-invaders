@@ -19,7 +19,7 @@ class BoldInvaders {
     }
     gameLoop(game) {
         var currentState = game.currentState();
-
+        console.log(currentState);
         if (currentState) {
             
             //  Delta t is the time to update/draw.
@@ -27,11 +27,12 @@ class BoldInvaders {
     
             //  Get the drawing context.
             var ctx = game.stateOptions.gameCanvas.getContext("2d");
+            console.log(ctx);
             
             //  Update if we have an update function. Also draw
             //  if we have a draw function.
             if (currentState.update) {
-                currentState.update(game, dt);
+                currentState.update(game, dt, ctx);
             }
             if (currentState.draw) {
                 currentState.draw(game, dt, ctx);
@@ -91,7 +92,7 @@ class BoldInvaders {
         this.stateOptions.lives = 3;
         this.boldOptions.debugMode = /debug=true/.test(window.location.href);
         //  Start the game loop.
-        var intervalId = setInterval(this.gameLoop(this), 1000 / this.boldOptions.fps);
+        this.stateOptions.intervalId = setInterval(this.gameLoop(this), 1000 / this.boldOptions.fps);
 
     }
 

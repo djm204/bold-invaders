@@ -23,7 +23,10 @@ var WelcomeState = (function () {
     WelcomeState.prototype.keyDown = function (game, keyCode) {
         if (keyCode == 32) {
             //  Space starts the game.  
-            game.moveToState(new levelIntroState(game, game.stateOptions.level, 1 / (game.boldOptions.fps), game.stateOptions.gameCanvas.getContext("2d")));
+            game.moveToState(new levelIntroState(game, 1 / (game.boldOptions.fps), game.stateOptions.gameCanvas.getContext("2d")));
+            var intervalId = setInterval(function () {
+                game.gameLoop(game);
+            }, 1000);
         }
     };
     return WelcomeState;

@@ -548,15 +548,17 @@
 	    };
 	    BoldInvaders.prototype.gameLoop = function (game) {
 	        var currentState = game.currentState();
+	        console.log(currentState);
 	        if (currentState) {
 	            //  Delta t is the time to update/draw.
 	            var dt = 1 / game.boldOptions.fps;
 	            //  Get the drawing context.
 	            var ctx = game.stateOptions.gameCanvas.getContext("2d");
+	            console.log(ctx);
 	            //  Update if we have an update function. Also draw
 	            //  if we have a draw function.
 	            if (currentState.update) {
-	                currentState.update(game, dt);
+	                currentState.update(game, dt, ctx);
 	            }
 	            if (currentState.draw) {
 	                currentState.draw(game, dt, ctx);
@@ -604,7 +606,7 @@
 	        this.stateOptions.lives = 3;
 	        this.boldOptions.debugMode = /debug=true/.test(window.location.href);
 	        //  Start the game loop.
-	        var intervalId = setInterval(this.gameLoop(this), 1000 / this.boldOptions.fps);
+	        this.stateOptions.intervalId = setInterval(this.gameLoop(this), 1000 / this.boldOptions.fps);
 	    };
 	    BoldInvaders.prototype.keyDown = function (keyCode) {
 	        this.stateOptions.pressedKeys[keyCode] = true;
@@ -654,7 +656,10 @@
 	    WelcomeState.prototype.keyDown = function (game, keyCode) {
 	        if (keyCode == 32) {
 	            //  Space starts the game.  
-	            game.moveToState(new levelIntroState(game, game.stateOptions.level, 1 / (game.boldOptions.fps), game.stateOptions.gameCanvas.getContext("2d")));
+	            game.moveToState(new levelIntroState(game, 1 / (game.boldOptions.fps), game.stateOptions.gameCanvas.getContext("2d")));
+	            var intervalId = setInterval(function () {
+	                game.gameLoop(game);
+	            }, 1000);
 	        }
 	    };
 	    return WelcomeState;
@@ -667,19 +672,44 @@
 /***/ function(module, exports) {
 
 	var LevelIntroState = (function () {
-	    function LevelIntroState(game, level, dt, ctx) {
-	        var countdownMessage = 3;
+	    function LevelIntroState(game, dt, ctx) {
+	    }
+	    LevelIntroState.prototype.draw = function (game, dt, ctx) {
+	        if (this.countDownMessage === undefined) {
+	            this.countDownMessage = 3;
+	        }
+	        console.log(ctx);
 	        //  Clear the background.
 	        ctx.clearRect(0, 0, game.stateOptions.width, game.stateOptions.height);
 	        ctx.font = "36px Arial";
 	        ctx.fillStyle = '#ffffff';
 	        ctx.textBaseline = "middle";
 	        ctx.textAlign = "center";
-	        ctx.fillText("Level " + level, game.stateOptions.width / 2, game.stateOptions.height / 2);
+	        ctx.fillText("Level " + game.stateOptions.level, game.stateOptions.width / 2, game.stateOptions.height / 2);
 	        ctx.font = "24px Arial";
-	        ctx.fillText("Ready in " + countdownMessage, game.stateOptions.width / 2, game.stateOptions.height / 2 + 36);
-	    }
-	    LevelIntroState.prototype.draw = function (game, dt, ctx, level) {
+	        ctx.fillText("Ready in " + this.countDownMessage, game.stateOptions.width / 2, game.stateOptions.height / 2 + 36);
+	    };
+	    LevelIntroState.prototype.update = function (game, dt, ctx) {
+	        console.log("Got HEre l-intro update");
+	        //  Update the countdown.
+	        if (this.countdown === undefined) {
+	            this.countdown = 3; // countdown from 3 secs
+	        }
+	        if (this.countdown === 2) {
+	            this.countDownMessage = 2;
+	        }
+	        if (this.countdown === 1) {
+	            this.countDownMessage = 1;
+	        }
+	        if (this.countdown <= 0) {
+	            //  Move to the next level, popping this state.
+	            //game.moveToState(new PlayState(game.config, this.level));
+	            console.log("counted to zero");
+	            return;
+	        }
+	        console.log(this.countdown + " message: " + this.countDownMessage);
+	        this.draw(game, dt, ctx);
+	        this.countdown -= 1;
 	    };
 	    return LevelIntroState;
 	})();

@@ -57,15 +57,9 @@ declare namespace BoldInvaders {
         intervalId: number,
         score: number,
         level: number,
-
-        //  The state stack.
         stateStack: Array<any>,
-
-        //  Input/output
         pressedKeys: Array<boolean>,
         gameCanvas: HTMLCanvasElement,
-
-        //  All sounds.
         sounds: Array<Sounds>
     }
 
