@@ -16,8 +16,8 @@ class BoldInvaders {
     initialize(gameCanvas: HTMLCanvasElement) {
         this.stateOptions.gameCanvas = gameCanvas;
         console.log(window.innerHeight);
-        gameCanvas.height = window.innerHeight ;
-        gameCanvas.width = window.innerWidth ;
+        gameCanvas.height = window.innerHeight / 2 ;
+        gameCanvas.width = window.innerWidth / 2;
         this.stateOptions.height = gameCanvas.height;
         this.stateOptions.width = gameCanvas.width;
         console.log(gameCanvas.height);

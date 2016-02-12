@@ -24,3 +24,8 @@ body, html {
     width: 800px;
     margin: auto;
 }
+
+#gameCanvas {
+    display: block;
+    margin: 20px auto;
+}

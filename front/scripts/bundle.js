@@ -164,7 +164,7 @@
 
 
 	// module
-	exports.push([module.id, "*{\r\n    padding: 0px;\r\n    margin: 0px;\r\n}\r\n\r\nbody, html { \r\n    width: 100%;\r\n    height: 100%;\r\n    margin: 0;\r\n    padding: 0;\r\n    overflow: hidden;\r\n    }\r\n            \r\n#container {\r\n    width: 100%;\r\n    height: 100%;\r\n    z-index: -1;\r\n    position: absolute;\r\n    left: 0px;\r\n    top: 0px;\r\n}\r\n\r\n#gamecontainer{\r\n    width: 800px;\r\n    margin: auto;\r\n}", ""]);
+	exports.push([module.id, "*{\r\n    padding: 0px;\r\n    margin: 0px;\r\n}\r\n\r\nbody, html { \r\n    width: 100%;\r\n    height: 100%;\r\n    margin: 0;\r\n    padding: 0;\r\n    overflow: hidden;\r\n    }\r\n            \r\n#container {\r\n    width: 100%;\r\n    height: 100%;\r\n    z-index: -1;\r\n    position: absolute;\r\n    left: 0px;\r\n    top: 0px;\r\n}\r\n\r\n#gamecontainer{\r\n    width: 800px;\r\n    margin: auto;\r\n}\r\n\r\n#gameCanvas {\r\n    display: block;\r\n    margin: 20px auto;\r\n}", ""]);
 
 	// exports
 
@@ -579,8 +579,8 @@
 	    BoldInvaders.prototype.initialize = function (gameCanvas) {
 	        this.stateOptions.gameCanvas = gameCanvas;
 	        console.log(window.innerHeight);
-	        gameCanvas.height = window.innerHeight;
-	        gameCanvas.width = window.innerWidth;
+	        gameCanvas.height = window.innerHeight / 2;
+	        gameCanvas.width = window.innerWidth / 2;
 	        this.stateOptions.height = gameCanvas.height;
 	        this.stateOptions.width = gameCanvas.width;
 	        console.log(gameCanvas.height);
@@ -714,7 +714,16 @@
 	            ctx.drawImage(invadersLogo, ctx.canvas.width / 2 - invadersLogo.width / 4, 125, 250, 75);
 	        }, 1300);
 	        setTimeout(function () {
-	            ctx.fillText("Press 'Space' to start.", game.stateOptions.width / 2, game.stateOptions.height / 2);
+	            ctx.fillText("A BOLD interpretation of a cult classic.", game.stateOptions.width / 2, game.stateOptions.height * .46);
+	        }, 2000);
+	        setTimeout(function () {
+	            ctx.fillText("Press 'Space' to start.", game.stateOptions.width / 2, game.stateOptions.height);
+	        }, 2000);
+	        setTimeout(function () {
+	            ctx.fillText("Move: <left> and <right> keys", game.stateOptions.width / 2, game.stateOptions.height * .55);
+	        }, 2000);
+	        setTimeout(function () {
+	            ctx.fillText("Shoot: spacebar", game.stateOptions.width / 2, game.stateOptions.height * .59);
 	        }, 2000);
 	    };
 	    WelcomeState.prototype.keyDown = function (game, keyCode) {

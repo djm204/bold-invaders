@@ -33,10 +33,19 @@ class WelcomeState {
     }, 1300);
     
     setTimeout(function() {
-        ctx.fillText("Press 'Space' to start.", game.stateOptions.width / 2, game.stateOptions.height / 2);
+        ctx.fillText("A BOLD interpretation of a cult classic.", game.stateOptions.width / 2, game.stateOptions.height * .46 );
+    }, 2000);
+    
+    setTimeout(function() {
+        ctx.fillText("Press 'Space' to start.", game.stateOptions.width / 2, game.stateOptions.height );
     }, 2000);
         
-
+    setTimeout(function() {
+        ctx.fillText("Move: <left> and <right> keys", game.stateOptions.width / 2, game.stateOptions.height * .55 );
+    }, 2000);
+    setTimeout(function() {
+        ctx.fillText("Shoot: spacebar", game.stateOptions.width / 2, game.stateOptions.height * .59 );
+    }, 2000);
     }
 
 
