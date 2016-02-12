@@ -65,8 +65,8 @@
 	starfield.start();
 	//Bold Invaders 
 	var BIOptions = {
-	    gameWidth: 0,
-	    gameHeight: 0,
+	    gameWidth: 400,
+	    gameHeight: 400,
 	    fps: 50,
 	    shipSpeed: 120,
 	    debugMode: false,
@@ -569,20 +569,21 @@
 
 	var welcomeState = __webpack_require__(7);
 	var BoldInvaders = (function () {
-	    function BoldInvaders(boldOptions, playerOptions, enemyOptions, playStateOptions, stateOptions) {
+	    function BoldInvaders(boldOptions, playerOptions, enemyOptions, gameStateOptions, stateOptions) {
 	        this.boldOptions = boldOptions;
 	        this.playerOptions = playerOptions;
 	        this.enemyOptions = enemyOptions;
-	        this.playStateOptions = playStateOptions;
+	        this.gameStateOptions = gameStateOptions;
 	        this.stateOptions = stateOptions;
 	    }
 	    BoldInvaders.prototype.initialize = function (gameCanvas) {
 	        this.stateOptions.gameCanvas = gameCanvas;
-	        console.log(gameCanvas.height);
-	        gameCanvas.height = window.innerHeight / 2;
-	        gameCanvas.width = window.innerWidth / 2;
+	        console.log(window.innerHeight);
+	        gameCanvas.height = window.innerHeight;
+	        gameCanvas.width = window.innerWidth;
 	        this.stateOptions.height = gameCanvas.height;
 	        this.stateOptions.width = gameCanvas.width;
+	        console.log(gameCanvas.height);
 	    };
 	    BoldInvaders.prototype.gameLoop = function (game) {
 	        var currentState = game.currentState();

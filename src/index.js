@@ -19,8 +19,8 @@ starfield.initialize(container);
 starfield.start();
 //Bold Invaders 
 var BIOptions = {
-    gameWidth: 0,
-    gameHeight: 0,
+    gameWidth: 400,
+    gameHeight: 400,
     fps: 50,
     shipSpeed: 120,
     debugMode: false,

@@ -8,19 +8,19 @@ class BoldInvaders {
         public boldOptions: BoldInvaders.GameOptions,
         public playerOptions: BoldInvaders.Player,
         public enemyOptions: BoldInvaders.Enemy,
-        public playStateOptions: BoldInvaders.GameStateOptions,
+        public gameStateOptions: BoldInvaders.GameStateOptions,
         public stateOptions: BoldInvaders.StateOptions) { }
 
 
 
     initialize(gameCanvas: HTMLCanvasElement) {
         this.stateOptions.gameCanvas = gameCanvas;
-
-        console.log(gameCanvas.height);
-        gameCanvas.height = window.innerHeight / 2;
-        gameCanvas.width = window.innerWidth / 2;
+        console.log(window.innerHeight);
+        gameCanvas.height = window.innerHeight ;
+        gameCanvas.width = window.innerWidth ;
         this.stateOptions.height = gameCanvas.height;
         this.stateOptions.width = gameCanvas.width;
+        console.log(gameCanvas.height);
 
 
     }

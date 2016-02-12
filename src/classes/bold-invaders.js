@@ -1,19 +1,20 @@
 var welcomeState = require('./welcome-state');
 var BoldInvaders = (function () {
-    function BoldInvaders(boldOptions, playerOptions, enemyOptions, playStateOptions, stateOptions) {
+    function BoldInvaders(boldOptions, playerOptions, enemyOptions, gameStateOptions, stateOptions) {
         this.boldOptions = boldOptions;
         this.playerOptions = playerOptions;
         this.enemyOptions = enemyOptions;
-        this.playStateOptions = playStateOptions;
+        this.gameStateOptions = gameStateOptions;
         this.stateOptions = stateOptions;
     }
     BoldInvaders.prototype.initialize = function (gameCanvas) {
         this.stateOptions.gameCanvas = gameCanvas;
-        console.log(gameCanvas.height);
-        gameCanvas.height = window.innerHeight / 2;
-        gameCanvas.width = window.innerWidth / 2;
+        console.log(window.innerHeight);
+        gameCanvas.height = window.innerHeight;
+        gameCanvas.width = window.innerWidth;
         this.stateOptions.height = gameCanvas.height;
         this.stateOptions.width = gameCanvas.width;
+        console.log(gameCanvas.height);
     };
     BoldInvaders.prototype.gameLoop = function (game) {
         var currentState = game.currentState();

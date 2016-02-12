@@ -1,5 +1,5 @@
 import boldInvaders = require('./bold-invaders');
-import PlayState = require('./play-state');
+import PlayState = require('./game-state');
 export = LevelIntroState;
 
 class LevelIntroState {
