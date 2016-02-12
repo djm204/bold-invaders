@@ -1,5 +1,6 @@
 import boldInvaders = require('./bold-invaders');
 import levelIntroState = require('./level-intro-state');
+export = WelcomeState;
 class WelcomeState {
 
     constructor(game: boldInvaders, dt: number, ctx: CanvasRenderingContext2D) { }
@@ -50,5 +51,3 @@ class WelcomeState {
         }
     }
 }
-
-export = WelcomeState;

@@ -1,3 +1,5 @@
+export = StarField;
+
 const STAR_LIMIT = 100;
 
 class StarField {
@@ -88,6 +90,3 @@ class StarField {
 
 
 }
-
-
-export = StarField;

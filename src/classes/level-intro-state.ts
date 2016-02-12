@@ -1,33 +1,35 @@
 import boldInvaders = require('./bold-invaders');
+import PlayState = require('./play-state');
+export = LevelIntroState;
+
 class LevelIntroState {
     countdown: number;
     countDownMessage: number;
     
-    constructor(game: boldInvaders, dt: number, ctx: CanvasRenderingContext2D) { 
+    constructor(public game: boldInvaders, public dt: number, public ctx: CanvasRenderingContext2D) { 
      
     }
         
 
-    draw(game, dt, ctx) {
+    draw() {
         if(this.countDownMessage === undefined){
             this.countDownMessage = 3;
         }
-        console.log(ctx);
+        console.log(this.ctx);
         //  Clear the background.
-        ctx.clearRect(0, 0, game.stateOptions.width, game.stateOptions.height);
+        this.ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
 
-        ctx.font = "36px Arial";
-        ctx.fillStyle = '#ffffff';
-        ctx.textBaseline = "middle";
-        ctx.textAlign = "center";
-        ctx.fillText("Level " + game.stateOptions.level, game.stateOptions.width / 2, game.stateOptions.height / 2);
-        ctx.font = "24px Arial";
-        ctx.fillText("Ready in " + this.countDownMessage, game.stateOptions.width / 2, game.stateOptions.height / 2 + 36);
+        this.ctx.font = "36px Arial";
+        this.ctx.fillStyle = '#ffffff';
+        this.ctx.textBaseline = "middle";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText("Level " + this.game.stateOptions.level, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2);
+        this.ctx.font = "24px Arial";
+        this.ctx.fillText("Ready in " + this.countDownMessage, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2 + 36);
     
     }
 
-    update(game, dt, ctx) {
-        console.log("Got HEre l-intro update");
+    update() {
 
         //  Update the countdown.
         if (this.countdown === undefined) {            
@@ -43,15 +45,13 @@ class LevelIntroState {
         }
         if (this.countdown <= 0) {
             //  Move to the next level, popping this state.
-            //game.moveToState(new PlayState(game.config, this.level));
+            this.game.moveToState(new PlayState(this.game));
             console.log("counted to zero");
         }
         console.log(this.countdown +" message: " + this.countDownMessage);
-        this.draw(game, dt, ctx);
+        this.draw();
         this.countdown -= 1;
         
     }
 
 }
-
-export = LevelIntroState;

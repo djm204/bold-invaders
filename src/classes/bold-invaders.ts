@@ -1,12 +1,19 @@
 import welcomeState = require('./welcome-state');
+export = BoldInvaders;
+
 class BoldInvaders {
 
 
-    constructor(public boldOptions: BoldInvaders.GameOptions, public stateOptions: BoldInvaders.StateOptions) { }
+    constructor(
+        public boldOptions: BoldInvaders.GameOptions,
+        public playerOptions: BoldInvaders.Player,
+        public enemyOptions: BoldInvaders.Enemy,
+        public playStateOptions: BoldInvaders.PlayState,
+        public stateOptions: BoldInvaders.StateOptions) { }
 
 
 
-    initialize(gameCanvas) {
+    initialize(gameCanvas: HTMLCanvasElement) {
         this.stateOptions.gameCanvas = gameCanvas;
 
         console.log(gameCanvas.height);
@@ -17,7 +24,7 @@ class BoldInvaders {
 
 
     }
-    gameLoop(game) {
+    gameLoop(game: BoldInvaders) {
         var currentState = game.currentState();
         console.log(currentState);
         if (currentState) {
@@ -96,7 +103,7 @@ class BoldInvaders {
 
     }
 
-    keyDown(keyCode): void {
+    keyDown(keyCode: number): void {
         this.stateOptions.pressedKeys[keyCode] = true;
         //  Delegate to the current state too.
         if (this.currentState() && this.currentState().keyDown) {
@@ -104,7 +111,7 @@ class BoldInvaders {
         }
     }
 
-    keyUp(keyCode) {
+    keyUp(keyCode: number) {
         delete this.stateOptions.pressedKeys[keyCode];
         //  Delegate to the current state too.
         if (this.currentState() && this.currentState().keyUp) {
@@ -115,9 +122,3 @@ class BoldInvaders {
 
 
 }
-
-
-
-
-
-export = BoldInvaders;
