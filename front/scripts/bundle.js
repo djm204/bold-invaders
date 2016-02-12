@@ -110,22 +110,16 @@
 	    invadersAreDropping: false,
 	    lastRocketTime: 0
 	};
+	var canvas = document.getElementById("gameCanvas");
 	var boldInvaders = new BoldInvaders(BIOptions, BIPlayerOptions, BIEnemyOptions, BIPlayStateOptions, BIStateOptions);
-	var gameContainer = document.getElementById("gameContainer");
-	var canvas = document.createElement("canvas");
-	canvas.setAttribute("id", "gameCanvas");
-	gameContainer.appendChild(canvas);
 	boldInvaders.initialize(canvas);
 	boldInvaders.start();
 	window.addEventListener("keydown", function keydown(e) {
 	    var keyCode = e.which || e.keyCode;
-	    var isGameKey = GAME_KEYS.some(function (code) { return keyCode === code; });
-	    if (isGameKey)
-	        e.preventDefault();
 	    //  Supress further processing of left/right/space (37/29/32)
-	    /*if (keyCode == 37 || keyCode == 39 || keyCode == 32) {
+	    if (keyCode == 37 || keyCode == 39 || keyCode == 32) {
 	        e.preventDefault();
-	    }*/
+	    }
 	    boldInvaders.keyDown(keyCode);
 	});
 	window.addEventListener("keyup", function keydown(e) {
@@ -620,17 +614,13 @@
 	            this.stateOptions.stateStack.pop();
 	        }
 	        //  If there's an enter function for the new state, call it.
-	        if (state.enter) {
-	            state.enter(this);
-	        }
+	        this.chooseStateFunction(state);
 	        //  Set the current state.
 	        this.stateOptions.stateStack.push(state);
 	    };
 	    BoldInvaders.prototype.pushState = function (state) {
 	        //  If there's an enter function for the new state, call it.
-	        if (state.enter) {
-	            state.enter(this);
-	        }
+	        this.chooseStateFunction(state);
 	        //  Set the current state.
 	        this.stateOptions.stateStack.push(state);
 	    };
@@ -665,6 +655,29 @@
 	        if (this.currentState() && this.currentState().keyUp) {
 	            this.currentState().keyUp(this, keyCode);
 	        }
+	    };
+	    BoldInvaders.prototype.chooseStateFunction = function (state) {
+	        if (this.isPlayState(state)) {
+	            state.enter();
+	        }
+	        if (this.isOverState(state)) {
+	            state.leave();
+	        }
+	        if (this.isIntroState(state)) {
+	            state.update();
+	        }
+	    };
+	    BoldInvaders.prototype.isPlayState = function (state) {
+	        return typeof state.enter === 'function';
+	    };
+	    BoldInvaders.prototype.isOverState = function (state) {
+	        return typeof state.leave === 'function';
+	    };
+	    BoldInvaders.prototype.isIntroState = function (state) {
+	        return typeof state.update === 'function';
+	    };
+	    BoldInvaders.prototype.isWelcomeState = function (state) {
+	        return typeof state.draw === 'function';
 	    };
 	    return BoldInvaders;
 	})();

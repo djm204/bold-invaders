@@ -64,22 +64,16 @@ var BIPlayStateOptions = {
     invadersAreDropping: false,
     lastRocketTime: 0
 };
+var canvas = document.getElementById("gameCanvas");
 var boldInvaders = new BoldInvaders(BIOptions, BIPlayerOptions, BIEnemyOptions, BIPlayStateOptions, BIStateOptions);
-var gameContainer = document.getElementById("gameContainer");
-var canvas = document.createElement("canvas");
-canvas.setAttribute("id", "gameCanvas");
-gameContainer.appendChild(canvas);
 boldInvaders.initialize(canvas);
 boldInvaders.start();
 window.addEventListener("keydown", function keydown(e) {
     var keyCode = e.which || e.keyCode;
-    var isGameKey = GAME_KEYS.some(function (code) { return keyCode === code; });
-    if (isGameKey)
-        e.preventDefault();
     //  Supress further processing of left/right/space (37/29/32)
-    /*if (keyCode == 37 || keyCode == 39 || keyCode == 32) {
+    if (keyCode == 37 || keyCode == 39 || keyCode == 32) {
         e.preventDefault();
-    }*/
+    }
     boldInvaders.keyDown(keyCode);
 });
 window.addEventListener("keyup", function keydown(e) {

@@ -7,7 +7,7 @@ import BoldInvadersOptions = BoldInvaders.GameOptions;
 import StateOptions = BoldInvaders.StateOptions;
 import PlayerOptions = BoldInvaders.Player;
 import EnemyOptions = BoldInvaders.Enemy;
-import PlayStateOptions = BoldInvaders.PlayState;
+import PlayStateOptions = BoldInvaders.GameStateOptions;
 
 const GAME_KEYS = [37, 39, 32];
 
@@ -83,6 +83,7 @@ var BIPlayStateOptions: PlayStateOptions = {
     lastRocketTime: 0
 }
 
+var canvas = <HTMLCanvasElement>document.getElementById("gameCanvas");
 
 var boldInvaders = new BoldInvaders(
     BIOptions, 
@@ -91,12 +92,6 @@ var boldInvaders = new BoldInvaders(
     BIPlayStateOptions, 
     BIStateOptions
     );
-    
-var gameContainer = document.getElementById("gameContainer");
-var canvas = document.createElement("canvas");
-canvas.setAttribute("id", "gameCanvas");
-
-gameContainer.appendChild(canvas);
 
 boldInvaders.initialize(canvas);
 
@@ -104,10 +99,10 @@ boldInvaders.start();
 
 window.addEventListener("keydown", function keydown(e) {
     var keyCode = e.which || e.keyCode;
-    var isGameKey = GAME_KEYS.some(code => keyCode === code);
-    //  Supress further processing of left/right/space (37/29/32)    
-    if(isGameKey) e.preventDefault();
-
+    //  Supress further processing of left/right/space (37/29/32)
+    if (keyCode == 37 || keyCode == 39 || keyCode == 32) {
+        e.preventDefault();
+    }
     boldInvaders.keyDown(keyCode);
 });
 window.addEventListener("keyup", function keydown(e) {

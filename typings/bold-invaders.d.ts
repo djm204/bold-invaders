@@ -72,7 +72,7 @@ declare namespace BoldInvaders {
 
 
 
-    export interface PlayState {
+    export interface GameStateOptions {
         ship: Ship,
         invaders: Array<Invader>,
         rockets: Array<Rocket>,
@@ -112,6 +112,25 @@ declare namespace BoldInvaders {
         width: number,
         height: number
     }
+    
+    interface PlayState {
+        enter: () => any;
+        update: () => any;
+    }
+
+    interface OverState {
+        leave: () => any;
+    }
+
+    interface IntroState {
+        update: () => any;
+    }
+    
+    interface WelcomeState {
+        draw: () => any;
+    }
+
+type GameState = PlayState | OverState | IntroState | WelcomeState;
 
 
 }

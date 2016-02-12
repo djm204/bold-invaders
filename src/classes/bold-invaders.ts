@@ -8,7 +8,7 @@ class BoldInvaders {
         public boldOptions: BoldInvaders.GameOptions,
         public playerOptions: BoldInvaders.Player,
         public enemyOptions: BoldInvaders.Enemy,
-        public playStateOptions: BoldInvaders.PlayState,
+        public playStateOptions: BoldInvaders.GameStateOptions,
         public stateOptions: BoldInvaders.StateOptions) { }
 
 
@@ -62,19 +62,15 @@ class BoldInvaders {
         }
         
         //  If there's an enter function for the new state, call it.
-        if (state.enter) {
-            state.enter(this);
-        }
+        this.chooseStateFunction(state);
  
         //  Set the current state.
         this.stateOptions.stateStack.push(state);
     }
 
-    pushState(state) {
+    pushState(state: BoldInvaders.GameState) {
         //  If there's an enter function for the new state, call it.
-        if (state.enter) {
-            state.enter(this);
-        }
+        this.chooseStateFunction(state);
         //  Set the current state.
         this.stateOptions.stateStack.push(state);
     }
@@ -117,6 +113,37 @@ class BoldInvaders {
         if (this.currentState() && this.currentState().keyUp) {
             this.currentState().keyUp(this, keyCode);
         }
+    }
+
+    chooseStateFunction(state: BoldInvaders.GameState) {
+        if (this.isPlayState(state)) {
+            state.enter();
+        }
+
+        if (this.isOverState(state)) {
+            state.leave();
+        }
+
+        if (this.isIntroState(state)) {
+            state.update();
+        }
+    }
+
+    isPlayState(state: BoldInvaders.GameState): state is BoldInvaders.PlayState {
+        return typeof (<BoldInvaders.PlayState>state).enter === 'function';
+    }
+
+    isOverState(state: BoldInvaders.GameState): state is BoldInvaders.OverState {
+        return typeof (<BoldInvaders.OverState>state).leave === 'function';
+    }
+
+    isIntroState(state: BoldInvaders.GameState): state is BoldInvaders.IntroState {
+        return typeof (<BoldInvaders.IntroState>state).update === 'function';
+    }
+    
+    isWelcomeState(state: BoldInvaders.GameState): state is BoldInvaders.WelcomeState {
+        return typeof (<BoldInvaders.WelcomeState>state).draw === 'function';
+        
     }
 
 
