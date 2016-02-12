@@ -70,13 +70,47 @@ declare namespace BoldInvaders {
         mute: boolean
     }
 
-    export interface GameState {
-        updateProc: Function,
-        drawProc: Function,
-        keyDown: Function,
-        keyUp: Function,
-        enter: Function,
-        leave: Function
+
+
+    export interface PlayState {
+        ship: Ship,
+        invaders: Array<Invader>,
+        rockets: Array<Rocket>,
+        bombs: Array<Bomb>,
+        invaderCurrentVelocity: number,
+        invaderCurrentDropDistance: number,
+        invadersAreDropping: boolean,
+        lastRocketTime: number
+
+    }
+
+    export interface Ship {
+        x: number,
+        y: number,
+        width: number,
+        height: number
+    }
+    
+    export interface Rocket{
+        x: number,
+        y: number,
+        velocity: number
+    }
+    
+    export interface Bomb {
+        x: number,
+        y: number,
+        velocity: number
+    }
+    
+    export interface Invader{
+        x: number,
+        y: number,
+        rank: number,
+        file: number,
+        type: any,
+        width: number,
+        height: number
     }
 
 

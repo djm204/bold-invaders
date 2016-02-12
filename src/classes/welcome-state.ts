@@ -7,8 +7,8 @@ class WelcomeState {
     draw(game, dt, ctx){
         var boldLogo = new Image();
         var invadersLogo = new Image();
-        boldLogo.src = "../images/welcomeLogo.png";
-        invadersLogo.src = "../images/invaders.png";
+        boldLogo.src = "../front/images/welcomeLogo.png";
+        invadersLogo.src = "../front/images/invaders.png";
 
 
         var invaders = document.getElementById("invadersLogo");
@@ -20,11 +20,21 @@ class WelcomeState {
         ctx.textBaseline = "bottom";
         ctx.textAlign = "center";
         ctx.font = "16px Arial";
-        ctx.fillText("Press 'Space' to start.", game.stateOptions.width / 2, game.stateOptions.height / 2);
         
         //Draw Logo
+        
+    setTimeout(function() {
         ctx.drawImage(boldLogo, ctx.canvas.width / 2 - boldLogo.width / 2, 25, 250, 125);
+    }, 300);
+    
+    setTimeout(function() {
         ctx.drawImage(invadersLogo, ctx.canvas.width / 2 - invadersLogo.width / 4, 125, 250, 75);
+    }, 1300);
+    
+    setTimeout(function() {
+        ctx.fillText("Press 'Space' to start.", game.stateOptions.width / 2, game.stateOptions.height / 2);
+    }, 2000);
+        
 
     }
 
