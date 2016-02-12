@@ -73,10 +73,13 @@ boldInvaders.initialize(canvas);
 boldInvaders.start();
 window.addEventListener("keydown", function keydown(e) {
     var keyCode = e.which || e.keyCode;
-    //  Supress further processing of left/right/space (37/29/32)
-    if (keyCode == 37 || keyCode == 39 || keyCode == 32) {
+    var isGameKey = GAME_KEYS.some(function (code) { return keyCode === code; });
+    if (isGameKey)
         e.preventDefault();
-    }
+    //  Supress further processing of left/right/space (37/29/32)
+    /*if (keyCode == 37 || keyCode == 39 || keyCode == 32) {
+        e.preventDefault();
+    }*/
     boldInvaders.keyDown(keyCode);
 });
 window.addEventListener("keyup", function keydown(e) {

@@ -104,10 +104,10 @@ boldInvaders.start();
 
 window.addEventListener("keydown", function keydown(e) {
     var keyCode = e.which || e.keyCode;
-    //  Supress further processing of left/right/space (37/29/32)
-    if (keyCode == 37 || keyCode == 39 || keyCode == 32) {
-        e.preventDefault();
-    }
+    var isGameKey = GAME_KEYS.some(code => keyCode === code);
+    //  Supress further processing of left/right/space (37/29/32)    
+    if(isGameKey) e.preventDefault();
+
     boldInvaders.keyDown(keyCode);
 });
 window.addEventListener("keyup", function keydown(e) {
