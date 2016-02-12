@@ -8,8 +8,8 @@ class WelcomeState {
     draw(game, dt, ctx){
         var boldLogo = new Image();
         var invadersLogo = new Image();
-        boldLogo.src = "../front/images/welcomeLogo.png";
-        invadersLogo.src = "../front/images/invaders.png";
+        boldLogo.src = "images/welcomeLogo.png";
+        invadersLogo.src = "images/invaders.png";
 
 
         var invaders = document.getElementById("invadersLogo");

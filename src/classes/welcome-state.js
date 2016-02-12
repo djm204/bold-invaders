@@ -5,8 +5,8 @@ var WelcomeState = (function () {
     WelcomeState.prototype.draw = function (game, dt, ctx) {
         var boldLogo = new Image();
         var invadersLogo = new Image();
-        boldLogo.src = "../front/images/welcomeLogo.png";
-        invadersLogo.src = "../front/images/invaders.png";
+        boldLogo.src = "images/welcomeLogo.png";
+        invadersLogo.src = "images/invaders.png";
         var invaders = document.getElementById("invadersLogo");
         //  Clear the background.
         ctx.clearRect(0, 0, game.stateOptions.width, game.stateOptions.height);
