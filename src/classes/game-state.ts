@@ -1,7 +1,9 @@
 import boldInvaders = require('./bold-invaders');
+const DT =  1000 / this.game.boldOptions.fps;
 class GameState {
     invaderVelocity: {x: number, y: number};
     invaderNextVelocity: {x: number, y: number};
+    currentBomb: BoldInvaders.Bomb;
     
     constructor(public game: boldInvaders) {
 
@@ -45,10 +47,10 @@ class GameState {
     
     update(){
         if(this.game.stateOptions.pressedKeys[37]) {
-            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed * 1000 / this.game.boldOptions.fps;
+            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed * DT;
         }
         if (this.game.stateOptions.pressedKeys[39]) {
-            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed * 1000 / this.game.boldOptions.fps;
+            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed * DT;
         }
         if (this.game.stateOptions.pressedKeys[32]) {
             //this.fireRocket();
@@ -63,13 +65,21 @@ class GameState {
             this.game.gameStateOptions.ship.x = this.game.stateOptions.gameBounds.right;
         }
         
+        
+        this.moveInvaders();
+        this.checkForInvaderKills();
+        this.dropBombsOnEm();
+         
+    }
+    
+    moveInvaders(): void {
         //Move the invaders
         var hitLeft, hitRight, hitBottom = false;
         
         for (var i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
             var invader = this.game.gameStateOptions.invaders[i];
-            var newx = invader.x + this.invaderVelocity.x * 1000 / this.game.boldOptions.fps;
-            var newy = invader.y + this.invaderVelocity.y * 1000 / this.game.boldOptions.fps;
+            var newx = invader.x + this.invaderVelocity.x * DT;
+            var newy = invader.y + this.invaderVelocity.y * DT;
             if (hitLeft === false && newx < this.game.stateOptions.gameBounds.left) {
                 hitLeft = true;
             }
@@ -88,7 +98,7 @@ class GameState {
  
         //  Update invader velocities.
         if (this.game.gameStateOptions.invadersAreDropping) {
-            this.game.gameStateOptions.invaderCurrentDropDistance += this.invaderVelocity.y * 1000 / this.game.boldOptions.fps;
+            this.game.gameStateOptions.invaderCurrentDropDistance += this.invaderVelocity.y * DT;
             if (this.game.gameStateOptions.invaderCurrentDropDistance >= this.game.enemyOptions.invaderDropDistance) {
                 this.game.gameStateOptions.invadersAreDropping = false;
                 this.invaderVelocity = this.invaderNextVelocity;
@@ -113,9 +123,11 @@ class GameState {
         if (hitBottom) {
             this.game.stateOptions.lives = 0;
         }
-        
+    }
+    
+    checkForInvaderKills(): void {
         //  Check for rocket/invader collisions.
-        for (i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
+        for (var i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
             var invader = this.game.gameStateOptions.invaders[i];
             var bang = false;
 
@@ -135,6 +147,35 @@ class GameState {
             }
             if (bang) {
                 this.game.gameStateOptions.invaders.splice(i--, 1);
+            }
+        }
+    }
+    
+    dropBombsOnEm(): void {
+        //  Find all of the front rank invaders.
+        var frontRankInvaders: Array<BoldInvaders.Invader> = [];
+        for (var i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
+            var invader = this.game.gameStateOptions.invaders[i];
+            //  If we have no invader for game file, or the invader
+            //  for game file is futher behind, set the front
+            //  rank invader to game one.
+            if (!frontRankInvaders[invader.file] || frontRankInvaders[invader.file].rank < invader.rank) {
+                frontRankInvaders[invader.file] = invader;
+            }
+        }
+    
+        //  Give each front rank invader a chance to drop a bomb.
+        for (var i = 0; i < this.game.enemyOptions.invaderFiles; i++) {
+            var invader: BoldInvaders.Invader = frontRankInvaders[i];
+            if (!invader) continue;
+            var chance = this.game.enemyOptions.bombRate * DT;
+            if (chance > Math.random()) {
+                //  Fire!
+                this.game.gameStateOptions.bombs.push(this.currentBomb = {
+                    x: invader.x, 
+                    y: invader.y + invader.height / 2,
+                    velocity: this.game.enemyOptions.bombMinVelocity + Math.random() * (this.game.enemyOptions.bombMaxVelocity - this.game.enemyOptions.bombMinVelocity)
+                });
             }
         } 
     }

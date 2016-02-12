@@ -1,3 +1,4 @@
+var DT = 1000 / this.game.boldOptions.fps;
 var GameState = (function () {
     function GameState(game) {
         this.game = game;
@@ -30,10 +31,10 @@ var GameState = (function () {
     };
     GameState.prototype.update = function () {
         if (this.game.stateOptions.pressedKeys[37]) {
-            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed * 1000 / this.game.boldOptions.fps;
+            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed * DT;
         }
         if (this.game.stateOptions.pressedKeys[39]) {
-            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed * 1000 / this.game.boldOptions.fps;
+            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed * DT;
         }
         if (this.game.stateOptions.pressedKeys[32]) {
             //this.fireRocket();
@@ -46,12 +47,17 @@ var GameState = (function () {
         if (this.game.gameStateOptions.ship.x > this.game.stateOptions.gameBounds.right) {
             this.game.gameStateOptions.ship.x = this.game.stateOptions.gameBounds.right;
         }
+        this.moveInvaders();
+        this.checkForInvaderKills();
+        this.dropBombsOnEm();
+    };
+    GameState.prototype.moveInvaders = function () {
         //Move the invaders
         var hitLeft, hitRight, hitBottom = false;
         for (var i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
             var invader = this.game.gameStateOptions.invaders[i];
-            var newx = invader.x + this.invaderVelocity.x * 1000 / this.game.boldOptions.fps;
-            var newy = invader.y + this.invaderVelocity.y * 1000 / this.game.boldOptions.fps;
+            var newx = invader.x + this.invaderVelocity.x * DT;
+            var newy = invader.y + this.invaderVelocity.y * DT;
             if (hitLeft === false && newx < this.game.stateOptions.gameBounds.left) {
                 hitLeft = true;
             }
@@ -68,7 +74,7 @@ var GameState = (function () {
         }
         //  Update invader velocities.
         if (this.game.gameStateOptions.invadersAreDropping) {
-            this.game.gameStateOptions.invaderCurrentDropDistance += this.invaderVelocity.y * 1000 / this.game.boldOptions.fps;
+            this.game.gameStateOptions.invaderCurrentDropDistance += this.invaderVelocity.y * DT;
             if (this.game.gameStateOptions.invaderCurrentDropDistance >= this.game.enemyOptions.invaderDropDistance) {
                 this.game.gameStateOptions.invadersAreDropping = false;
                 this.invaderVelocity = this.invaderNextVelocity;
@@ -93,8 +99,10 @@ var GameState = (function () {
         if (hitBottom) {
             this.game.stateOptions.lives = 0;
         }
+    };
+    GameState.prototype.checkForInvaderKills = function () {
         //  Check for rocket/invader collisions.
-        for (i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
+        for (var i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
             var invader = this.game.gameStateOptions.invaders[i];
             var bang = false;
             for (var j = 0; j < this.game.gameStateOptions.rockets.length; j++) {
@@ -111,6 +119,34 @@ var GameState = (function () {
             }
             if (bang) {
                 this.game.gameStateOptions.invaders.splice(i--, 1);
+            }
+        }
+    };
+    GameState.prototype.dropBombsOnEm = function () {
+        //  Find all of the front rank invaders.
+        var frontRankInvaders = [];
+        for (var i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
+            var invader = this.game.gameStateOptions.invaders[i];
+            //  If we have no invader for game file, or the invader
+            //  for game file is futher behind, set the front
+            //  rank invader to game one.
+            if (!frontRankInvaders[invader.file] || frontRankInvaders[invader.file].rank < invader.rank) {
+                frontRankInvaders[invader.file] = invader;
+            }
+        }
+        //  Give each front rank invader a chance to drop a bomb.
+        for (var i = 0; i < this.game.enemyOptions.invaderFiles; i++) {
+            var invader = frontRankInvaders[i];
+            if (!invader)
+                continue;
+            var chance = this.game.enemyOptions.bombRate * DT;
+            if (chance > Math.random()) {
+                //  Fire!
+                this.game.gameStateOptions.bombs.push(this.currentBomb = {
+                    x: invader.x,
+                    y: invader.y + invader.height / 2,
+                    velocity: this.game.enemyOptions.bombMinVelocity + Math.random() * (this.game.enemyOptions.bombMaxVelocity - this.game.enemyOptions.bombMinVelocity)
+                });
             }
         }
     };
