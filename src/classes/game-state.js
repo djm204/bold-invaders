@@ -1,7 +1,7 @@
-var DT = 1000 / this.game.boldOptions.fps;
 var GameState = (function () {
     function GameState(game) {
         this.game = game;
+        this.dt = 1000 / this.game.boldOptions.fps;
     }
     GameState.prototype.enter = function () {
         //instantiate le ship
@@ -28,13 +28,14 @@ var GameState = (function () {
         this.game.gameStateOptions.invaderCurrentVelocity = this.game.enemyOptions.invaderInitialVelocity;
         this.invaderVelocity = { x: this.game.enemyOptions.invaderInitialVelocity, y: 0 };
         var invaderNextVelocity = null;
+        this.draw();
     };
     GameState.prototype.update = function () {
         if (this.game.stateOptions.pressedKeys[37]) {
-            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed * DT;
+            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed * this.dt;
         }
         if (this.game.stateOptions.pressedKeys[39]) {
-            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed * DT;
+            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed * this.dt;
         }
         if (this.game.stateOptions.pressedKeys[32]) {
             //this.fireRocket();
@@ -50,14 +51,54 @@ var GameState = (function () {
         this.moveInvaders();
         this.checkForInvaderKills();
         this.dropBombsOnEm();
+        this.hitShipCheck();
+        //  Check for failure
+        if (this.game.stateOptions.lives <= 0) {
+            //this.game.moveToState(new GameOverState());
+            console.log("Game Over.");
+        }
+        //  Check for victory
+        if (this.game.gameStateOptions.invaders.length === 0) {
+            this.game.stateOptions.score += this.game.stateOptions.level * 50;
+            this.game.stateOptions.level += 1;
+            //this.game.moveToState(new LevelIntroState(game.level));
+            console.log("Next Level");
+        }
+        this.draw();
+    };
+    GameState.prototype.draw = function () {
+        //  Clear the background.
+        var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
+        ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
+        //  Draw ship.
+        ctx.fillStyle = '#ff0000';
+        ctx.fillRect(this.game.gameStateOptions.ship.x - (this.game.gameStateOptions.ship.width / 2), this.game.gameStateOptions.ship.y - (this.game.gameStateOptions.ship.height / 2), this.game.gameStateOptions.ship.width, this.game.gameStateOptions.ship.height);
+        //  Draw invaders.
+        ctx.fillStyle = '#006600';
+        for (var i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
+            var invader = this.game.gameStateOptions.invaders[i];
+            ctx.fillRect(invader.x - invader.width / 2, invader.y - invader.height / 2, invader.width, invader.height);
+        }
+        //  Draw bombs.
+        ctx.fillStyle = '#ff5555';
+        for (var i = 0; i < this.game.gameStateOptions.bombs.length; i++) {
+            var bomb = this.game.gameStateOptions.bombs[i];
+            ctx.fillRect(bomb.x - 2, bomb.y - 2, 4, 4);
+        }
+        //  Draw rockets.
+        ctx.fillStyle = '#ff0000';
+        for (var i = 0; i < this.game.gameStateOptions.rockets.length; i++) {
+            var rocket = this.game.gameStateOptions.rockets[i];
+            ctx.fillRect(rocket.x, rocket.y - 2, 1, 4);
+        }
     };
     GameState.prototype.moveInvaders = function () {
         //Move the invaders
         var hitLeft, hitRight, hitBottom = false;
         for (var i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
             var invader = this.game.gameStateOptions.invaders[i];
-            var newx = invader.x + this.invaderVelocity.x * DT;
-            var newy = invader.y + this.invaderVelocity.y * DT;
+            var newx = invader.x + this.invaderVelocity.x * this.dt;
+            var newy = invader.y + this.invaderVelocity.y * this.dt;
             if (hitLeft === false && newx < this.game.stateOptions.gameBounds.left) {
                 hitLeft = true;
             }
@@ -74,7 +115,7 @@ var GameState = (function () {
         }
         //  Update invader velocities.
         if (this.game.gameStateOptions.invadersAreDropping) {
-            this.game.gameStateOptions.invaderCurrentDropDistance += this.invaderVelocity.y * DT;
+            this.game.gameStateOptions.invaderCurrentDropDistance += this.invaderVelocity.y * this.dt;
             if (this.game.gameStateOptions.invaderCurrentDropDistance >= this.game.enemyOptions.invaderDropDistance) {
                 this.game.gameStateOptions.invadersAreDropping = false;
                 this.invaderVelocity = this.invaderNextVelocity;
@@ -139,7 +180,7 @@ var GameState = (function () {
             var invader = frontRankInvaders[i];
             if (!invader)
                 continue;
-            var chance = this.game.enemyOptions.bombRate * DT;
+            var chance = this.game.enemyOptions.bombRate * this.dt;
             if (chance > Math.random()) {
                 //  Fire!
                 this.game.gameStateOptions.bombs.push(this.currentBomb = {
@@ -150,6 +191,51 @@ var GameState = (function () {
             }
         }
     };
+    GameState.prototype.hitShipCheck = function () {
+        //  Check for bomb/ship collisions.
+        for (var i = 0; i < this.game.gameStateOptions.bombs.length; i++) {
+            var bomb = this.game.gameStateOptions.bombs[i];
+            if (this.hitShip(bomb)) {
+                this.game.gameStateOptions.bombs.splice(i--, 1);
+                this.game.stateOptions.lives--;
+            }
+        }
+        //  Check for invader/ship collisions.
+        for (var i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
+            var invader = this.game.gameStateOptions.invaders[i];
+            if ((invader.x + invader.width / 2) > (this.game.gameStateOptions.ship.x - this.game.gameStateOptions.ship.width / 2) &&
+                (invader.x - invader.width / 2) < (this.game.gameStateOptions.ship.x + this.game.gameStateOptions.ship.width / 2) &&
+                (invader.y + invader.height / 2) > (this.game.gameStateOptions.ship.y - this.game.gameStateOptions.ship.height / 2) &&
+                (invader.y - invader.height / 2) < (this.game.gameStateOptions.ship.y + this.game.gameStateOptions.ship.height / 2)) {
+                //  Dead by collision!
+                this.game.stateOptions.lives = 0;
+                console.log("Play Death Sound Here");
+            }
+        }
+    };
+    GameState.prototype.hitShip = function (bomb) {
+        if (bomb.x >= (this.game.gameStateOptions.ship.x - this.game.gameStateOptions.ship.width / 2) &&
+            bomb.x <= (this.game.gameStateOptions.ship.x + this.game.gameStateOptions.ship.width / 2) &&
+            bomb.y >= (this.game.gameStateOptions.ship.y - this.game.gameStateOptions.ship.height / 2) &&
+            bomb.y <= (this.game.gameStateOptions.ship.y + this.game.gameStateOptions.ship.height / 2)) {
+            return true;
+        }
+        return false;
+    };
+    GameState.prototype.fireRocket = function () {
+        //  If we have no last rocket time, or the last rocket time 
+        //  is older than the max rocket rate, we can fire.
+        if (this.game.gameStateOptions.lastRocketTime === null || ((new Date()).valueOf() - this.game.gameStateOptions.lastRocketTime) > (1000 / this.game.playerOptions.rocketMaxFireRate)) {
+            //  Add a rocket.
+            this.game.gameStateOptions.rockets.push(this.currentRocket = {
+                x: this.game.gameStateOptions.ship.x,
+                y: this.game.gameStateOptions.ship.y - 12,
+                velocity: this.game.playerOptions.rocketVelocity
+            });
+            this.game.gameStateOptions.lastRocketTime = (new Date()).valueOf();
+        }
+    };
     return GameState;
 })();
+module.exports = GameState;
 //# sourceMappingURL=game-state.js.map

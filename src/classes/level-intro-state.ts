@@ -1,5 +1,5 @@
 import boldInvaders = require('./bold-invaders');
-import PlayState = require('./game-state');
+import GameState = require('./game-state');
 export = LevelIntroState;
 
 class LevelIntroState {
@@ -45,7 +45,7 @@ class LevelIntroState {
         }
         if (this.countdown <= 0) {
             //  Move to the next level, popping this state.
-            //this.game.moveToState(new PlayState(this.game));
+            this.game.moveToState(new GameState(this.game));
             console.log("counted to zero");
         }
         console.log(this.countdown +" message: " + this.countDownMessage);
