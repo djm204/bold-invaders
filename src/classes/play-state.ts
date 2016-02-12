@@ -26,7 +26,7 @@ class PlayState {
             
             for (var file = 0; file < this.game.enemyOptions.invaderFiles; file++) {
                 
-                var invader: BoldInvaders.Invader = {x: (this.game.stateOptions.width / 2) + ((this.enemyOptions.invaderFiles / 2 - file) * 200 / this.enemyOptions.invaderFiles),
+                var invader: BoldInvaders.Invader = {x: (this.game.stateOptions.width / 2) + ((this.game.enemyOptions.invaderFiles / 2 - file) * 200 / this.game.enemyOptions.invaderFiles),
                     y: (this.game.stateOptions.gameBounds.top + rank * 20), rank: rank, file: file, type: 'Invader', width: 18, height: 14 };
                     
                 invaders.push(invader);

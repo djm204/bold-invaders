@@ -5,20 +5,23 @@ import BoldInvaders = require('./classes/bold-invaders');
 import StarFieldOptions = StarField.Options;
 import BoldInvadersOptions = BoldInvaders.GameOptions;
 import StateOptions = BoldInvaders.StateOptions;
+import PlayerOptions = BoldInvaders.Player;
+import EnemyOptions = BoldInvaders.Enemy;
+import PlayStateOptions = BoldInvaders.PlayState;
 
 const GAME_KEYS = [37, 39, 32];
 
 
 //Starfield 
-var SFOptions: StarFieldOptions = { 
-    fps: 30, 
-    canvas: null, 
-    width: 0, 
-    height: 0, 
-    minVelocity: 15, 
-    maxVelocity: 30, 
-    starList: null, 
-    intervalId: 0 
+var SFOptions: StarFieldOptions = {
+    fps: 30,
+    canvas: null,
+    width: 0,
+    height: 0,
+    minVelocity: 15,
+    maxVelocity: 30,
+    starList: null,
+    intervalId: 0
 };
 
 var starfield = new StarField(SFOptions);
@@ -52,9 +55,48 @@ var BIStateOptions: StateOptions = {
     sounds: []
 }
 
-var canvas = document.getElementById("gameCanvas");
+var BIPlayerOptions: PlayerOptions = {
+    rocketVelocity: 120,
+    rocketMaxFireRate: 2
+}
 
-var boldInvaders = new BoldInvaders(BIOptions, BIStateOptions);
+var BIEnemyOptions: EnemyOptions = {
+    bombRate: 0.05,
+    bombMinVelocity: 50,
+    bombMaxVelocity: 60,
+    invaderInitialVelocity: 25,
+    invaderAcceleration: 0,
+    invaderDropDistance: 20,
+    invaderRanks: 5,
+    invaderFiles: 10,
+    pointsPerInvader: 5
+}
+
+var BIPlayStateOptions: PlayStateOptions = {
+    ship: null,
+    invaders: null,
+    rockets: null,
+    bombs: null,
+    invaderCurrentVelocity: 0,
+    invaderCurrentDropDistance: 0,
+    invadersAreDropping: false,
+    lastRocketTime: 0
+}
+
+
+var boldInvaders = new BoldInvaders(
+    BIOptions, 
+    BIPlayerOptions, 
+    BIEnemyOptions, 
+    BIPlayStateOptions, 
+    BIStateOptions
+    );
+    
+var gameContainer = document.getElementById("gameContainer");
+var canvas = document.createElement("canvas");
+canvas.setAttribute("id", "gameCanvas");
+
+gameContainer.appendChild(canvas);
 
 boldInvaders.initialize(canvas);
 
@@ -63,7 +105,7 @@ boldInvaders.start();
 window.addEventListener("keydown", function keydown(e) {
     var keyCode = e.which || e.keyCode;
     //  Supress further processing of left/right/space (37/29/32)
-    if(keyCode == 37 || keyCode == 39 || keyCode == 32) {
+    if (keyCode == 37 || keyCode == 39 || keyCode == 32) {
         e.preventDefault();
     }
     boldInvaders.keyDown(keyCode);
@@ -71,7 +113,7 @@ window.addEventListener("keydown", function keydown(e) {
 window.addEventListener("keyup", function keydown(e) {
     var keyCode = e.which || e.keyCode;
     boldInvaders.keyUp(keyCode);
-}); 
+});
 
 
 

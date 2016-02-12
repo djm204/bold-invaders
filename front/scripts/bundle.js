@@ -47,8 +47,18 @@
 	__webpack_require__(1);
 	var StarField = __webpack_require__(5);
 	var BoldInvaders = __webpack_require__(6);
+	var GAME_KEYS = [37, 39, 32];
 	//Starfield 
-	var SFOptions = { fps: 30, canvas: null, width: 0, height: 0, minVelocity: 15, maxVelocity: 30, starList: null, intervalId: 0 };
+	var SFOptions = {
+	    fps: 30,
+	    canvas: null,
+	    width: 0,
+	    height: 0,
+	    minVelocity: 15,
+	    maxVelocity: 30,
+	    starList: null,
+	    intervalId: 0
+	};
 	var starfield = new StarField(SFOptions);
 	var container = document.getElementById('container');
 	starfield.initialize(container);
@@ -75,21 +85,49 @@
 	    gameCanvas: null,
 	    sounds: []
 	};
-	var canvas = document.getElementById("gameCanvas");
-	var boldInvaders = new BoldInvaders(BIOptions, BIStateOptions);
+	var BIPlayerOptions = {
+	    rocketVelocity: 120,
+	    rocketMaxFireRate: 2
+	};
+	var BIEnemyOptions = {
+	    bombRate: 0.05,
+	    bombMinVelocity: 50,
+	    bombMaxVelocity: 60,
+	    invaderInitialVelocity: 25,
+	    invaderAcceleration: 0,
+	    invaderDropDistance: 20,
+	    invaderRanks: 5,
+	    invaderFiles: 10,
+	    pointsPerInvader: 5
+	};
+	var BIPlayStateOptions = {
+	    ship: null,
+	    invaders: null,
+	    rockets: null,
+	    bombs: null,
+	    invaderCurrentVelocity: 0,
+	    invaderCurrentDropDistance: 0,
+	    invadersAreDropping: false,
+	    lastRocketTime: 0
+	};
+	var boldInvaders = new BoldInvaders(BIOptions, BIPlayerOptions, BIEnemyOptions, BIPlayStateOptions, BIStateOptions);
+	var gameContainer = document.getElementById("gameContainer");
+	var canvas = document.createElement("canvas");
+	canvas.setAttribute("id", "gameCanvas");
+	gameContainer.appendChild(canvas);
 	boldInvaders.initialize(canvas);
 	boldInvaders.start();
 	window.addEventListener("keydown", function keydown(e) {
-	    var keycode = e.which || e.keyCode;
+	    var keyCode = e.which || e.keyCode;
 	    //  Supress further processing of left/right/space (37/29/32)
-	    if (keycode == 37 || keycode == 39 || keycode == 32) {
+	    if (keyCode == 37 || keyCode == 39 || keyCode == 32) {
 	        e.preventDefault();
 	    }
-	    boldInvaders.keyDown(keycode);
+	    boldInvaders.keyDown(keyCode);
 	});
 	window.addEventListener("keyup", function keydown(e) {
-	    var keycode = e.which || e.keyCode;
-	    boldInvaders.keyUp(keycode);
+	    var keyCode = e.which || e.keyCode;
+	    boldInvaders.keyUp(keyCode);
 	});
 	console.log(boldInvaders.boldOptions.fps);
 	//# sourceMappingURL=index.js.map
@@ -534,8 +572,11 @@
 
 	var welcomeState = __webpack_require__(7);
 	var BoldInvaders = (function () {
-	    function BoldInvaders(boldOptions, stateOptions) {
+	    function BoldInvaders(boldOptions, playerOptions, enemyOptions, playStateOptions, stateOptions) {
 	        this.boldOptions = boldOptions;
+	        this.playerOptions = playerOptions;
+	        this.enemyOptions = enemyOptions;
+	        this.playStateOptions = playStateOptions;
 	        this.stateOptions = stateOptions;
 	    }
 	    BoldInvaders.prototype.initialize = function (gameCanvas) {
@@ -679,26 +720,28 @@
 
 	var LevelIntroState = (function () {
 	    function LevelIntroState(game, dt, ctx) {
+	        this.game = game;
+	        this.dt = dt;
+	        this.ctx = ctx;
 	    }
-	    LevelIntroState.prototype.draw = function (game, dt, ctx) {
-	        if (this.countDownMessage === undefined) {
+	    LevelIntroState.prototype.draw = function () {
+	        if (this.countDownMessage == null) {
 	            this.countDownMessage = 3;
 	        }
-	        console.log(ctx);
+	        console.log(this.ctx);
 	        //  Clear the background.
-	        ctx.clearRect(0, 0, game.stateOptions.width, game.stateOptions.height);
-	        ctx.font = "36px Arial";
-	        ctx.fillStyle = '#ffffff';
-	        ctx.textBaseline = "middle";
-	        ctx.textAlign = "center";
-	        ctx.fillText("Level " + game.stateOptions.level, game.stateOptions.width / 2, game.stateOptions.height / 2);
-	        ctx.font = "24px Arial";
-	        ctx.fillText("Ready in " + this.countDownMessage, game.stateOptions.width / 2, game.stateOptions.height / 2 + 36);
+	        this.ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
+	        this.ctx.font = "36px Arial";
+	        this.ctx.fillStyle = '#ffffff';
+	        this.ctx.textBaseline = "middle";
+	        this.ctx.textAlign = "center";
+	        this.ctx.fillText("Level " + this.game.stateOptions.level, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2);
+	        this.ctx.font = "24px Arial";
+	        this.ctx.fillText("Ready in " + this.countDownMessage, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2 + 36);
 	    };
-	    LevelIntroState.prototype.update = function (game, dt, ctx) {
-	        console.log("Got HEre l-intro update");
+	    LevelIntroState.prototype.update = function () {
 	        //  Update the countdown.
-	        if (this.countdown === undefined) {
+	        if (this.countdown == null) {
 	            this.countdown = 3; // countdown from 3 secs
 	        }
 	        if (this.countdown === 2) {
@@ -709,11 +752,11 @@
 	        }
 	        if (this.countdown <= 0) {
 	            //  Move to the next level, popping this state.
-	            //game.moveToState(new PlayState(game.config, this.level));
+	            //this.game.moveToState(new PlayState(this.game));
 	            console.log("counted to zero");
 	        }
 	        console.log(this.countdown + " message: " + this.countDownMessage);
-	        this.draw(game, dt, ctx);
+	        this.draw();
 	        this.countdown -= 1;
 	    };
 	    return LevelIntroState;

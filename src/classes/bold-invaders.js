@@ -1,7 +1,10 @@
 var welcomeState = require('./welcome-state');
 var BoldInvaders = (function () {
-    function BoldInvaders(boldOptions, stateOptions) {
+    function BoldInvaders(boldOptions, playerOptions, enemyOptions, playStateOptions, stateOptions) {
         this.boldOptions = boldOptions;
+        this.playerOptions = playerOptions;
+        this.enemyOptions = enemyOptions;
+        this.playStateOptions = playStateOptions;
         this.stateOptions = stateOptions;
     }
     BoldInvaders.prototype.initialize = function (gameCanvas) {

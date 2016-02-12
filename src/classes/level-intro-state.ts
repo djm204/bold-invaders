@@ -12,7 +12,7 @@ class LevelIntroState {
         
 
     draw() {
-        if(this.countDownMessage === undefined){
+        if(this.countDownMessage == null){
             this.countDownMessage = 3;
         }
         console.log(this.ctx);
@@ -32,7 +32,7 @@ class LevelIntroState {
     update() {
 
         //  Update the countdown.
-        if (this.countdown === undefined) {            
+        if (this.countdown == null) {            
             
             this.countdown = 3; // countdown from 3 secs
         }
@@ -45,7 +45,7 @@ class LevelIntroState {
         }
         if (this.countdown <= 0) {
             //  Move to the next level, popping this state.
-            this.game.moveToState(new PlayState(this.game));
+            //this.game.moveToState(new PlayState(this.game));
             console.log("counted to zero");
         }
         console.log(this.countdown +" message: " + this.countDownMessage);
