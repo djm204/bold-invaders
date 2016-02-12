@@ -93,6 +93,26 @@ var GameState = (function () {
         if (hitBottom) {
             this.game.stateOptions.lives = 0;
         }
+        //  Check for rocket/invader collisions.
+        for (i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
+            var invader = this.game.gameStateOptions.invaders[i];
+            var bang = false;
+            for (var j = 0; j < this.game.gameStateOptions.rockets.length; j++) {
+                var rocket = this.game.gameStateOptions.rockets[j];
+                if (rocket.x >= (invader.x - invader.width / 2) && rocket.x <= (invader.x + invader.width / 2) &&
+                    rocket.y >= (invader.y - invader.height / 2) && rocket.y <= (invader.y + invader.height / 2)) {
+                    //  Remove the rocket, set 'bang' so we don't process
+                    //  this rocket again.
+                    this.game.gameStateOptions.rockets.splice(j--, 1);
+                    bang = true;
+                    this.game.stateOptions.score += this.game.enemyOptions.pointsPerInvader;
+                    break;
+                }
+            }
+            if (bang) {
+                this.game.gameStateOptions.invaders.splice(i--, 1);
+            }
+        }
     };
     return GameState;
 })();
