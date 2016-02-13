@@ -38,14 +38,13 @@ var GameState = (function () {
     };
     GameState.prototype.update = function () {
         if (this.game.stateOptions.pressedKeys[37]) {
-            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed / 10;
+            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed / 100;
         }
         if (this.game.stateOptions.pressedKeys[39]) {
-            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed / 10;
+            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed / 100;
         }
         if (this.game.stateOptions.pressedKeys[32]) {
             this.fireRocket();
-            console.log("fire rocket");
         }
         //  Keep the ship in bounds.
         if (this.game.gameStateOptions.ship.x < this.game.stateOptions.gameBounds.left) {
@@ -62,7 +61,7 @@ var GameState = (function () {
         if (this.game.stateOptions.lives <= 0) {
             //this.game.moveToState(new GameOverState());
             console.log("Game Over.");
-            return;
+            clearInterval(this.game.stateOptions.intervalId);
         }
         //  Check for victory
         if (this.game.gameStateOptions.invaders.length === 0) {
@@ -70,6 +69,7 @@ var GameState = (function () {
             this.game.stateOptions.level += 1;
             //this.game.moveToState(new LevelIntroState(game.level));
             console.log("Next Level");
+            return;
         }
         this.draw();
     };
@@ -90,13 +90,21 @@ var GameState = (function () {
         ctx.fillStyle = '#ff5555';
         for (var i = 0; i < this.game.gameStateOptions.bombs.length; i++) {
             var bomb = this.game.gameStateOptions.bombs[i];
-            ctx.fillRect(bomb.x - 2, bomb.y - 2, 4, 4);
+            bomb.y += .5;
+            ctx.fillRect(bomb.x, bomb.y, 4, 4);
         }
         //  Draw rockets.
         ctx.fillStyle = '#ff0000';
         for (var i = 0; i < this.game.gameStateOptions.rockets.length; i++) {
             var rocket = this.game.gameStateOptions.rockets[i];
-            ctx.fillRect(rocket.x, rocket.y - 2, 1, 4);
+            rocket.y -= 2;
+            ctx.fillRect(rocket.x, rocket.y, 1, 4);
+        }
+        //check if we are in debug mode
+        if (this.game.boldOptions.debugMode) {
+            ctx.strokeStyle = '#ff0000';
+            ctx.strokeRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
+            ctx.strokeRect(this.game.stateOptions.gameBounds.left, this.game.stateOptions.gameBounds.top, this.game.stateOptions.gameBounds.right - this.game.stateOptions.gameBounds.left, this.game.stateOptions.gameBounds.bottom - this.game.stateOptions.gameBounds.top);
         }
     };
     GameState.prototype.moveInvaders = function () {
@@ -187,7 +195,7 @@ var GameState = (function () {
             var invader = frontRankInvaders[i];
             if (!invader)
                 continue;
-            var chance = this.game.enemyOptions.bombRate * this.dt;
+            var chance = this.game.enemyOptions.bombRate * .025;
             if (chance > Math.random()) {
                 //  Fire!
                 this.game.gameStateOptions.bombs.push(this.currentBomb = {
