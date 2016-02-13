@@ -105,6 +105,8 @@ window.addEventListener("keydown", function keydown(e) {
     }
     boldInvaders.keyDown(keyCode);
 });
+
+
 window.addEventListener("keyup", function keydown(e) {
     var keyCode = e.which || e.keyCode;
     boldInvaders.keyUp(keyCode);

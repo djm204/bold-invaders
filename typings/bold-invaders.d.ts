@@ -135,8 +135,14 @@ declare namespace BoldInvaders {
     interface WelcomeState {
         draw: () => any;
     }
+    
+    interface PauseState {
+        draw: () => any;
+        update: () => any;
+        
+    }
 
-type GameState = PlayState | OverState | IntroState | WelcomeState;
+type GameState = PlayState | OverState | IntroState | WelcomeState | PauseState;
 
 
 }

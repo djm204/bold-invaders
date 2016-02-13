@@ -1,3 +1,4 @@
+var PauseState = require('./pause-state');
 var GameState = (function () {
     function GameState(game) {
         this.game = game;
@@ -37,15 +38,6 @@ var GameState = (function () {
         var invaderNextVelocity = null;
     };
     GameState.prototype.update = function () {
-        if (this.game.stateOptions.pressedKeys[37]) {
-            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed / 100;
-        }
-        if (this.game.stateOptions.pressedKeys[39]) {
-            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed / 100;
-        }
-        if (this.game.stateOptions.pressedKeys[32]) {
-            this.fireRocket();
-        }
         //  Keep the ship in bounds.
         if (this.game.gameStateOptions.ship.x < this.game.stateOptions.gameBounds.left) {
             this.game.gameStateOptions.ship.x = this.game.stateOptions.gameBounds.left;
@@ -105,6 +97,21 @@ var GameState = (function () {
             ctx.strokeStyle = '#ff0000';
             ctx.strokeRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
             ctx.strokeRect(this.game.stateOptions.gameBounds.left, this.game.stateOptions.gameBounds.top, this.game.stateOptions.gameBounds.right - this.game.stateOptions.gameBounds.left, this.game.stateOptions.gameBounds.bottom - this.game.stateOptions.gameBounds.top);
+        }
+    };
+    GameState.prototype.keyDown = function (game, keyCode) {
+        if (this.game.stateOptions.pressedKeys[37]) {
+            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed / 100;
+        }
+        if (this.game.stateOptions.pressedKeys[39]) {
+            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed / 100;
+        }
+        if (this.game.stateOptions.pressedKeys[32]) {
+            this.fireRocket();
+        }
+        if (keyCode == 27) {
+            //  Push the pause state.
+            game.pushState(new PauseState(game, 1000 / game.boldOptions.fps, this.game.stateOptions.gameCanvas.getContext("2d")));
         }
     };
     GameState.prototype.moveInvaders = function () {

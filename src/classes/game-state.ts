@@ -1,17 +1,18 @@
 import boldInvaders = require('./bold-invaders');
+import PauseState = require('./pause-state');
 export = GameState;
 class GameState {
     constructor(public game: boldInvaders) {
 
     }
-    
-    invaderVelocity: {x: number, y: number};
-    invaderNextVelocity: {x: number, y: number};
+
+    invaderVelocity: { x: number, y: number };
+    invaderNextVelocity: { x: number, y: number };
     currentBomb: BoldInvaders.Bomb;
-    currentRocket: BoldInvaders.Rocket;  
+    currentRocket: BoldInvaders.Rocket;
     dt: number = 1000 / this.game.boldOptions.fps;
-    
-    
+
+
 
     enter() {
         
@@ -21,50 +22,42 @@ class GameState {
         //create level multipliers
         var levelMultiplier = this.game.stateOptions.level * this.game.boldOptions.levelDifficultyMultiplier;
         var shipSpeed = this.game.boldOptions.shipSpeed;
-        
+
         this.game.enemyOptions.invaderInitialVelocity += (levelMultiplier * this.game.enemyOptions.invaderInitialVelocity);
         this.game.enemyOptions.bombRate += (levelMultiplier * this.game.enemyOptions.bombRate);
-        this.game.enemyOptions.bombMinVelocity += (levelMultiplier * this.game.enemyOptions.bombMinVelocity );
-        this.game.enemyOptions.bombMaxVelocity += (levelMultiplier * this.game.enemyOptions.bombMinVelocity );
+        this.game.enemyOptions.bombMinVelocity += (levelMultiplier * this.game.enemyOptions.bombMinVelocity);
+        this.game.enemyOptions.bombMaxVelocity += (levelMultiplier * this.game.enemyOptions.bombMinVelocity);
         
         //invader creation
         this.game.enemyOptions.invaderRanks = 5;
         this.game.enemyOptions.invaderFiles = 10;
         var invaders = [];
         for (var rank = 0; rank < this.game.enemyOptions.invaderRanks; rank++) {
-            
+
             for (var file = 0; file < this.game.enemyOptions.invaderFiles; file++) {
-                
+
                 var invader: BoldInvaders.Invader = {
                     x: (this.game.stateOptions.width / 2) + ((this.game.enemyOptions.invaderFiles / 2 - file) * 200 / this.game.enemyOptions.invaderFiles),
-                    y: (this.game.stateOptions.gameBounds.top + rank * 20), 
-                    rank: rank, 
+                    y: (this.game.stateOptions.gameBounds.top + rank * 20),
+                    rank: rank,
                     file: file,
-                    type: 'Invader', 
-                    width: 18, 
-                    height: 14 
+                    type: 'Invader',
+                    width: 18,
+                    height: 14
                 };
-                    
+
                 invaders.push(invader);
             }
         }
-        
+
         this.game.gameStateOptions.invaders = invaders;
         this.game.gameStateOptions.invaderCurrentVelocity = this.game.enemyOptions.invaderInitialVelocity;
-        this.invaderVelocity = {x: this.game.enemyOptions.invaderInitialVelocity, y:0};
+        this.invaderVelocity = { x: this.game.enemyOptions.invaderInitialVelocity, y: 0 };
         var invaderNextVelocity = null;
     }
-    
-    update(){
-        if(this.game.stateOptions.pressedKeys[37]) {
-            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed / 100;
-        }
-        if (this.game.stateOptions.pressedKeys[39]) {
-            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed / 100;
-        }
-        if (this.game.stateOptions.pressedKeys[32]) {
-            this.fireRocket();
-        }
+
+    update() {
+        
  
         //  Keep the ship in bounds.
         
@@ -74,8 +67,8 @@ class GameState {
         if (this.game.gameStateOptions.ship.x > this.game.stateOptions.gameBounds.right) {
             this.game.gameStateOptions.ship.x = this.game.stateOptions.gameBounds.right;
         }
-        
-        
+
+
         this.moveInvaders();
         this.checkForInvaderKills();
         this.dropBombsOnEm();
@@ -95,11 +88,11 @@ class GameState {
             //this.game.moveToState(new LevelIntroState(game.level));
             console.log("Next Level");
             return;
-        } 
-        
+        }
+
         this.draw();
     }
-    
+
     draw(): void {
         //  Clear the background.
         var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
@@ -125,7 +118,7 @@ class GameState {
         ctx.fillStyle = '#ff5555';
         for (var i = 0; i < this.game.gameStateOptions.bombs.length; i++) {
             var bomb = this.game.gameStateOptions.bombs[i];
-            
+
             bomb.y += .5;
             ctx.fillRect(bomb.x, bomb.y, 4, 4);
         }
@@ -139,22 +132,37 @@ class GameState {
         }
         
         //check if we are in debug mode
-        if(this.game.boldOptions.debugMode) {
-        ctx.strokeStyle = '#ff0000';
-        ctx.strokeRect(0,0,this.game.stateOptions.width, this.game.stateOptions.height);
-        ctx.strokeRect(this.game.stateOptions.gameBounds.left, this.game.stateOptions.gameBounds.top,
-            this.game.stateOptions.gameBounds.right - this.game.stateOptions.gameBounds.left,
-            this.game.stateOptions.gameBounds.bottom - this.game.stateOptions.gameBounds.top);
+        if (this.game.boldOptions.debugMode) {
+            ctx.strokeStyle = '#ff0000';
+            ctx.strokeRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
+            ctx.strokeRect(this.game.stateOptions.gameBounds.left, this.game.stateOptions.gameBounds.top,
+                this.game.stateOptions.gameBounds.right - this.game.stateOptions.gameBounds.left,
+                this.game.stateOptions.gameBounds.bottom - this.game.stateOptions.gameBounds.top);
+        }
     }
+
+    keyDown(game: boldInvaders, keyCode: number){
+        if(this.game.stateOptions.pressedKeys[37]) {
+            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed / 100;
+        }
+        if (this.game.stateOptions.pressedKeys[39]) {
+            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed / 100;
+        }
+        if (this.game.stateOptions.pressedKeys[32]) {
+            this.fireRocket();
+        }
+        if(keyCode == 27) {
+            //  Push the pause state.
+            game.pushState(new PauseState(game, 1000 / game.boldOptions.fps, this.game.stateOptions.gameCanvas.getContext("2d")));
+        }
     }
-    
     moveInvaders(): void {
         //Move the invaders
         var hitLeft = false, hitRight = false, hitBottom = false;
-        
+
         for (var i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
             var invader = this.game.gameStateOptions.invaders[i];
-            var newx = invader.x + this.invaderVelocity.x * .025 ;
+            var newx = invader.x + this.invaderVelocity.x * .025;
             var newy = invader.y + this.invaderVelocity.y * .025;
             if (hitLeft === false && newx < this.game.stateOptions.gameBounds.left) {
                 hitLeft = true;
@@ -169,7 +177,7 @@ class GameState {
             if (!hitLeft && !hitRight && !hitBottom) {
                 invader.x = newx;
                 invader.y = newy;
-                
+
             }
         }
  
@@ -201,7 +209,7 @@ class GameState {
             this.game.stateOptions.lives = 0;
         }
     }
-    
+
     checkForInvaderKills(): void {
         //  Check for rocket/invader collisions.
         for (var i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
@@ -227,7 +235,7 @@ class GameState {
             }
         }
     }
-    
+
     dropBombsOnEm(): void {
         //  Find all of the front rank invaders.
         var frontRankInvaders: Array<BoldInvaders.Invader> = [];
@@ -249,14 +257,14 @@ class GameState {
             if (chance > Math.random()) {
                 //  Fire!
                 this.game.gameStateOptions.bombs.push(this.currentBomb = {
-                    x: invader.x, 
+                    x: invader.x,
                     y: invader.y + invader.height / 2,
                     velocity: this.game.enemyOptions.bombMinVelocity + Math.random() * (this.game.enemyOptions.bombMaxVelocity - this.game.enemyOptions.bombMinVelocity)
                 });
             }
-        } 
+        }
     }
-    
+
     hitShipCheck(): void {
         //  Check for bomb/ship collisions.
         for (var i = 0; i < this.game.gameStateOptions.bombs.length; i++) {
@@ -282,7 +290,7 @@ class GameState {
             }
         }
     }
-    
+
     hitShip(bomb: BoldInvaders.Bomb): boolean {
         if (bomb.x >= (this.game.gameStateOptions.ship.x - this.game.gameStateOptions.ship.width / 2) &&
             bomb.x <= (this.game.gameStateOptions.ship.x + this.game.gameStateOptions.ship.width / 2) &&
@@ -292,20 +300,20 @@ class GameState {
         }
         return false;
     }
-    
+
     fireRocket(): void {
         //  If we have no last rocket time, or the last rocket time 
         //  is older than the max rocket rate, we can fire.
         if (this.game.gameStateOptions.lastRocketTime === null || ((new Date()).valueOf() - this.game.gameStateOptions.lastRocketTime) > (1000 / this.game.playerOptions.rocketMaxFireRate)) {   
             //  Add a rocket.
-            this.game.gameStateOptions.rockets.push( this.currentRocket = {
-                x: this.game.gameStateOptions.ship.x + 12, 
-                y: this.game.gameStateOptions.ship.y - 12, 
+            this.game.gameStateOptions.rockets.push(this.currentRocket = {
+                x: this.game.gameStateOptions.ship.x + 12,
+                y: this.game.gameStateOptions.ship.y - 12,
                 velocity: this.game.playerOptions.rocketVelocity
             });
             this.game.gameStateOptions.lastRocketTime = (new Date()).valueOf();
         }
     }
 
-    
+
 }
