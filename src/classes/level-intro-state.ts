@@ -37,10 +37,10 @@ class LevelIntroState {
             this.countdown = 3; // countdown from 3 secs
         }
 
-        if (this.countdown === 2) {
+        if (this.countdown <= 2) {
             this.countDownMessage = 2;
         }
-        if (this.countdown === 1) {
+        if (this.countdown <= 1) {
             this.countDownMessage = 1;
         }
         if (this.countdown <= 0) {
@@ -50,7 +50,7 @@ class LevelIntroState {
         }
         console.log(this.countdown +" message: " + this.countDownMessage);
         this.draw();
-        this.countdown -= 1;
+        this.countdown -= .03;
         
     }
 

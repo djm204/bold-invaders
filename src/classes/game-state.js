@@ -195,7 +195,7 @@ var GameState = (function () {
             var invader = frontRankInvaders[i];
             if (!invader)
                 continue;
-            var chance = this.game.enemyOptions.bombRate * .025;
+            var chance = this.game.enemyOptions.bombRate * .015;
             if (chance > Math.random()) {
                 //  Fire!
                 this.game.gameStateOptions.bombs.push(this.currentBomb = {

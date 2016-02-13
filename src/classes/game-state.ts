@@ -245,7 +245,7 @@ class GameState {
         for (var i = 0; i < this.game.enemyOptions.invaderFiles; i++) {
             var invader: BoldInvaders.Invader = frontRankInvaders[i];
             if (!invader) continue;
-            var chance = this.game.enemyOptions.bombRate * .025;
+            var chance = this.game.enemyOptions.bombRate * .015;
             if (chance > Math.random()) {
                 //  Fire!
                 this.game.gameStateOptions.bombs.push(this.currentBomb = {
