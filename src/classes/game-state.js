@@ -9,18 +9,25 @@ var GameState = (function () {
         //create level multipliers
         var levelMultiplier = this.game.stateOptions.level * this.game.boldOptions.levelDifficultyMultiplier;
         var shipSpeed = this.game.boldOptions.shipSpeed;
-        this.game.enemyOptions.invaderInitialVelocity = 25 + (levelMultiplier * 25);
-        this.game.enemyOptions.bombRate = 0.05 + (levelMultiplier * 0.05);
-        this.game.enemyOptions.bombMinVelocity = 50 + (levelMultiplier * 50);
-        this.game.enemyOptions.bombMaxVelocity = 60 + (levelMultiplier * 60);
+        this.game.enemyOptions.invaderInitialVelocity += (levelMultiplier * this.game.enemyOptions.invaderInitialVelocity);
+        this.game.enemyOptions.bombRate += (levelMultiplier * this.game.enemyOptions.bombRate);
+        this.game.enemyOptions.bombMinVelocity += (levelMultiplier * this.game.enemyOptions.bombMinVelocity);
+        this.game.enemyOptions.bombMaxVelocity += (levelMultiplier * this.game.enemyOptions.bombMinVelocity);
         //invader creation
         this.game.enemyOptions.invaderRanks = 5;
         this.game.enemyOptions.invaderFiles = 10;
         var invaders = [];
         for (var rank = 0; rank < this.game.enemyOptions.invaderRanks; rank++) {
             for (var file = 0; file < this.game.enemyOptions.invaderFiles; file++) {
-                var invader = { x: (this.game.stateOptions.width / 2) + ((this.game.enemyOptions.invaderFiles / 2 - file) * 200 / this.game.enemyOptions.invaderFiles),
-                    y: (this.game.stateOptions.gameBounds.top + rank * 20), rank: rank, file: file, type: 'Invader', width: 18, height: 14 };
+                var invader = {
+                    x: (this.game.stateOptions.width / 2) + ((this.game.enemyOptions.invaderFiles / 2 - file) * 200 / this.game.enemyOptions.invaderFiles),
+                    y: (this.game.stateOptions.gameBounds.top + rank * 20),
+                    rank: rank,
+                    file: file,
+                    type: 'Invader',
+                    width: 18,
+                    height: 14
+                };
                 invaders.push(invader);
             }
         }
@@ -31,17 +38,16 @@ var GameState = (function () {
     };
     GameState.prototype.update = function () {
         if (this.game.stateOptions.pressedKeys[37]) {
-            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed / this.dt;
+            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed / 10;
         }
         if (this.game.stateOptions.pressedKeys[39]) {
-            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed / this.dt;
+            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed / 10;
         }
         if (this.game.stateOptions.pressedKeys[32]) {
             this.fireRocket();
             console.log("fire rocket");
         }
         //  Keep the ship in bounds.
-        console.log(this.game.stateOptions.gameBounds.left);
         if (this.game.gameStateOptions.ship.x < this.game.stateOptions.gameBounds.left) {
             this.game.gameStateOptions.ship.x = this.game.stateOptions.gameBounds.left;
         }
@@ -56,6 +62,7 @@ var GameState = (function () {
         if (this.game.stateOptions.lives <= 0) {
             //this.game.moveToState(new GameOverState());
             console.log("Game Over.");
+            return;
         }
         //  Check for victory
         if (this.game.gameStateOptions.invaders.length === 0) {
@@ -97,8 +104,8 @@ var GameState = (function () {
         var hitLeft = false, hitRight = false, hitBottom = false;
         for (var i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
             var invader = this.game.gameStateOptions.invaders[i];
-            var newx = invader.x + this.invaderVelocity.x * 2;
-            var newy = invader.y + this.invaderVelocity.y * 2;
+            var newx = invader.x + this.invaderVelocity.x * .025;
+            var newy = invader.y + this.invaderVelocity.y * .025;
             if (hitLeft === false && newx < this.game.stateOptions.gameBounds.left) {
                 hitLeft = true;
             }
@@ -115,7 +122,7 @@ var GameState = (function () {
         }
         //  Update invader velocities.
         if (this.game.gameStateOptions.invadersAreDropping) {
-            this.game.gameStateOptions.invaderCurrentDropDistance += this.invaderVelocity.y * this.dt;
+            this.game.gameStateOptions.invaderCurrentDropDistance += this.invaderVelocity.y * .025;
             if (this.game.gameStateOptions.invaderCurrentDropDistance >= this.game.enemyOptions.invaderDropDistance) {
                 this.game.gameStateOptions.invadersAreDropping = false;
                 this.invaderVelocity = this.invaderNextVelocity;

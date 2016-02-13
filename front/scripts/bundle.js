@@ -50,7 +50,7 @@
 	var GAME_KEYS = [37, 39, 32];
 	//Starfield 
 	var SFOptions = {
-	    fps: 30,
+	    fps: 50,
 	    canvas: null,
 	    width: 0,
 	    height: 0,
@@ -92,7 +92,7 @@
 	var BIEnemyOptions = {
 	    bombRate: 0.05,
 	    bombMinVelocity: 50,
-	    bombMaxVelocity: 60,
+	    bombMaxVelocity: 50,
 	    invaderInitialVelocity: 25,
 	    invaderAcceleration: 0,
 	    invaderDropDistance: 20,
@@ -105,7 +105,7 @@
 	    invaders: [],
 	    rockets: [],
 	    bombs: [],
-	    invaderCurrentVelocity: 10,
+	    invaderCurrentVelocity: 1,
 	    invaderCurrentDropDistance: 0,
 	    invadersAreDropping: false,
 	    lastRocketTime: 0
@@ -164,7 +164,7 @@
 
 
 	// module
-	exports.push([module.id, "*{\r\n    padding: 0px;\r\n    margin: 0px;\r\n}\r\n\r\nbody, html { \r\n    width: 100%;\r\n    height: 100%;\r\n    margin: 0;\r\n    padding: 0;\r\n    overflow: hidden;\r\n    }\r\n            \r\n#container {\r\n    width: 100%;\r\n    height: 100%;\r\n    z-index: -1;\r\n    position: absolute;\r\n    left: 0px;\r\n    top: 0px;\r\n}\r\n\r\n#gamecontainer{\r\n    width: 800px;\r\n    margin: auto;\r\n}\r\n\r\n#gameCanvas {\r\n    display: block;\r\n    margin: 20px auto;\r\n}", ""]);
+	exports.push([module.id, "*{\r\n    padding: 0px;\r\n    margin: 0px;\r\n}\r\n\r\nbody, html { \r\n    width: 100%;\r\n    height: 100%;\r\n    margin: 0;\r\n    padding: 0;\r\n    overflow: hidden;\r\n    }\r\n            \r\n#container {\r\n    width: 100%;\r\n    height: 100%;\r\n    z-index: -1;\r\n    position: absolute;\r\n    left: 0px;\r\n    top: 0px;\r\n}\r\n\r\n#gamecontainer{\r\n    width: 800px;\r\n    margin: auto;\r\n}\r\n\r\n#gameCanvas {\r\n    display: block;\r\n    margin: 20px auto;\r\n\r\n}", ""]);
 
 	// exports
 
@@ -578,16 +578,57 @@
 	    }
 	    BoldInvaders.prototype.initialize = function (gameCanvas) {
 	        this.stateOptions.gameCanvas = gameCanvas;
-	        gameCanvas.height = window.innerHeight / 2;
-	        gameCanvas.width = window.innerWidth / 2;
+	        gameCanvas.width = 800;
+	        gameCanvas.height = 600;
 	        this.stateOptions.height = gameCanvas.height;
 	        this.stateOptions.width = gameCanvas.width;
 	        this.stateOptions.gameBounds = {
-	            left: 0,
-	            right: gameCanvas.width,
-	            top: 0,
+	            left: gameCanvas.width / 2 - this.boldOptions.gameWidth / 2,
+	            right: gameCanvas.width / 2 + this.boldOptions.gameWidth / 2,
+	            top: gameCanvas.height / 2 - this.boldOptions.gameHeight / 1.5,
 	            bottom: gameCanvas.height,
 	        };
+	    };
+	    BoldInvaders.prototype.moveToState = function (state) {
+	        if (this.currentState()) {
+	            if (this.currentState().leave) {
+	                this.currentState().leave(this);
+	            }
+	            this.stateOptions.stateStack.pop();
+	        }
+	        //  If there's an enter function for the new state, call it.
+	        this.chooseStateFunction(state);
+	        //  Set the current state.
+	        this.stateOptions.stateStack.pop();
+	        this.stateOptions.stateStack.push(state);
+	    };
+	    BoldInvaders.prototype.start = function () {
+	        var _this = this;
+	        var canvas = this.stateOptions.gameCanvas;
+	        var ctx = canvas.getContext("2d");
+	        //  Move into the 'welcome' state.
+	        this.moveToState(new welcomeState(this, 1000 / (this.boldOptions.fps), ctx));
+	        //  Set the game variables.
+	        this.stateOptions.lives = 3;
+	        this.boldOptions.debugMode = /debug=true/.test(window.location.href);
+	        //  Start the game loop.
+	        this.stateOptions.intervalId = setInterval(function () { _this.gameLoop(_this); }, 1000 / this.boldOptions.fps);
+	    };
+	    BoldInvaders.prototype.currentState = function () {
+	        return this.stateOptions.stateStack.length > 0 ? this.stateOptions.stateStack[this.stateOptions.stateStack.length - 1] : null;
+	    };
+	    BoldInvaders.prototype.pushState = function (state) {
+	        //  If there's an enter function for the new state, call it.
+	        this.chooseStateFunction(state);
+	        //  Set the current state.
+	        this.stateOptions.stateStack.push(state);
+	    };
+	    BoldInvaders.prototype.popState = function () {
+	        if (this.currentState().leave) {
+	            this.currentState().leave(this);
+	        }
+	        //  Set the current state.
+	        this.stateOptions.stateStack.pop();
 	    };
 	    BoldInvaders.prototype.gameLoop = function (game) {
 	        var currentState = game.currentState();
@@ -604,47 +645,6 @@
 	                currentState.draw();
 	            }
 	        }
-	    };
-	    BoldInvaders.prototype.currentState = function () {
-	        return this.stateOptions.stateStack.length > 0 ? this.stateOptions.stateStack[this.stateOptions.stateStack.length - 1] : null;
-	    };
-	    BoldInvaders.prototype.moveToState = function (state) {
-	        if (this.currentState()) {
-	            if (this.currentState().leave) {
-	                this.currentState().leave(this);
-	            }
-	            this.stateOptions.stateStack.pop();
-	        }
-	        //  If there's an enter function for the new state, call it.
-	        this.chooseStateFunction(state);
-	        //  Set the current state.
-	        this.stateOptions.stateStack.pop();
-	        this.stateOptions.stateStack.push(state);
-	    };
-	    BoldInvaders.prototype.pushState = function (state) {
-	        //  If there's an enter function for the new state, call it.
-	        this.chooseStateFunction(state);
-	        //  Set the current state.
-	        this.stateOptions.stateStack.push(state);
-	    };
-	    BoldInvaders.prototype.popState = function () {
-	        if (this.currentState().leave) {
-	            this.currentState().leave(this);
-	        }
-	        //  Set the current state.
-	        this.stateOptions.stateStack.pop();
-	    };
-	    BoldInvaders.prototype.start = function () {
-	        var _this = this;
-	        var canvas = this.stateOptions.gameCanvas;
-	        var ctx = canvas.getContext("2d");
-	        //  Move into the 'welcome' state.
-	        this.moveToState(new welcomeState(this, 1 / (this.boldOptions.fps), ctx));
-	        //  Set the game variables.
-	        this.stateOptions.lives = 3;
-	        this.boldOptions.debugMode = /debug=true/.test(window.location.href);
-	        //  Start the game loop.
-	        setInterval(function () { _this.gameLoop(_this); }, 1000 / this.boldOptions.fps);
 	    };
 	    BoldInvaders.prototype.keyDown = function (keyCode) {
 	        this.stateOptions.pressedKeys[keyCode] = true;
@@ -803,18 +803,25 @@
 	        //create level multipliers
 	        var levelMultiplier = this.game.stateOptions.level * this.game.boldOptions.levelDifficultyMultiplier;
 	        var shipSpeed = this.game.boldOptions.shipSpeed;
-	        this.game.enemyOptions.invaderInitialVelocity = 25 + (levelMultiplier * 25);
-	        this.game.enemyOptions.bombRate = 0.05 + (levelMultiplier * 0.05);
-	        this.game.enemyOptions.bombMinVelocity = 50 + (levelMultiplier * 50);
-	        this.game.enemyOptions.bombMaxVelocity = 60 + (levelMultiplier * 60);
+	        this.game.enemyOptions.invaderInitialVelocity += (levelMultiplier * this.game.enemyOptions.invaderInitialVelocity);
+	        this.game.enemyOptions.bombRate += (levelMultiplier * this.game.enemyOptions.bombRate);
+	        this.game.enemyOptions.bombMinVelocity += (levelMultiplier * this.game.enemyOptions.bombMinVelocity);
+	        this.game.enemyOptions.bombMaxVelocity += (levelMultiplier * this.game.enemyOptions.bombMinVelocity);
 	        //invader creation
 	        this.game.enemyOptions.invaderRanks = 5;
 	        this.game.enemyOptions.invaderFiles = 10;
 	        var invaders = [];
 	        for (var rank = 0; rank < this.game.enemyOptions.invaderRanks; rank++) {
 	            for (var file = 0; file < this.game.enemyOptions.invaderFiles; file++) {
-	                var invader = { x: (this.game.stateOptions.width / 2) + ((this.game.enemyOptions.invaderFiles / 2 - file) * 200 / this.game.enemyOptions.invaderFiles),
-	                    y: (this.game.stateOptions.gameBounds.top + rank * 20), rank: rank, file: file, type: 'Invader', width: 18, height: 14 };
+	                var invader = {
+	                    x: (this.game.stateOptions.width / 2) + ((this.game.enemyOptions.invaderFiles / 2 - file) * 200 / this.game.enemyOptions.invaderFiles),
+	                    y: (this.game.stateOptions.gameBounds.top + rank * 20),
+	                    rank: rank,
+	                    file: file,
+	                    type: 'Invader',
+	                    width: 18,
+	                    height: 14
+	                };
 	                invaders.push(invader);
 	            }
 	        }
@@ -825,17 +832,16 @@
 	    };
 	    GameState.prototype.update = function () {
 	        if (this.game.stateOptions.pressedKeys[37]) {
-	            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed / this.dt;
+	            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed / 10;
 	        }
 	        if (this.game.stateOptions.pressedKeys[39]) {
-	            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed / this.dt;
+	            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed / 10;
 	        }
 	        if (this.game.stateOptions.pressedKeys[32]) {
 	            this.fireRocket();
 	            console.log("fire rocket");
 	        }
 	        //  Keep the ship in bounds.
-	        console.log(this.game.stateOptions.gameBounds.left);
 	        if (this.game.gameStateOptions.ship.x < this.game.stateOptions.gameBounds.left) {
 	            this.game.gameStateOptions.ship.x = this.game.stateOptions.gameBounds.left;
 	        }
@@ -850,6 +856,7 @@
 	        if (this.game.stateOptions.lives <= 0) {
 	            //this.game.moveToState(new GameOverState());
 	            console.log("Game Over.");
+	            return;
 	        }
 	        //  Check for victory
 	        if (this.game.gameStateOptions.invaders.length === 0) {
@@ -891,8 +898,8 @@
 	        var hitLeft = false, hitRight = false, hitBottom = false;
 	        for (var i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
 	            var invader = this.game.gameStateOptions.invaders[i];
-	            var newx = invader.x + this.invaderVelocity.x * 2;
-	            var newy = invader.y + this.invaderVelocity.y * 2;
+	            var newx = invader.x + this.invaderVelocity.x * .025;
+	            var newy = invader.y + this.invaderVelocity.y * .025;
 	            if (hitLeft === false && newx < this.game.stateOptions.gameBounds.left) {
 	                hitLeft = true;
 	            }
@@ -909,7 +916,7 @@
 	        }
 	        //  Update invader velocities.
 	        if (this.game.gameStateOptions.invadersAreDropping) {
-	            this.game.gameStateOptions.invaderCurrentDropDistance += this.invaderVelocity.y * this.dt;
+	            this.game.gameStateOptions.invaderCurrentDropDistance += this.invaderVelocity.y * .025;
 	            if (this.game.gameStateOptions.invaderCurrentDropDistance >= this.game.enemyOptions.invaderDropDistance) {
 	                this.game.gameStateOptions.invadersAreDropping = false;
 	                this.invaderVelocity = this.invaderNextVelocity;

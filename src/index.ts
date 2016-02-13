@@ -14,7 +14,7 @@ const GAME_KEYS = [37, 39, 32];
 
 //Starfield 
 var SFOptions: StarFieldOptions = {
-    fps: 30,
+    fps: 50,
     canvas: null,
     width: 0,
     height: 0,
@@ -63,7 +63,7 @@ var BIPlayerOptions: PlayerOptions = {
 var BIEnemyOptions: EnemyOptions = {
     bombRate: 0.05,
     bombMinVelocity: 50,
-    bombMaxVelocity: 60,
+    bombMaxVelocity: 50,
     invaderInitialVelocity: 25,
     invaderAcceleration: 0,
     invaderDropDistance: 20,
@@ -77,7 +77,7 @@ var BIPlayStateOptions: PlayStateOptions = {
     invaders: [],
     rockets: [],
     bombs: [],
-    invaderCurrentVelocity: 10,
+    invaderCurrentVelocity: 1,
     invaderCurrentDropDistance: 0,
     invadersAreDropping: false,
     lastRocketTime: 0

@@ -54,7 +54,7 @@ declare namespace BoldInvaders {
         width: number,
         height: number,
         gameBounds: { left: number, top: number, right: number, bottom: number },
-        intervalId: number,
+        intervalId: any,
         score: number,
         level: number,
         stateStack: Array<any>,

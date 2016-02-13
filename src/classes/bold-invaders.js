@@ -9,16 +9,57 @@ var BoldInvaders = (function () {
     }
     BoldInvaders.prototype.initialize = function (gameCanvas) {
         this.stateOptions.gameCanvas = gameCanvas;
-        gameCanvas.height = window.innerHeight / 2;
-        gameCanvas.width = window.innerWidth / 2;
+        gameCanvas.width = 800;
+        gameCanvas.height = 600;
         this.stateOptions.height = gameCanvas.height;
         this.stateOptions.width = gameCanvas.width;
         this.stateOptions.gameBounds = {
-            left: 0,
-            right: gameCanvas.width,
-            top: 0,
+            left: gameCanvas.width / 2 - this.boldOptions.gameWidth / 2,
+            right: gameCanvas.width / 2 + this.boldOptions.gameWidth / 2,
+            top: gameCanvas.height / 2 - this.boldOptions.gameHeight / 1.5,
             bottom: gameCanvas.height,
         };
+    };
+    BoldInvaders.prototype.moveToState = function (state) {
+        if (this.currentState()) {
+            if (this.currentState().leave) {
+                this.currentState().leave(this);
+            }
+            this.stateOptions.stateStack.pop();
+        }
+        //  If there's an enter function for the new state, call it.
+        this.chooseStateFunction(state);
+        //  Set the current state.
+        this.stateOptions.stateStack.pop();
+        this.stateOptions.stateStack.push(state);
+    };
+    BoldInvaders.prototype.start = function () {
+        var _this = this;
+        var canvas = this.stateOptions.gameCanvas;
+        var ctx = canvas.getContext("2d");
+        //  Move into the 'welcome' state.
+        this.moveToState(new welcomeState(this, 1000 / (this.boldOptions.fps), ctx));
+        //  Set the game variables.
+        this.stateOptions.lives = 3;
+        this.boldOptions.debugMode = /debug=true/.test(window.location.href);
+        //  Start the game loop.
+        this.stateOptions.intervalId = setInterval(function () { _this.gameLoop(_this); }, 1000 / this.boldOptions.fps);
+    };
+    BoldInvaders.prototype.currentState = function () {
+        return this.stateOptions.stateStack.length > 0 ? this.stateOptions.stateStack[this.stateOptions.stateStack.length - 1] : null;
+    };
+    BoldInvaders.prototype.pushState = function (state) {
+        //  If there's an enter function for the new state, call it.
+        this.chooseStateFunction(state);
+        //  Set the current state.
+        this.stateOptions.stateStack.push(state);
+    };
+    BoldInvaders.prototype.popState = function () {
+        if (this.currentState().leave) {
+            this.currentState().leave(this);
+        }
+        //  Set the current state.
+        this.stateOptions.stateStack.pop();
     };
     BoldInvaders.prototype.gameLoop = function (game) {
         var currentState = game.currentState();
@@ -35,47 +76,6 @@ var BoldInvaders = (function () {
                 currentState.draw();
             }
         }
-    };
-    BoldInvaders.prototype.currentState = function () {
-        return this.stateOptions.stateStack.length > 0 ? this.stateOptions.stateStack[this.stateOptions.stateStack.length - 1] : null;
-    };
-    BoldInvaders.prototype.moveToState = function (state) {
-        if (this.currentState()) {
-            if (this.currentState().leave) {
-                this.currentState().leave(this);
-            }
-            this.stateOptions.stateStack.pop();
-        }
-        //  If there's an enter function for the new state, call it.
-        this.chooseStateFunction(state);
-        //  Set the current state.
-        this.stateOptions.stateStack.pop();
-        this.stateOptions.stateStack.push(state);
-    };
-    BoldInvaders.prototype.pushState = function (state) {
-        //  If there's an enter function for the new state, call it.
-        this.chooseStateFunction(state);
-        //  Set the current state.
-        this.stateOptions.stateStack.push(state);
-    };
-    BoldInvaders.prototype.popState = function () {
-        if (this.currentState().leave) {
-            this.currentState().leave(this);
-        }
-        //  Set the current state.
-        this.stateOptions.stateStack.pop();
-    };
-    BoldInvaders.prototype.start = function () {
-        var _this = this;
-        var canvas = this.stateOptions.gameCanvas;
-        var ctx = canvas.getContext("2d");
-        //  Move into the 'welcome' state.
-        this.moveToState(new welcomeState(this, 1 / (this.boldOptions.fps), ctx));
-        //  Set the game variables.
-        this.stateOptions.lives = 3;
-        this.boldOptions.debugMode = /debug=true/.test(window.location.href);
-        //  Start the game loop.
-        setInterval(function () { _this.gameLoop(_this); }, 1000 / this.boldOptions.fps);
     };
     BoldInvaders.prototype.keyDown = function (keyCode) {
         this.stateOptions.pressedKeys[keyCode] = true;
