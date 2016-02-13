@@ -45,8 +45,6 @@ class GameState {
         this.game.gameStateOptions.invaderCurrentVelocity = this.game.enemyOptions.invaderInitialVelocity;
         this.invaderVelocity = {x: this.game.enemyOptions.invaderInitialVelocity, y:0};
         var invaderNextVelocity = null;
-        this.draw();
-
     }
     
     update(){
@@ -62,6 +60,8 @@ class GameState {
         }
  
         //  Keep the ship in bounds.
+        
+        console.log(this.game.stateOptions.gameBounds.left);
         if (this.game.gameStateOptions.ship.x < this.game.stateOptions.gameBounds.left) {
             this.game.gameStateOptions.ship.x = this.game.stateOptions.gameBounds.left;
         }
@@ -130,12 +130,12 @@ class GameState {
     
     moveInvaders(): void {
         //Move the invaders
-        var hitLeft, hitRight, hitBottom = false;
+        var hitLeft = false, hitRight = false, hitBottom = false;
         
         for (var i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
             var invader = this.game.gameStateOptions.invaders[i];
-            var newx = invader.x + this.invaderVelocity.x * this.dt;
-            var newy = invader.y + this.invaderVelocity.y * this.dt;
+            var newx = invader.x + this.invaderVelocity.x *2 ;
+            var newy = invader.y + this.invaderVelocity.y *2;
             if (hitLeft === false && newx < this.game.stateOptions.gameBounds.left) {
                 hitLeft = true;
             }
@@ -149,6 +149,7 @@ class GameState {
             if (!hitLeft && !hitRight && !hitBottom) {
                 invader.x = newx;
                 invader.y = newy;
+                
             }
         }
  

@@ -28,7 +28,6 @@ var GameState = (function () {
         this.game.gameStateOptions.invaderCurrentVelocity = this.game.enemyOptions.invaderInitialVelocity;
         this.invaderVelocity = { x: this.game.enemyOptions.invaderInitialVelocity, y: 0 };
         var invaderNextVelocity = null;
-        this.draw();
     };
     GameState.prototype.update = function () {
         if (this.game.stateOptions.pressedKeys[37]) {
@@ -42,6 +41,7 @@ var GameState = (function () {
             console.log("fire rocket");
         }
         //  Keep the ship in bounds.
+        console.log(this.game.stateOptions.gameBounds.left);
         if (this.game.gameStateOptions.ship.x < this.game.stateOptions.gameBounds.left) {
             this.game.gameStateOptions.ship.x = this.game.stateOptions.gameBounds.left;
         }
@@ -94,11 +94,11 @@ var GameState = (function () {
     };
     GameState.prototype.moveInvaders = function () {
         //Move the invaders
-        var hitLeft, hitRight, hitBottom = false;
+        var hitLeft = false, hitRight = false, hitBottom = false;
         for (var i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
             var invader = this.game.gameStateOptions.invaders[i];
-            var newx = invader.x + this.invaderVelocity.x * this.dt;
-            var newy = invader.y + this.invaderVelocity.y * this.dt;
+            var newx = invader.x + this.invaderVelocity.x * 2;
+            var newy = invader.y + this.invaderVelocity.y * 2;
             if (hitLeft === false && newx < this.game.stateOptions.gameBounds.left) {
                 hitLeft = true;
             }

@@ -14,10 +14,10 @@ var BoldInvaders = (function () {
         this.stateOptions.height = gameCanvas.height;
         this.stateOptions.width = gameCanvas.width;
         this.stateOptions.gameBounds = {
-            left: gameCanvas.width / 2 - this.boldOptions.gameWidth / 2,
-            right: gameCanvas.width / 2 + this.boldOptions.gameWidth / 2,
-            top: gameCanvas.height / 2 - this.boldOptions.gameHeight / 2,
-            bottom: gameCanvas.height / 2 + this.boldOptions.gameHeight / 2,
+            left: 0,
+            right: gameCanvas.width,
+            top: 0,
+            bottom: gameCanvas.height,
         };
     };
     BoldInvaders.prototype.gameLoop = function (game) {
@@ -28,7 +28,12 @@ var BoldInvaders = (function () {
             //  Get the drawing context.
             var ctx = game.stateOptions.gameCanvas.getContext("2d");
             console.log(ctx);
-            this.chooseStateFunction(currentState);
+            if (currentState.update) {
+                currentState.update();
+            }
+            if (currentState.draw) {
+                currentState.draw();
+            }
         }
     };
     BoldInvaders.prototype.currentState = function () {

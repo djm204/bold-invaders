@@ -583,10 +583,10 @@
 	        this.stateOptions.height = gameCanvas.height;
 	        this.stateOptions.width = gameCanvas.width;
 	        this.stateOptions.gameBounds = {
-	            left: gameCanvas.width / 2 - this.boldOptions.gameWidth / 2,
-	            right: gameCanvas.width / 2 + this.boldOptions.gameWidth / 2,
-	            top: gameCanvas.height / 2 - this.boldOptions.gameHeight / 2,
-	            bottom: gameCanvas.height / 2 + this.boldOptions.gameHeight / 2,
+	            left: 0,
+	            right: gameCanvas.width,
+	            top: 0,
+	            bottom: gameCanvas.height,
 	        };
 	    };
 	    BoldInvaders.prototype.gameLoop = function (game) {
@@ -597,7 +597,12 @@
 	            //  Get the drawing context.
 	            var ctx = game.stateOptions.gameCanvas.getContext("2d");
 	            console.log(ctx);
-	            this.chooseStateFunction(currentState);
+	            if (currentState.update) {
+	                currentState.update();
+	            }
+	            if (currentState.draw) {
+	                currentState.draw();
+	            }
 	        }
 	    };
 	    BoldInvaders.prototype.currentState = function () {
@@ -817,7 +822,6 @@
 	        this.game.gameStateOptions.invaderCurrentVelocity = this.game.enemyOptions.invaderInitialVelocity;
 	        this.invaderVelocity = { x: this.game.enemyOptions.invaderInitialVelocity, y: 0 };
 	        var invaderNextVelocity = null;
-	        this.draw();
 	    };
 	    GameState.prototype.update = function () {
 	        if (this.game.stateOptions.pressedKeys[37]) {
@@ -831,6 +835,7 @@
 	            console.log("fire rocket");
 	        }
 	        //  Keep the ship in bounds.
+	        console.log(this.game.stateOptions.gameBounds.left);
 	        if (this.game.gameStateOptions.ship.x < this.game.stateOptions.gameBounds.left) {
 	            this.game.gameStateOptions.ship.x = this.game.stateOptions.gameBounds.left;
 	        }
@@ -883,11 +888,11 @@
 	    };
 	    GameState.prototype.moveInvaders = function () {
 	        //Move the invaders
-	        var hitLeft, hitRight, hitBottom = false;
+	        var hitLeft = false, hitRight = false, hitBottom = false;
 	        for (var i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
 	            var invader = this.game.gameStateOptions.invaders[i];
-	            var newx = invader.x + this.invaderVelocity.x * this.dt;
-	            var newy = invader.y + this.invaderVelocity.y * this.dt;
+	            var newx = invader.x + this.invaderVelocity.x * 2;
+	            var newy = invader.y + this.invaderVelocity.y * 2;
 	            if (hitLeft === false && newx < this.game.stateOptions.gameBounds.left) {
 	                hitLeft = true;
 	            }

@@ -21,16 +21,16 @@ class BoldInvaders {
         this.stateOptions.width = gameCanvas.width;
 
         this.stateOptions.gameBounds = {
-            left: gameCanvas.width / 2 - this.boldOptions.gameWidth / 2,
-            right: gameCanvas.width / 2 + this.boldOptions.gameWidth / 2,
-            top: gameCanvas.height / 2 - this.boldOptions.gameHeight / 2,
-            bottom: gameCanvas.height / 2 + this.boldOptions.gameHeight / 2,
+            left: 0,
+            right: gameCanvas.width,
+            top: 0,
+            bottom: gameCanvas.height,
         };
 
 
     }
     gameLoop(game: BoldInvaders) {
-        var currentState: BoldInvaders.GameState = game.currentState();
+        var currentState = game.currentState();
         if (currentState) {
             
             //  Delta t is the time to update/draw.
@@ -39,7 +39,12 @@ class BoldInvaders {
             //  Get the drawing context.
             var ctx = game.stateOptions.gameCanvas.getContext("2d");
             console.log(ctx);
-            this.chooseStateFunction(currentState);
+             if(currentState.update) {
+                currentState.update();
+            }
+            if(currentState.draw) {
+                currentState.draw();
+            }
             
             //  Update if we have an update function. Also draw
             //  if we have a draw function.
