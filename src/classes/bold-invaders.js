@@ -22,21 +22,13 @@ var BoldInvaders = (function () {
     };
     BoldInvaders.prototype.gameLoop = function (game) {
         var currentState = game.currentState();
-        console.log(currentState);
         if (currentState) {
             //  Delta t is the time to update/draw.
             var dt = 1 / game.boldOptions.fps;
             //  Get the drawing context.
             var ctx = game.stateOptions.gameCanvas.getContext("2d");
             console.log(ctx);
-            //  Update if we have an update function. Also draw
-            //  if we have a draw function.
-            if (currentState.update) {
-                currentState.update(game, dt, ctx);
-            }
-            if (currentState.draw) {
-                currentState.draw(game, dt, ctx);
-            }
+            this.chooseStateFunction(currentState);
         }
     };
     BoldInvaders.prototype.currentState = function () {
@@ -103,6 +95,9 @@ var BoldInvaders = (function () {
         }
         if (this.isIntroState(state)) {
             state.update();
+        }
+        if (this.isWelcomeState(state)) {
+            state.draw();
         }
     };
     BoldInvaders.prototype.isPlayState = function (state) {
