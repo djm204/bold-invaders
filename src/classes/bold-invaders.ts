@@ -15,12 +15,17 @@ class BoldInvaders {
 
     initialize(gameCanvas: HTMLCanvasElement) {
         this.stateOptions.gameCanvas = gameCanvas;
-        console.log(window.innerHeight);
-        gameCanvas.height = window.innerHeight / 2 ;
+        gameCanvas.height = window.innerHeight / 2;
         gameCanvas.width = window.innerWidth / 2;
         this.stateOptions.height = gameCanvas.height;
         this.stateOptions.width = gameCanvas.width;
-        console.log(gameCanvas.height);
+
+        this.stateOptions.gameBounds = {
+            left: gameCanvas.width / 2 - this.boldOptions.gameWidth / 2,
+            right: gameCanvas.width / 2 + this.boldOptions.gameWidth / 2,
+            top: gameCanvas.height / 2 - this.boldOptions.gameHeight / 2,
+            bottom: gameCanvas.height / 2 + this.boldOptions.gameHeight / 2,
+        };
 
 
     }
@@ -65,6 +70,7 @@ class BoldInvaders {
         this.chooseStateFunction(state);
  
         //  Set the current state.
+        this.stateOptions.stateStack.pop();
         this.stateOptions.stateStack.push(state);
     }
 
@@ -95,7 +101,7 @@ class BoldInvaders {
         this.stateOptions.lives = 3;
         this.boldOptions.debugMode = /debug=true/.test(window.location.href);
         //  Start the game loop.
-        this.stateOptions.intervalId = setInterval(this.gameLoop(this), 1000 / this.boldOptions.fps);
+        setInterval(() =>{this.gameLoop(this)}, 1000 / this.boldOptions.fps);
 
     }
 
@@ -140,10 +146,10 @@ class BoldInvaders {
     isIntroState(state: BoldInvaders.GameState): state is BoldInvaders.IntroState {
         return typeof (<BoldInvaders.IntroState>state).update === 'function';
     }
-    
+
     isWelcomeState(state: BoldInvaders.GameState): state is BoldInvaders.WelcomeState {
         return typeof (<BoldInvaders.WelcomeState>state).draw === 'function';
-        
+
     }
 
 

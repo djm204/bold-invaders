@@ -5,7 +5,7 @@ var GameState = (function () {
     }
     GameState.prototype.enter = function () {
         //instantiate le ship
-        this.game.gameStateOptions.ship = { x: this.game.stateOptions.width / 2, y: this.game.stateOptions.gameBounds.bottom, width: 20, height: 16 };
+        this.game.gameStateOptions.ship = { x: this.game.stateOptions.width / 2, y: this.game.stateOptions.height, width: 20, height: 16 };
         //create level multipliers
         var levelMultiplier = this.game.stateOptions.level * this.game.boldOptions.levelDifficultyMultiplier;
         var shipSpeed = this.game.boldOptions.shipSpeed;
@@ -32,13 +32,13 @@ var GameState = (function () {
     };
     GameState.prototype.update = function () {
         if (this.game.stateOptions.pressedKeys[37]) {
-            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed * this.dt;
+            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed / this.dt;
         }
         if (this.game.stateOptions.pressedKeys[39]) {
-            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed * this.dt;
+            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed / this.dt;
         }
         if (this.game.stateOptions.pressedKeys[32]) {
-            //this.fireRocket();
+            this.fireRocket();
             console.log("fire rocket");
         }
         //  Keep the ship in bounds.
@@ -80,20 +80,16 @@ var GameState = (function () {
             ctx.fillRect(invader.x - invader.width / 2, invader.y - invader.height / 2, invader.width, invader.height);
         }
         //  Draw bombs.
-        if (this.game.gameStateOptions.bombs) {
-            ctx.fillStyle = '#ff5555';
-            for (var i = 0; i < this.game.gameStateOptions.bombs.length; i++) {
-                var bomb = this.game.gameStateOptions.bombs[i];
-                ctx.fillRect(bomb.x - 2, bomb.y - 2, 4, 4);
-            }
+        ctx.fillStyle = '#ff5555';
+        for (var i = 0; i < this.game.gameStateOptions.bombs.length; i++) {
+            var bomb = this.game.gameStateOptions.bombs[i];
+            ctx.fillRect(bomb.x - 2, bomb.y - 2, 4, 4);
         }
         //  Draw rockets.
-        if (this.game.gameStateOptions.rockets) {
-            ctx.fillStyle = '#ff0000';
-            for (var i = 0; i < this.game.gameStateOptions.rockets.length; i++) {
-                var rocket = this.game.gameStateOptions.rockets[i];
-                ctx.fillRect(rocket.x, rocket.y - 2, 1, 4);
-            }
+        ctx.fillStyle = '#ff0000';
+        for (var i = 0; i < this.game.gameStateOptions.rockets.length; i++) {
+            var rocket = this.game.gameStateOptions.rockets[i];
+            ctx.fillRect(rocket.x, rocket.y - 2, 1, 4);
         }
     };
     GameState.prototype.moveInvaders = function () {
@@ -150,22 +146,20 @@ var GameState = (function () {
         for (var i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
             var invader = this.game.gameStateOptions.invaders[i];
             var bang = false;
-            if (this.game.gameStateOptions.rockets) {
-                for (var j = 0; j < this.game.gameStateOptions.rockets.length; j++) {
-                    var rocket = this.game.gameStateOptions.rockets[j];
-                    if (rocket.x >= (invader.x - invader.width / 2) && rocket.x <= (invader.x + invader.width / 2) &&
-                        rocket.y >= (invader.y - invader.height / 2) && rocket.y <= (invader.y + invader.height / 2)) {
-                        //  Remove the rocket, set 'bang' so we don't process
-                        //  this rocket again.
-                        this.game.gameStateOptions.rockets.splice(j--, 1);
-                        bang = true;
-                        this.game.stateOptions.score += this.game.enemyOptions.pointsPerInvader;
-                        break;
-                    }
+            for (var j = 0; j < this.game.gameStateOptions.rockets.length; j++) {
+                var rocket = this.game.gameStateOptions.rockets[j];
+                if (rocket.x >= (invader.x - invader.width / 2) && rocket.x <= (invader.x + invader.width / 2) &&
+                    rocket.y >= (invader.y - invader.height / 2) && rocket.y <= (invader.y + invader.height / 2)) {
+                    //  Remove the rocket, set 'bang' so we don't process
+                    //  this rocket again.
+                    this.game.gameStateOptions.rockets.splice(j--, 1);
+                    bang = true;
+                    this.game.stateOptions.score += this.game.enemyOptions.pointsPerInvader;
+                    break;
                 }
-                if (bang) {
-                    this.game.gameStateOptions.invaders.splice(i--, 1);
-                }
+            }
+            if (bang) {
+                this.game.gameStateOptions.invaders.splice(i--, 1);
             }
         }
     };
@@ -234,7 +228,7 @@ var GameState = (function () {
         if (this.game.gameStateOptions.lastRocketTime === null || ((new Date()).valueOf() - this.game.gameStateOptions.lastRocketTime) > (1000 / this.game.playerOptions.rocketMaxFireRate)) {
             //  Add a rocket.
             this.game.gameStateOptions.rockets.push(this.currentRocket = {
-                x: this.game.gameStateOptions.ship.x,
+                x: this.game.gameStateOptions.ship.x + 12,
                 y: this.game.gameStateOptions.ship.y - 12,
                 velocity: this.game.playerOptions.rocketVelocity
             });

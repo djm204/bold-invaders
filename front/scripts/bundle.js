@@ -56,7 +56,7 @@
 	    height: 0,
 	    minVelocity: 15,
 	    maxVelocity: 30,
-	    starList: null,
+	    starList: [],
 	    intervalId: 0
 	};
 	var starfield = new StarField(SFOptions);
@@ -66,7 +66,7 @@
 	//Bold Invaders 
 	var BIOptions = {
 	    gameWidth: 400,
-	    gameHeight: 400,
+	    gameHeight: 300,
 	    fps: 50,
 	    shipSpeed: 120,
 	    debugMode: false,
@@ -105,7 +105,7 @@
 	    invaders: [],
 	    rockets: [],
 	    bombs: [],
-	    invaderCurrentVelocity: 0,
+	    invaderCurrentVelocity: 10,
 	    invaderCurrentDropDistance: 0,
 	    invadersAreDropping: false,
 	    lastRocketTime: 0
@@ -578,12 +578,16 @@
 	    }
 	    BoldInvaders.prototype.initialize = function (gameCanvas) {
 	        this.stateOptions.gameCanvas = gameCanvas;
-	        console.log(window.innerHeight);
 	        gameCanvas.height = window.innerHeight / 2;
 	        gameCanvas.width = window.innerWidth / 2;
 	        this.stateOptions.height = gameCanvas.height;
 	        this.stateOptions.width = gameCanvas.width;
-	        console.log(gameCanvas.height);
+	        this.stateOptions.gameBounds = {
+	            left: gameCanvas.width / 2 - this.boldOptions.gameWidth / 2,
+	            right: gameCanvas.width / 2 + this.boldOptions.gameWidth / 2,
+	            top: gameCanvas.height / 2 - this.boldOptions.gameHeight / 2,
+	            bottom: gameCanvas.height / 2 + this.boldOptions.gameHeight / 2,
+	        };
 	    };
 	    BoldInvaders.prototype.gameLoop = function (game) {
 	        var currentState = game.currentState();
@@ -617,6 +621,7 @@
 	        //  If there's an enter function for the new state, call it.
 	        this.chooseStateFunction(state);
 	        //  Set the current state.
+	        this.stateOptions.stateStack.pop();
 	        this.stateOptions.stateStack.push(state);
 	    };
 	    BoldInvaders.prototype.pushState = function (state) {
@@ -633,6 +638,7 @@
 	        this.stateOptions.stateStack.pop();
 	    };
 	    BoldInvaders.prototype.start = function () {
+	        var _this = this;
 	        var canvas = this.stateOptions.gameCanvas;
 	        var ctx = canvas.getContext("2d");
 	        //  Move into the 'welcome' state.
@@ -641,7 +647,7 @@
 	        this.stateOptions.lives = 3;
 	        this.boldOptions.debugMode = /debug=true/.test(window.location.href);
 	        //  Start the game loop.
-	        this.stateOptions.intervalId = setInterval(this.gameLoop(this), 1000 / this.boldOptions.fps);
+	        setInterval(function () { _this.gameLoop(_this); }, 1000 / this.boldOptions.fps);
 	    };
 	    BoldInvaders.prototype.keyDown = function (keyCode) {
 	        this.stateOptions.pressedKeys[keyCode] = true;
@@ -707,24 +713,12 @@
 	        ctx.textAlign = "center";
 	        ctx.font = "16px Arial";
 	        //Draw Logo
-	        setTimeout(function () {
-	            ctx.drawImage(boldLogo, ctx.canvas.width / 2 - boldLogo.width / 2, 25, 250, 125);
-	        }, 300);
-	        setTimeout(function () {
-	            ctx.drawImage(invadersLogo, ctx.canvas.width / 2 - invadersLogo.width / 4, 125, 250, 75);
-	        }, 1300);
-	        setTimeout(function () {
-	            ctx.fillText("A BOLD interpretation of a cult classic.", game.stateOptions.width / 2, game.stateOptions.height * .46);
-	        }, 2000);
-	        setTimeout(function () {
-	            ctx.fillText("Press 'Space' to start.", game.stateOptions.width / 2, game.stateOptions.height);
-	        }, 2000);
-	        setTimeout(function () {
-	            ctx.fillText("Move: <left> and <right> keys", game.stateOptions.width / 2, game.stateOptions.height * .55);
-	        }, 2000);
-	        setTimeout(function () {
-	            ctx.fillText("Shoot: spacebar", game.stateOptions.width / 2, game.stateOptions.height * .59);
-	        }, 2000);
+	        ctx.drawImage(boldLogo, ctx.canvas.width / 2 - boldLogo.width / 2, 25, 250, 125);
+	        ctx.drawImage(invadersLogo, ctx.canvas.width / 2 - invadersLogo.width / 4, 125, 250, 75);
+	        ctx.fillText("A BOLD interpretation of a cult classic.", game.stateOptions.width / 2, game.stateOptions.height * .46);
+	        ctx.fillText("Press 'Space' to start.", game.stateOptions.width / 2, game.stateOptions.height);
+	        ctx.fillText("Move: <left> and <right> keys", game.stateOptions.width / 2, game.stateOptions.height * .55);
+	        ctx.fillText("Shoot: spacebar", game.stateOptions.width / 2, game.stateOptions.height * .59);
 	    };
 	    WelcomeState.prototype.keyDown = function (game, keyCode) {
 	        if (keyCode == 32) {
@@ -802,7 +796,7 @@
 	    }
 	    GameState.prototype.enter = function () {
 	        //instantiate le ship
-	        this.game.gameStateOptions.ship = { x: this.game.stateOptions.width / 2, y: this.game.stateOptions.gameBounds.bottom, width: 20, height: 16 };
+	        this.game.gameStateOptions.ship = { x: this.game.stateOptions.width / 2, y: this.game.stateOptions.height, width: 20, height: 16 };
 	        //create level multipliers
 	        var levelMultiplier = this.game.stateOptions.level * this.game.boldOptions.levelDifficultyMultiplier;
 	        var shipSpeed = this.game.boldOptions.shipSpeed;
@@ -829,13 +823,13 @@
 	    };
 	    GameState.prototype.update = function () {
 	        if (this.game.stateOptions.pressedKeys[37]) {
-	            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed * this.dt;
+	            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed / this.dt;
 	        }
 	        if (this.game.stateOptions.pressedKeys[39]) {
-	            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed * this.dt;
+	            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed / this.dt;
 	        }
 	        if (this.game.stateOptions.pressedKeys[32]) {
-	            //this.fireRocket();
+	            this.fireRocket();
 	            console.log("fire rocket");
 	        }
 	        //  Keep the ship in bounds.
@@ -877,20 +871,16 @@
 	            ctx.fillRect(invader.x - invader.width / 2, invader.y - invader.height / 2, invader.width, invader.height);
 	        }
 	        //  Draw bombs.
-	        if (this.game.gameStateOptions.bombs) {
-	            ctx.fillStyle = '#ff5555';
-	            for (var i = 0; i < this.game.gameStateOptions.bombs.length; i++) {
-	                var bomb = this.game.gameStateOptions.bombs[i];
-	                ctx.fillRect(bomb.x - 2, bomb.y - 2, 4, 4);
-	            }
+	        ctx.fillStyle = '#ff5555';
+	        for (var i = 0; i < this.game.gameStateOptions.bombs.length; i++) {
+	            var bomb = this.game.gameStateOptions.bombs[i];
+	            ctx.fillRect(bomb.x - 2, bomb.y - 2, 4, 4);
 	        }
 	        //  Draw rockets.
-	        if (this.game.gameStateOptions.rockets) {
-	            ctx.fillStyle = '#ff0000';
-	            for (var i = 0; i < this.game.gameStateOptions.rockets.length; i++) {
-	                var rocket = this.game.gameStateOptions.rockets[i];
-	                ctx.fillRect(rocket.x, rocket.y - 2, 1, 4);
-	            }
+	        ctx.fillStyle = '#ff0000';
+	        for (var i = 0; i < this.game.gameStateOptions.rockets.length; i++) {
+	            var rocket = this.game.gameStateOptions.rockets[i];
+	            ctx.fillRect(rocket.x, rocket.y - 2, 1, 4);
 	        }
 	    };
 	    GameState.prototype.moveInvaders = function () {
@@ -947,22 +937,20 @@
 	        for (var i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
 	            var invader = this.game.gameStateOptions.invaders[i];
 	            var bang = false;
-	            if (this.game.gameStateOptions.rockets) {
-	                for (var j = 0; j < this.game.gameStateOptions.rockets.length; j++) {
-	                    var rocket = this.game.gameStateOptions.rockets[j];
-	                    if (rocket.x >= (invader.x - invader.width / 2) && rocket.x <= (invader.x + invader.width / 2) &&
-	                        rocket.y >= (invader.y - invader.height / 2) && rocket.y <= (invader.y + invader.height / 2)) {
-	                        //  Remove the rocket, set 'bang' so we don't process
-	                        //  this rocket again.
-	                        this.game.gameStateOptions.rockets.splice(j--, 1);
-	                        bang = true;
-	                        this.game.stateOptions.score += this.game.enemyOptions.pointsPerInvader;
-	                        break;
-	                    }
+	            for (var j = 0; j < this.game.gameStateOptions.rockets.length; j++) {
+	                var rocket = this.game.gameStateOptions.rockets[j];
+	                if (rocket.x >= (invader.x - invader.width / 2) && rocket.x <= (invader.x + invader.width / 2) &&
+	                    rocket.y >= (invader.y - invader.height / 2) && rocket.y <= (invader.y + invader.height / 2)) {
+	                    //  Remove the rocket, set 'bang' so we don't process
+	                    //  this rocket again.
+	                    this.game.gameStateOptions.rockets.splice(j--, 1);
+	                    bang = true;
+	                    this.game.stateOptions.score += this.game.enemyOptions.pointsPerInvader;
+	                    break;
 	                }
-	                if (bang) {
-	                    this.game.gameStateOptions.invaders.splice(i--, 1);
-	                }
+	            }
+	            if (bang) {
+	                this.game.gameStateOptions.invaders.splice(i--, 1);
 	            }
 	        }
 	    };
@@ -1031,7 +1019,7 @@
 	        if (this.game.gameStateOptions.lastRocketTime === null || ((new Date()).valueOf() - this.game.gameStateOptions.lastRocketTime) > (1000 / this.game.playerOptions.rocketMaxFireRate)) {
 	            //  Add a rocket.
 	            this.game.gameStateOptions.rockets.push(this.currentRocket = {
-	                x: this.game.gameStateOptions.ship.x,
+	                x: this.game.gameStateOptions.ship.x + 12,
 	                y: this.game.gameStateOptions.ship.y - 12,
 	                velocity: this.game.playerOptions.rocketVelocity
 	            });

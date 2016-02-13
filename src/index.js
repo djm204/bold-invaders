@@ -10,7 +10,7 @@ var SFOptions = {
     height: 0,
     minVelocity: 15,
     maxVelocity: 30,
-    starList: null,
+    starList: [],
     intervalId: 0
 };
 var starfield = new StarField(SFOptions);
@@ -20,7 +20,7 @@ starfield.start();
 //Bold Invaders 
 var BIOptions = {
     gameWidth: 400,
-    gameHeight: 400,
+    gameHeight: 300,
     fps: 50,
     shipSpeed: 120,
     debugMode: false,
@@ -59,7 +59,7 @@ var BIPlayStateOptions = {
     invaders: [],
     rockets: [],
     bombs: [],
-    invaderCurrentVelocity: 0,
+    invaderCurrentVelocity: 10,
     invaderCurrentDropDistance: 0,
     invadersAreDropping: false,
     lastRocketTime: 0

@@ -24,28 +24,17 @@ class WelcomeState {
         
         //Draw Logo
         
-    setTimeout(function() {
         ctx.drawImage(boldLogo, ctx.canvas.width / 2 - boldLogo.width / 2, 25, 250, 125);
-    }, 300);
     
-    setTimeout(function() {
+    
         ctx.drawImage(invadersLogo, ctx.canvas.width / 2 - invadersLogo.width / 4, 125, 250, 75);
-    }, 1300);
     
-    setTimeout(function() {
         ctx.fillText("A BOLD interpretation of a cult classic.", game.stateOptions.width / 2, game.stateOptions.height * .46 );
-    }, 2000);
     
-    setTimeout(function() {
         ctx.fillText("Press 'Space' to start.", game.stateOptions.width / 2, game.stateOptions.height );
-    }, 2000);
         
-    setTimeout(function() {
         ctx.fillText("Move: <left> and <right> keys", game.stateOptions.width / 2, game.stateOptions.height * .55 );
-    }, 2000);
-    setTimeout(function() {
         ctx.fillText("Shoot: spacebar", game.stateOptions.width / 2, game.stateOptions.height * .59 );
-    }, 2000);
     }
 
 

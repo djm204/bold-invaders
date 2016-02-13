@@ -9,12 +9,16 @@ var BoldInvaders = (function () {
     }
     BoldInvaders.prototype.initialize = function (gameCanvas) {
         this.stateOptions.gameCanvas = gameCanvas;
-        console.log(window.innerHeight);
         gameCanvas.height = window.innerHeight / 2;
         gameCanvas.width = window.innerWidth / 2;
         this.stateOptions.height = gameCanvas.height;
         this.stateOptions.width = gameCanvas.width;
-        console.log(gameCanvas.height);
+        this.stateOptions.gameBounds = {
+            left: gameCanvas.width / 2 - this.boldOptions.gameWidth / 2,
+            right: gameCanvas.width / 2 + this.boldOptions.gameWidth / 2,
+            top: gameCanvas.height / 2 - this.boldOptions.gameHeight / 2,
+            bottom: gameCanvas.height / 2 + this.boldOptions.gameHeight / 2,
+        };
     };
     BoldInvaders.prototype.gameLoop = function (game) {
         var currentState = game.currentState();
@@ -48,6 +52,7 @@ var BoldInvaders = (function () {
         //  If there's an enter function for the new state, call it.
         this.chooseStateFunction(state);
         //  Set the current state.
+        this.stateOptions.stateStack.pop();
         this.stateOptions.stateStack.push(state);
     };
     BoldInvaders.prototype.pushState = function (state) {
@@ -64,6 +69,7 @@ var BoldInvaders = (function () {
         this.stateOptions.stateStack.pop();
     };
     BoldInvaders.prototype.start = function () {
+        var _this = this;
         var canvas = this.stateOptions.gameCanvas;
         var ctx = canvas.getContext("2d");
         //  Move into the 'welcome' state.
@@ -72,7 +78,7 @@ var BoldInvaders = (function () {
         this.stateOptions.lives = 3;
         this.boldOptions.debugMode = /debug=true/.test(window.location.href);
         //  Start the game loop.
-        this.stateOptions.intervalId = setInterval(this.gameLoop(this), 1000 / this.boldOptions.fps);
+        setInterval(function () { _this.gameLoop(_this); }, 1000 / this.boldOptions.fps);
     };
     BoldInvaders.prototype.keyDown = function (keyCode) {
         this.stateOptions.pressedKeys[keyCode] = true;
