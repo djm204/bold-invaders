@@ -114,17 +114,23 @@ class GameState {
         }
 
         //  Draw bombs.
-        ctx.fillStyle = '#ff5555';
-        for (var i = 0; i < this.game.gameStateOptions.bombs.length; i++) {
-            var bomb = this.game.gameStateOptions.bombs[i];
-            ctx.fillRect(bomb.x - 2, bomb.y - 2, 4, 4);
+        if(this.game.gameStateOptions.bombs){
+           ctx.fillStyle = '#ff5555';
+            for (var i = 0; i < this.game.gameStateOptions.bombs.length; i++) {
+                var bomb = this.game.gameStateOptions.bombs[i];
+                ctx.fillRect(bomb.x - 2, bomb.y - 2, 4, 4);
+            } 
         }
+        
 
         //  Draw rockets.
-        ctx.fillStyle = '#ff0000';
-        for (var i = 0; i < this.game.gameStateOptions.rockets.length; i++) {
-            var rocket = this.game.gameStateOptions.rockets[i];
-            ctx.fillRect(rocket.x, rocket.y - 2, 1, 4);
+        if(this.game.gameStateOptions.rockets){
+        
+            ctx.fillStyle = '#ff0000';
+            for (var i = 0; i < this.game.gameStateOptions.rockets.length; i++) {
+                var rocket = this.game.gameStateOptions.rockets[i];
+                ctx.fillRect(rocket.x, rocket.y - 2, 1, 4);
+            }
         }
     }
     
@@ -186,24 +192,26 @@ class GameState {
         for (var i = 0; i < this.game.gameStateOptions.invaders.length; i++) {
             var invader = this.game.gameStateOptions.invaders[i];
             var bang = false;
+            if (this.game.gameStateOptions.rockets) {
+                for (var j = 0; j < this.game.gameStateOptions.rockets.length; j++) {
+                    var rocket = this.game.gameStateOptions.rockets[j];
 
-            for (var j = 0; j < this.game.gameStateOptions.rockets.length; j++) {
-                var rocket = this.game.gameStateOptions.rockets[j];
-
-                if (rocket.x >= (invader.x - invader.width / 2) && rocket.x <= (invader.x + invader.width / 2) &&
-                    rocket.y >= (invader.y - invader.height / 2) && rocket.y <= (invader.y + invader.height / 2)) {
+                    if (rocket.x >= (invader.x - invader.width / 2) && rocket.x <= (invader.x + invader.width / 2) &&
+                        rocket.y >= (invader.y - invader.height / 2) && rocket.y <= (invader.y + invader.height / 2)) {
                 
-                    //  Remove the rocket, set 'bang' so we don't process
-                    //  this rocket again.
-                    this.game.gameStateOptions.rockets.splice(j--, 1);
-                    bang = true;
-                    this.game.stateOptions.score += this.game.enemyOptions.pointsPerInvader;
-                    break;
+                        //  Remove the rocket, set 'bang' so we don't process
+                        //  this rocket again.
+                        this.game.gameStateOptions.rockets.splice(j--, 1);
+                        bang = true;
+                        this.game.stateOptions.score += this.game.enemyOptions.pointsPerInvader;
+                        break;
+                    }
+                }
+                if (bang) {
+                    this.game.gameStateOptions.invaders.splice(i--, 1);
                 }
             }
-            if (bang) {
-                this.game.gameStateOptions.invaders.splice(i--, 1);
-            }
+            
         }
     }
     

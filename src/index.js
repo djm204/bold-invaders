@@ -56,9 +56,9 @@ var BIEnemyOptions = {
 };
 var BIPlayStateOptions = {
     ship: null,
-    invaders: null,
-    rockets: null,
-    bombs: null,
+    invaders: [],
+    rockets: [],
+    bombs: [],
     invaderCurrentVelocity: 0,
     invaderCurrentDropDistance: 0,
     invadersAreDropping: false,
