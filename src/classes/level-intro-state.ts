@@ -6,7 +6,7 @@ class LevelIntroState {
     countdown: number;
     countDownMessage: number;
 
-    constructor(public level: number, public game: boldInvaders, public dt: number, public ctx: CanvasRenderingContext2D) {
+    constructor(public level: number, public game: boldInvaders, public ctx: CanvasRenderingContext2D) {
 
     }
 
@@ -46,7 +46,7 @@ class LevelIntroState {
         }
         if (this.countdown <= 0) {
             //  Move to the next level, popping this state.
-            this.game.moveToState(new GameState(this.game));
+            this.game.moveToState(new GameState(this.game, this));
             console.log("counted to zero");
         }
         console.log(this.countdown + " message: " + this.countDownMessage);

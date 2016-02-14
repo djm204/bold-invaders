@@ -1,10 +1,8 @@
 import boldInvaders = require('./bold-invaders');
-import levelIntroState = require('./level-intro-state');
 export = GameOverState;
 class GameOverState {
-    levelIntroState1: BoldInvaders.IntroState = new levelIntroState(1, this.game, 1 / (this.game.boldOptions.fps), this.ctx);
 
-    constructor(public game: boldInvaders, public dt: number, public ctx: CanvasRenderingContext2D) { }
+    constructor(public gameState: BoldInvaders.GameState, public game: boldInvaders, public dt: number, public ctx: CanvasRenderingContext2D) { }
     
     draw(){
         //  Clear the background.
@@ -29,7 +27,7 @@ class GameOverState {
             game.stateOptions.lives = 3;
             game.stateOptions.score = 0;
             game.stateOptions.level = 1;
-            game.moveToState(levelIntroState);
+            game.pushState(this.gameState);
            
 
         }

@@ -1,11 +1,10 @@
 import boldInvaders = require('./bold-invaders');
-import PauseState = require('./pause-state');
-import LevelIntroState = require('./level-intro-state');
+import pauseState = require('./pause-state');
 import GameOverState = require('./game-over');
 export = GameState;
 const PAUSE_PREVENTER = 1;
 class GameState {
-    constructor(public game: boldInvaders) {
+    constructor(public game: boldInvaders, public levelIntroState: BoldInvaders.GameState) {
 
     }
 
@@ -88,19 +87,21 @@ class GameState {
         this.dropBombsOnEm();
         this.hitShipCheck();
         
-        //  Check for failure
-        if (this.game.stateOptions.lives <= 0) {
-            this.game.moveToState(new GameOverState(this.game, this.dt, this.ctx));
-            console.log("Game Over.");
-        }
+        
  
         //  Check for victory
         if (this.game.gameStateOptions.invaders.length === 0) {
             this.game.stateOptions.score += this.game.stateOptions.level * 50;
             this.game.stateOptions.level += 1;
-            this.game.moveToState(new LevelIntroState(1, this.game, 1 / (this.game.boldOptions.fps), this.ctx));
+            this.game.moveToState(this.levelIntroState);
             
             return;
+        }
+        
+        //  Check for failure
+        if (this.game.stateOptions.lives <= 0) {
+            this.game.moveToState(new GameOverState(this.levelIntroState, this.game, this.dt, this.ctx));
+            console.log("Game Over.");
         }
 
         this.draw();
@@ -346,7 +347,7 @@ class GameState {
 
         if (this.game.stateOptions.lastPauseTime === null || ((new Date()).valueOf() - this.game.gameStateOptions.lastRocketTime) > (1000 / PAUSE_PREVENTER)) {
             this.game.stateOptions.lastPauseTime = (new Date()).valueOf();
-            this.game.pushState(new PauseState(this, this.game, 1000 / this.game.boldOptions.fps, ctx));
+            this.game.pushState(new pauseState(this, this.game, 1000 / this.game.boldOptions.fps, ctx));
 
         }
     }

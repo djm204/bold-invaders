@@ -1,9 +1,8 @@
 var GameState = require('./game-state');
 var LevelIntroState = (function () {
-    function LevelIntroState(level, game, dt, ctx) {
+    function LevelIntroState(level, game, ctx) {
         this.level = level;
         this.game = game;
-        this.dt = dt;
         this.ctx = ctx;
     }
     LevelIntroState.prototype.draw = function () {
@@ -34,7 +33,7 @@ var LevelIntroState = (function () {
         }
         if (this.countdown <= 0) {
             //  Move to the next level, popping this state.
-            this.game.moveToState(new GameState(this.game));
+            this.game.moveToState(new GameState(this.game, this));
             console.log("counted to zero");
         }
         console.log(this.countdown + " message: " + this.countDownMessage);

@@ -1,10 +1,9 @@
-var levelIntroState = require('./level-intro-state');
 var GameOverState = (function () {
-    function GameOverState(game, dt, ctx) {
+    function GameOverState(gameState, game, dt, ctx) {
+        this.gameState = gameState;
         this.game = game;
         this.dt = dt;
         this.ctx = ctx;
-        this.levelIntroState1 = new levelIntroState(1, this.game, 1 / (this.game.boldOptions.fps), this.ctx);
     }
     GameOverState.prototype.draw = function () {
         //  Clear the background.
@@ -24,7 +23,7 @@ var GameOverState = (function () {
             game.stateOptions.lives = 3;
             game.stateOptions.score = 0;
             game.stateOptions.level = 1;
-            game.moveToState(levelIntroState);
+            game.pushState(this.gameState);
         }
     };
     return GameOverState;

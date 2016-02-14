@@ -54,7 +54,7 @@ class BoldInvaders {
         var canvas = this.stateOptions.gameCanvas;
         var ctx = canvas.getContext("2d");
         //  Move into the 'welcome' state.
-        this.moveToState(new welcomeState(this, 1000 / (this.boldOptions.fps), ctx));
+        this.moveToState(new welcomeState(this, ctx));
     
         //  Set the game variables.
         this.stateOptions.lives = 3;

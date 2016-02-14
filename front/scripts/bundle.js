@@ -605,7 +605,7 @@
 	        var canvas = this.stateOptions.gameCanvas;
 	        var ctx = canvas.getContext("2d");
 	        //  Move into the 'welcome' state.
-	        this.moveToState(new welcomeState(this, 1000 / (this.boldOptions.fps), ctx));
+	        this.moveToState(new welcomeState(this, ctx));
 	        //  Set the game variables.
 	        this.stateOptions.lives = 3;
 	        this.boldOptions.debugMode = /debug=true/.test(window.location.href);
@@ -759,9 +759,8 @@
 
 	var levelIntroState = __webpack_require__(8);
 	var WelcomeState = (function () {
-	    function WelcomeState(game, dt, ctx) {
+	    function WelcomeState(game, ctx) {
 	        this.game = game;
-	        this.dt = dt;
 	        this.ctx = ctx;
 	    }
 	    WelcomeState.prototype.draw = function () {
@@ -788,7 +787,7 @@
 	    WelcomeState.prototype.keyDown = function (game, keyCode) {
 	        if (keyCode == 32) {
 	            //  Space starts the game.  
-	            game.moveToState(new levelIntroState(1, game, 1 / (game.boldOptions.fps), this.ctx));
+	            game.moveToState(new levelIntroState(this.game.stateOptions.level, game, this.ctx));
 	        }
 	    };
 	    return WelcomeState;
@@ -802,10 +801,9 @@
 
 	var GameState = __webpack_require__(9);
 	var LevelIntroState = (function () {
-	    function LevelIntroState(level, game, dt, ctx) {
+	    function LevelIntroState(level, game, ctx) {
 	        this.level = level;
 	        this.game = game;
-	        this.dt = dt;
 	        this.ctx = ctx;
 	    }
 	    LevelIntroState.prototype.draw = function () {
@@ -836,7 +834,7 @@
 	        }
 	        if (this.countdown <= 0) {
 	            //  Move to the next level, popping this state.
-	            this.game.moveToState(new GameState(this.game));
+	            this.game.moveToState(new GameState(this.game, this));
 	            console.log("counted to zero");
 	        }
 	        console.log(this.countdown + " message: " + this.countDownMessage);
@@ -852,13 +850,13 @@
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var PauseState = __webpack_require__(10);
-	var LevelIntroState = __webpack_require__(8);
+	var pauseState = __webpack_require__(10);
 	var GameOverState = __webpack_require__(11);
 	var PAUSE_PREVENTER = 1;
 	var GameState = (function () {
-	    function GameState(game) {
+	    function GameState(game, levelIntroState) {
 	        this.game = game;
+	        this.levelIntroState = levelIntroState;
 	        this.dt = 1000 / this.game.boldOptions.fps;
 	        this.ctx = this.game.stateOptions.gameCanvas.getContext("2d");
 	    }
@@ -918,17 +916,17 @@
 	        this.checkForInvaderKills();
 	        this.dropBombsOnEm();
 	        this.hitShipCheck();
-	        //  Check for failure
-	        if (this.game.stateOptions.lives <= 0) {
-	            this.game.moveToState(new GameOverState(this.game, this.dt, this.ctx));
-	            console.log("Game Over.");
-	        }
 	        //  Check for victory
 	        if (this.game.gameStateOptions.invaders.length === 0) {
 	            this.game.stateOptions.score += this.game.stateOptions.level * 50;
 	            this.game.stateOptions.level += 1;
-	            this.game.moveToState(new LevelIntroState(1, this.game, 1 / (this.game.boldOptions.fps), this.ctx));
+	            this.game.moveToState(this.levelIntroState);
 	            return;
+	        }
+	        //  Check for failure
+	        if (this.game.stateOptions.lives <= 0) {
+	            this.game.moveToState(new GameOverState(this.levelIntroState, this.game, this.dt, this.ctx));
+	            console.log("Game Over.");
 	        }
 	        this.draw();
 	    };
@@ -1133,7 +1131,7 @@
 	        var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
 	        if (this.game.stateOptions.lastPauseTime === null || ((new Date()).valueOf() - this.game.gameStateOptions.lastRocketTime) > (1000 / PAUSE_PREVENTER)) {
 	            this.game.stateOptions.lastPauseTime = (new Date()).valueOf();
-	            this.game.pushState(new PauseState(this, this.game, 1000 / this.game.boldOptions.fps, ctx));
+	            this.game.pushState(new pauseState(this, this.game, 1000 / this.game.boldOptions.fps, ctx));
 	        }
 	    };
 	    return GameState;
@@ -1180,15 +1178,14 @@
 
 /***/ },
 /* 11 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	var levelIntroState = __webpack_require__(8);
 	var GameOverState = (function () {
-	    function GameOverState(game, dt, ctx) {
+	    function GameOverState(gameState, game, dt, ctx) {
+	        this.gameState = gameState;
 	        this.game = game;
 	        this.dt = dt;
 	        this.ctx = ctx;
-	        this.levelIntroState1 = new levelIntroState(1, this.game, 1 / (this.game.boldOptions.fps), this.ctx);
 	    }
 	    GameOverState.prototype.draw = function () {
 	        //  Clear the background.
@@ -1208,7 +1205,7 @@
 	            game.stateOptions.lives = 3;
 	            game.stateOptions.score = 0;
 	            game.stateOptions.level = 1;
-	            game.moveToState(levelIntroState);
+	            game.pushState(this.gameState);
 	        }
 	    };
 	    return GameOverState;

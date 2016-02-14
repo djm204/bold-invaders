@@ -1,10 +1,10 @@
-var PauseState = require('./pause-state');
-var LevelIntroState = require('./level-intro-state');
+var pauseState = require('./pause-state');
 var GameOverState = require('./game-over');
 var PAUSE_PREVENTER = 1;
 var GameState = (function () {
-    function GameState(game) {
+    function GameState(game, levelIntroState) {
         this.game = game;
+        this.levelIntroState = levelIntroState;
         this.dt = 1000 / this.game.boldOptions.fps;
         this.ctx = this.game.stateOptions.gameCanvas.getContext("2d");
     }
@@ -64,17 +64,17 @@ var GameState = (function () {
         this.checkForInvaderKills();
         this.dropBombsOnEm();
         this.hitShipCheck();
-        //  Check for failure
-        if (this.game.stateOptions.lives <= 0) {
-            this.game.moveToState(new GameOverState(this.game, this.dt, this.ctx));
-            console.log("Game Over.");
-        }
         //  Check for victory
         if (this.game.gameStateOptions.invaders.length === 0) {
             this.game.stateOptions.score += this.game.stateOptions.level * 50;
             this.game.stateOptions.level += 1;
-            this.game.moveToState(new LevelIntroState(1, this.game, 1 / (this.game.boldOptions.fps), this.ctx));
+            this.game.moveToState(this.levelIntroState);
             return;
+        }
+        //  Check for failure
+        if (this.game.stateOptions.lives <= 0) {
+            this.game.moveToState(new GameOverState(this.levelIntroState, this.game, this.dt, this.ctx));
+            console.log("Game Over.");
         }
         this.draw();
     };
@@ -279,7 +279,7 @@ var GameState = (function () {
         var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
         if (this.game.stateOptions.lastPauseTime === null || ((new Date()).valueOf() - this.game.gameStateOptions.lastRocketTime) > (1000 / PAUSE_PREVENTER)) {
             this.game.stateOptions.lastPauseTime = (new Date()).valueOf();
-            this.game.pushState(new PauseState(this, this.game, 1000 / this.game.boldOptions.fps, ctx));
+            this.game.pushState(new pauseState(this, this.game, 1000 / this.game.boldOptions.fps, ctx));
         }
     };
     return GameState;
