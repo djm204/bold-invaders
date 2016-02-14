@@ -62,7 +62,8 @@ var BIPlayStateOptions = {
     invaderCurrentVelocity: 1,
     invaderCurrentDropDistance: 0,
     invadersAreDropping: false,
-    lastRocketTime: 0
+    lastRocketTime: 0,
+    firstEntry: true
 };
 var canvas = document.getElementById("gameCanvas");
 var boldInvaders = new BoldInvaders(BIOptions, BIPlayerOptions, BIEnemyOptions, BIPlayStateOptions, BIStateOptions);

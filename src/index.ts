@@ -80,7 +80,8 @@ var BIPlayStateOptions: PlayStateOptions = {
     invaderCurrentVelocity: 1,
     invaderCurrentDropDistance: 0,
     invadersAreDropping: false,
-    lastRocketTime: 0
+    lastRocketTime: 0,
+    firstEntry: true
 }
 
 var canvas = <HTMLCanvasElement>document.getElementById("gameCanvas");

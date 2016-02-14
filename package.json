@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "postbuild": "webpack --optimize-minimize --optimize-occurence-order",
+    "postbuild": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

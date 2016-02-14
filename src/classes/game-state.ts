@@ -1,5 +1,6 @@
 import boldInvaders = require('./bold-invaders');
 import PauseState = require('./pause-state');
+import GameOverState = require('./game-over');
 export = GameState;
 class GameState {
     constructor(public game: boldInvaders) {
@@ -15,7 +16,7 @@ class GameState {
 
 
     enter() {
-        
+        this.game.gameStateOptions.firstEntry = false;
         //instantiate le ship
         this.game.gameStateOptions.ship = { x: this.game.stateOptions.width / 2, y: this.game.stateOptions.height, width: 20, height: 16 };
         
@@ -57,7 +58,21 @@ class GameState {
     }
 
     update() {
-        
+        /*var ctx = this.game.stateOptions.gameCanvas.getContext("2d");*/
+         if(this.game.stateOptions.pressedKeys[37]) {
+            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed / 100;
+        }
+        if (this.game.stateOptions.pressedKeys[39]) {
+            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed / 100;
+        }
+        if (this.game.stateOptions.pressedKeys[32]) {
+            this.fireRocket();
+        }
+        if(this.game.stateOptions.pressedKeys[27]) {
+            //  Push the pause state.
+            
+            pauseGame();
+        }
  
         //  Keep the ship in bounds.
         
@@ -76,9 +91,9 @@ class GameState {
         
         //  Check for failure
         if (this.game.stateOptions.lives <= 0) {
-            //this.game.moveToState(new GameOverState());
+            var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
+            this.game.moveToState(new GameOverState(this.game, this.dt, ctx));
             console.log("Game Over.");
-            clearInterval(this.game.stateOptions.intervalId);
         }
  
         //  Check for victory
@@ -142,19 +157,7 @@ class GameState {
     }
 
     keyDown(game: boldInvaders, keyCode: number){
-        if(this.game.stateOptions.pressedKeys[37]) {
-            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed / 100;
-        }
-        if (this.game.stateOptions.pressedKeys[39]) {
-            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed / 100;
-        }
-        if (this.game.stateOptions.pressedKeys[32]) {
-            this.fireRocket();
-        }
-        if(keyCode == 27) {
-            //  Push the pause state.
-            game.pushState(new PauseState(game, 1000 / game.boldOptions.fps, this.game.stateOptions.gameCanvas.getContext("2d")));
-        }
+       
     }
     moveInvaders(): void {
         //Move the invaders
@@ -313,6 +316,14 @@ class GameState {
             });
             this.game.gameStateOptions.lastRocketTime = (new Date()).valueOf();
         }
+    }
+    
+    pauseGame() {
+       var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
+       this.game.pushState(new PauseState(this, this.game, 1000 / this.game.boldOptions.fps, ctx));
+       
+       
+       if(this.game.stateOptions.lastPauseTime === null || )
     }
 
 

@@ -1,6 +1,7 @@
 var GameState = require('./game-state');
 var LevelIntroState = (function () {
-    function LevelIntroState(game, dt, ctx) {
+    function LevelIntroState(level, game, dt, ctx) {
+        this.level = level;
         this.game = game;
         this.dt = dt;
         this.ctx = ctx;

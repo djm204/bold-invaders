@@ -1,10 +1,12 @@
 var PauseState = require('./pause-state');
+var GameOverState = require('./game-over');
 var GameState = (function () {
     function GameState(game) {
         this.game = game;
         this.dt = 1000 / this.game.boldOptions.fps;
     }
     GameState.prototype.enter = function () {
+        this.game.gameStateOptions.firstEntry = false;
         //instantiate le ship
         this.game.gameStateOptions.ship = { x: this.game.stateOptions.width / 2, y: this.game.stateOptions.height, width: 20, height: 16 };
         //create level multipliers
@@ -38,6 +40,20 @@ var GameState = (function () {
         var invaderNextVelocity = null;
     };
     GameState.prototype.update = function () {
+        /*var ctx = this.game.stateOptions.gameCanvas.getContext("2d");*/
+        if (this.game.stateOptions.pressedKeys[37]) {
+            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed / 100;
+        }
+        if (this.game.stateOptions.pressedKeys[39]) {
+            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed / 100;
+        }
+        if (this.game.stateOptions.pressedKeys[32]) {
+            this.fireRocket();
+        }
+        if (this.game.stateOptions.pressedKeys[27]) {
+            //  Push the pause state.
+            pauseGame();
+        }
         //  Keep the ship in bounds.
         if (this.game.gameStateOptions.ship.x < this.game.stateOptions.gameBounds.left) {
             this.game.gameStateOptions.ship.x = this.game.stateOptions.gameBounds.left;
@@ -51,9 +67,9 @@ var GameState = (function () {
         this.hitShipCheck();
         //  Check for failure
         if (this.game.stateOptions.lives <= 0) {
-            //this.game.moveToState(new GameOverState());
+            var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
+            this.game.moveToState(new GameOverState(this.game, this.dt, ctx));
             console.log("Game Over.");
-            clearInterval(this.game.stateOptions.intervalId);
         }
         //  Check for victory
         if (this.game.gameStateOptions.invaders.length === 0) {
@@ -100,19 +116,6 @@ var GameState = (function () {
         }
     };
     GameState.prototype.keyDown = function (game, keyCode) {
-        if (this.game.stateOptions.pressedKeys[37]) {
-            this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed / 100;
-        }
-        if (this.game.stateOptions.pressedKeys[39]) {
-            this.game.gameStateOptions.ship.x += this.game.boldOptions.shipSpeed / 100;
-        }
-        if (this.game.stateOptions.pressedKeys[32]) {
-            this.fireRocket();
-        }
-        if (keyCode == 27) {
-            //  Push the pause state.
-            game.pushState(new PauseState(game, 1000 / game.boldOptions.fps, this.game.stateOptions.gameCanvas.getContext("2d")));
-        }
     };
     GameState.prototype.moveInvaders = function () {
         //Move the invaders
@@ -256,6 +259,10 @@ var GameState = (function () {
             });
             this.game.gameStateOptions.lastRocketTime = (new Date()).valueOf();
         }
+    };
+    GameState.prototype.pauseGame = function () {
+        var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
+        this.game.pushState(new PauseState(this, this.game, 1000 / this.game.boldOptions.fps, ctx));
     };
     return GameState;
 })();

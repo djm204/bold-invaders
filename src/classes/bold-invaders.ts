@@ -1,3 +1,4 @@
+import levelIntroState = require('./level-intro-state');
 import welcomeState = require('./welcome-state');
 export = BoldInvaders;
 
@@ -9,7 +10,8 @@ class BoldInvaders {
         public playerOptions: BoldInvaders.Player,
         public enemyOptions: BoldInvaders.Enemy,
         public gameStateOptions: BoldInvaders.GameStateOptions,
-        public stateOptions: BoldInvaders.StateOptions) { }
+        public stateOptions: BoldInvaders.StateOptions
+    ) { }
 
 
 
@@ -28,7 +30,7 @@ class BoldInvaders {
             bottom: gameCanvas.height,
         };
 
-       
+
 
     }
 
@@ -36,14 +38,11 @@ class BoldInvaders {
     moveToState(state) {
         if (this.currentState()) {
 
-            if (this.currentState().leave) {
-                this.currentState().leave(this);
-            }
+
 
             this.stateOptions.stateStack.pop();
         }
-        
-        //  If there's an enter function for the new state, call it.
+
         this.chooseStateFunction(state);
  
         //  Set the current state.
@@ -63,6 +62,71 @@ class BoldInvaders {
         //  Start the game loop.
         this.stateOptions.intervalId = setInterval(() => { this.gameLoop(this) }, 1000 / this.boldOptions.fps);
 
+    }
+
+    tryAgain() {
+        this.resetGameVariables();
+        
+    }
+
+    resetGameVariables() {
+        
+        // rest config 
+        this.boldOptions = {
+            gameWidth: 400,
+            gameHeight: 300,
+            fps: 50,
+            shipSpeed: 120,
+            debugMode: true,
+            levelDifficultyMultiplier: .2
+        };
+
+        this.stateOptions = {
+            lives: 3,
+            width: 0,
+            height: 0,
+            gameBounds: { left: 0, top: 0, right: 0, bottom: 0 },
+            intervalId: 0,
+            score: 0,
+            level: 1,
+            stateStack: [],
+            pressedKeys: [],
+            gameCanvas: this.stateOptions.gameCanvas,
+            sounds: [],
+            lastPauseTime: null
+        }
+
+        this.playerOptions = {
+            rocketVelocity: 120,
+            rocketMaxFireRate: 2
+        }
+
+        this.enemyOptions = {
+            bombRate: 0.05,
+            bombMinVelocity: 50,
+            bombMaxVelocity: 50,
+            invaderInitialVelocity: 25,
+            invaderAcceleration: 0,
+            invaderDropDistance: 20,
+            invaderRanks: 5,
+            invaderFiles: 10,
+            pointsPerInvader: 5
+        }
+
+        this.gameStateOptions = {
+            ship: null,
+            invaders: [],
+            rockets: [],
+            bombs: [],
+            invaderCurrentVelocity: 1,
+            invaderCurrentDropDistance: 0,
+            invadersAreDropping: false,
+            lastRocketTime: 0,
+            firstEntry: true
+        }
+
+       
+        
     }
 
 
@@ -96,12 +160,12 @@ class BoldInvaders {
     
             //  Get the drawing context.
             var ctx = game.stateOptions.gameCanvas.getContext("2d");
-            console.log(ctx);
-            if (currentState.update) {
-                currentState.update();
-            }
+
             if (currentState.draw) {
                 currentState.draw();
+            }
+            if (currentState.update) {
+                currentState.update();
             }
             
             //  Update if we have an update function. Also draw
@@ -131,7 +195,17 @@ class BoldInvaders {
 
     chooseStateFunction(state: BoldInvaders.GameState) {
         if (this.isPlayState(state)) {
-            state.enter();
+
+            if (this.gameStateOptions.firstEntry) {
+                console.log("got to State Enter");
+
+                state.enter();
+
+            }
+            else {
+                state.update();
+
+            }
         }
 
         if (this.isOverState(state)) {

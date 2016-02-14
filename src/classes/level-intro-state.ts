@@ -6,7 +6,7 @@ class LevelIntroState {
     countdown: number;
     countDownMessage: number;
     
-    constructor(public game: boldInvaders, public dt: number, public ctx: CanvasRenderingContext2D) { 
+    constructor(public level: number, public game: boldInvaders, public dt: number, public ctx: CanvasRenderingContext2D) { 
      
     }
         

@@ -60,7 +60,8 @@ declare namespace BoldInvaders {
         stateStack: Array<any>,
         pressedKeys: Array<boolean>,
         gameCanvas: HTMLCanvasElement,
-        sounds: Array<Sounds>
+        sounds: Array<Sounds>,
+        lastPauseTime: number
     }
 
 
@@ -80,7 +81,8 @@ declare namespace BoldInvaders {
         invaderCurrentVelocity: number,
         invaderCurrentDropDistance: number,
         invadersAreDropping: boolean,
-        lastRocketTime: number
+        lastRocketTime: number,
+        firstEntry: boolean
 
     }
 
@@ -114,6 +116,7 @@ declare namespace BoldInvaders {
     }
     
     interface PlayState {
+        firstEntry: boolean;
         enter: () => any;
         update: () => any;
         draw: () => any;
@@ -138,7 +141,8 @@ declare namespace BoldInvaders {
     
     interface PauseState {
         draw: () => any;
-        update: () => any;
+        leave: () => any;
+        
         
     }
 
