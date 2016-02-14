@@ -37,7 +37,8 @@ var BIStateOptions = {
     stateStack: [],
     pressedKeys: [],
     gameCanvas: null,
-    sounds: []
+    sounds: [],
+    lastPauseTime: null
 };
 var BIPlayerOptions = {
     rocketVelocity: 120,

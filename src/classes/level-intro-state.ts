@@ -5,14 +5,14 @@ export = LevelIntroState;
 class LevelIntroState {
     countdown: number;
     countDownMessage: number;
-    
-    constructor(public level: number, public game: boldInvaders, public dt: number, public ctx: CanvasRenderingContext2D) { 
-     
+
+    constructor(public level: number, public game: boldInvaders, public dt: number, public ctx: CanvasRenderingContext2D) {
+
     }
-        
+
 
     draw() {
-        if(this.countDownMessage == null){
+        if (this.countDownMessage == null) {
             this.countDownMessage = 3;
         }
         console.log(this.ctx);
@@ -22,18 +22,19 @@ class LevelIntroState {
         this.ctx.font = "36px Arial";
         this.ctx.fillStyle = '#ffffff';
         this.ctx.textBaseline = "middle";
+        
         this.ctx.textAlign = "center";
         this.ctx.fillText("Level " + this.game.stateOptions.level, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2);
         this.ctx.font = "24px Arial";
         this.ctx.fillText("Ready in " + this.countDownMessage, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2 + 36);
-    
+
     }
 
     update() {
 
         //  Update the countdown.
-        if (this.countdown == null) {            
-            
+        if (this.countdown == null) {
+
             this.countdown = 3; // countdown from 3 secs
         }
 
@@ -48,10 +49,10 @@ class LevelIntroState {
             this.game.moveToState(new GameState(this.game));
             console.log("counted to zero");
         }
-        console.log(this.countdown +" message: " + this.countDownMessage);
+        console.log(this.countdown + " message: " + this.countDownMessage);
         this.draw();
         this.countdown -= .03;
-        
+
     }
 
 }

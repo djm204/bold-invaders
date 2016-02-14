@@ -65,7 +65,8 @@ var BoldInvaders = (function () {
             stateStack: [],
             pressedKeys: [],
             gameCanvas: this.stateOptions.gameCanvas,
-            sounds: []
+            sounds: [],
+            lastPauseTime: null
         };
         this.playerOptions = {
             rocketVelocity: 120,
@@ -160,7 +161,13 @@ var BoldInvaders = (function () {
         }
     };
     BoldInvaders.prototype.isPlayState = function (state) {
-        return typeof state.enter === 'function';
+        if (this.gameStateOptions.firstEntry) {
+            console.log("got to State isPlayState / it's first entry");
+            return typeof state.enter === 'function';
+        }
+        else {
+            return typeof state.update === 'function';
+        }
     };
     BoldInvaders.prototype.isOverState = function (state) {
         return typeof state.leave === 'function';

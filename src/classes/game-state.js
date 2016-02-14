@@ -1,5 +1,6 @@
 var PauseState = require('./pause-state');
 var GameOverState = require('./game-over');
+var PAUSE_PREVENTER = 1;
 var GameState = (function () {
     function GameState(game) {
         this.game = game;
@@ -52,7 +53,7 @@ var GameState = (function () {
         }
         if (this.game.stateOptions.pressedKeys[27]) {
             //  Push the pause state.
-            pauseGame();
+            this.pauseGame();
         }
         //  Keep the ship in bounds.
         if (this.game.gameStateOptions.ship.x < this.game.stateOptions.gameBounds.left) {
@@ -85,6 +86,8 @@ var GameState = (function () {
         //  Clear the background.
         var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
         ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
+        ctx.strokeStyle = "#FFFFFF";
+        ctx.strokeRect(this.game.stateOptions.gameBounds.left, this.game.stateOptions.gameBounds.top, this.game.stateOptions.gameBounds.right, this.game.stateOptions.gameBounds.bottom);
         //  Draw ship.
         ctx.fillStyle = '#ff0000';
         ctx.fillRect(this.game.gameStateOptions.ship.x - (this.game.gameStateOptions.ship.width / 2), this.game.gameStateOptions.ship.y - (this.game.gameStateOptions.ship.height / 2), this.game.gameStateOptions.ship.width, this.game.gameStateOptions.ship.height);
@@ -262,7 +265,10 @@ var GameState = (function () {
     };
     GameState.prototype.pauseGame = function () {
         var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
-        this.game.pushState(new PauseState(this, this.game, 1000 / this.game.boldOptions.fps, ctx));
+        if (this.game.stateOptions.lastPauseTime === null || ((new Date()).valueOf() - this.game.gameStateOptions.lastRocketTime) > (1000 / PAUSE_PREVENTER)) {
+            this.game.stateOptions.lastPauseTime = (new Date()).valueOf();
+            this.game.pushState(new PauseState(this, this.game, 1000 / this.game.boldOptions.fps, ctx));
+        }
     };
     return GameState;
 })();

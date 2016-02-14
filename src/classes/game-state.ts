@@ -2,6 +2,7 @@ import boldInvaders = require('./bold-invaders');
 import PauseState = require('./pause-state');
 import GameOverState = require('./game-over');
 export = GameState;
+const PAUSE_PREVENTER = 1;
 class GameState {
     constructor(public game: boldInvaders) {
 
@@ -71,7 +72,7 @@ class GameState {
         if(this.game.stateOptions.pressedKeys[27]) {
             //  Push the pause state.
             
-            pauseGame();
+            this.pauseGame();
         }
  
         //  Keep the ship in bounds.
@@ -112,6 +113,13 @@ class GameState {
         //  Clear the background.
         var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
         ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
+        
+        ctx.strokeStyle = "#FFFFFF";
+        ctx.strokeRect(
+            this.game.stateOptions.gameBounds.left,
+        this.game.stateOptions.gameBounds.top, 
+        this.game.stateOptions.gameBounds.right, 
+        this.game.stateOptions.gameBounds.bottom);
 
         //  Draw ship.
         ctx.fillStyle = '#ff0000';
@@ -320,10 +328,13 @@ class GameState {
     
     pauseGame() {
        var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
-       this.game.pushState(new PauseState(this, this.game, 1000 / this.game.boldOptions.fps, ctx));
        
        
-       if(this.game.stateOptions.lastPauseTime === null || )
+       if(this.game.stateOptions.lastPauseTime === null ||  ((new Date()).valueOf() - this.game.gameStateOptions.lastRocketTime) > (1000 / PAUSE_PREVENTER)) {
+            this.game.stateOptions.lastPauseTime = (new Date()).valueOf();
+            this.game.pushState(new PauseState(this, this.game, 1000 / this.game.boldOptions.fps, ctx));
+           
+       }
     }
 
 

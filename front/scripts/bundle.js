@@ -83,7 +83,8 @@
 	    stateStack: [],
 	    pressedKeys: [],
 	    gameCanvas: null,
-	    sounds: []
+	    sounds: [],
+	    lastPauseTime: null
 	};
 	var BIPlayerOptions = {
 	    rocketVelocity: 120,
@@ -635,7 +636,8 @@
 	            stateStack: [],
 	            pressedKeys: [],
 	            gameCanvas: this.stateOptions.gameCanvas,
-	            sounds: []
+	            sounds: [],
+	            lastPauseTime: null
 	        };
 	        this.playerOptions = {
 	            rocketVelocity: 120,
@@ -730,7 +732,13 @@
 	        }
 	    };
 	    BoldInvaders.prototype.isPlayState = function (state) {
-	        return typeof state.enter === 'function';
+	        if (this.gameStateOptions.firstEntry) {
+	            console.log("got to State isPlayState / it's first entry");
+	            return typeof state.enter === 'function';
+	        }
+	        else {
+	            return typeof state.update === 'function';
+	        }
 	    };
 	    BoldInvaders.prototype.isOverState = function (state) {
 	        return typeof state.leave === 'function';
@@ -847,6 +855,7 @@
 
 	var PauseState = __webpack_require__(10);
 	var GameOverState = __webpack_require__(11);
+	var PAUSE_PREVENTER = 1;
 	var GameState = (function () {
 	    function GameState(game) {
 	        this.game = game;
@@ -899,7 +908,7 @@
 	        }
 	        if (this.game.stateOptions.pressedKeys[27]) {
 	            //  Push the pause state.
-	            this.game.pushState(new PauseState(this, this.game, 1000 / this.game.boldOptions.fps, ctx));
+	            this.pauseGame();
 	        }
 	        //  Keep the ship in bounds.
 	        if (this.game.gameStateOptions.ship.x < this.game.stateOptions.gameBounds.left) {
@@ -932,6 +941,8 @@
 	        //  Clear the background.
 	        var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
 	        ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
+	        ctx.strokeStyle = "#FFFFFF";
+	        ctx.strokeRect(this.game.stateOptions.gameBounds.left, this.game.stateOptions.gameBounds.top, this.game.stateOptions.gameBounds.right, this.game.stateOptions.gameBounds.bottom);
 	        //  Draw ship.
 	        ctx.fillStyle = '#ff0000';
 	        ctx.fillRect(this.game.gameStateOptions.ship.x - (this.game.gameStateOptions.ship.width / 2), this.game.gameStateOptions.ship.y - (this.game.gameStateOptions.ship.height / 2), this.game.gameStateOptions.ship.width, this.game.gameStateOptions.ship.height);
@@ -1107,6 +1118,13 @@
 	            this.game.gameStateOptions.lastRocketTime = (new Date()).valueOf();
 	        }
 	    };
+	    GameState.prototype.pauseGame = function () {
+	        var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
+	        if (this.game.stateOptions.lastPauseTime === null || ((new Date()).valueOf() - this.game.gameStateOptions.lastRocketTime) > (1000 / PAUSE_PREVENTER)) {
+	            this.game.stateOptions.lastPauseTime = (new Date()).valueOf();
+	            this.game.pushState(new PauseState(this, this.game, 1000 / this.game.boldOptions.fps, ctx));
+	        }
+	    };
 	    return GameState;
 	})();
 	module.exports = GameState;
@@ -1158,6 +1176,7 @@
 	        this.game = game;
 	        this.dt = dt;
 	        this.ctx = ctx;
+	        this.levelIntroState1 = new levelIntroState(1, this.game, 1 / (this.game.boldOptions.fps), this.ctx);
 	    }
 	    GameOverState.prototype.draw = function () {
 	        //  Clear the background.
@@ -1177,7 +1196,7 @@
 	            game.stateOptions.lives = 3;
 	            game.stateOptions.score = 0;
 	            game.stateOptions.level = 1;
-	            game.moveToState(new levelIntroState(1, game, 1 / (game.boldOptions.fps), this.ctx));
+	            game.moveToState(levelIntroState);
 	        }
 	    };
 	    return GameOverState;

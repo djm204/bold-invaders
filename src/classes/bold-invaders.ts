@@ -66,7 +66,7 @@ class BoldInvaders {
 
     tryAgain() {
         this.resetGameVariables();
-        
+
     }
 
     resetGameVariables() {
@@ -125,8 +125,8 @@ class BoldInvaders {
             firstEntry: true
         }
 
-       
-        
+
+
     }
 
 
@@ -223,7 +223,17 @@ class BoldInvaders {
 
 
     isPlayState(state: BoldInvaders.GameState): state is BoldInvaders.PlayState {
-        return typeof (<BoldInvaders.PlayState>state).enter === 'function';
+        if (this.gameStateOptions.firstEntry) {
+            console.log("got to State isPlayState / it's first entry");
+
+            return typeof (<BoldInvaders.PlayState>state).enter === 'function';
+
+        }
+        else {
+            return typeof (<BoldInvaders.PlayState>state).update === 'function';
+
+
+        }
     }
 
     isOverState(state: BoldInvaders.GameState): state is BoldInvaders.OverState {

@@ -52,7 +52,8 @@ var BIStateOptions: StateOptions = {
     stateStack: [],
     pressedKeys: [],
     gameCanvas: null,
-    sounds: []
+    sounds: [],
+    lastPauseTime: null
 }
 
 var BIPlayerOptions: PlayerOptions = {

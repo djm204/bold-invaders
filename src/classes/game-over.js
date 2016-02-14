@@ -4,6 +4,7 @@ var GameOverState = (function () {
         this.game = game;
         this.dt = dt;
         this.ctx = ctx;
+        this.levelIntroState1 = new levelIntroState(1, this.game, 1 / (this.game.boldOptions.fps), this.ctx);
     }
     GameOverState.prototype.draw = function () {
         //  Clear the background.
@@ -23,7 +24,7 @@ var GameOverState = (function () {
             game.stateOptions.lives = 3;
             game.stateOptions.score = 0;
             game.stateOptions.level = 1;
-            game.moveToState(new levelIntroState(1, game, 1 / (game.boldOptions.fps), this.ctx));
+            game.moveToState(levelIntroState);
         }
     };
     return GameOverState;
