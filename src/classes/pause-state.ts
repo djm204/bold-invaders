@@ -23,6 +23,7 @@ class PauseState {
     }
 
     leave() {
+        console.log("in leave pause state")
         //move back to the last game state
         this.game.pushState(this.gameState);
         

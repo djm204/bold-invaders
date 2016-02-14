@@ -10,14 +10,14 @@ var BoldInvaders = (function () {
     BoldInvaders.prototype.initialize = function (gameCanvas) {
         this.stateOptions.gameCanvas = gameCanvas;
         gameCanvas.width = 700;
-        gameCanvas.height = 500;
+        gameCanvas.height = 600;
         this.stateOptions.height = gameCanvas.height;
         this.stateOptions.width = gameCanvas.width;
         this.stateOptions.gameBounds = {
             left: gameCanvas.width / 2 - this.boldOptions.gameWidth / 2,
             right: gameCanvas.width / 2 + this.boldOptions.gameWidth / 2,
             top: gameCanvas.height / 2 - this.boldOptions.gameHeight / 1.5,
-            bottom: gameCanvas.height,
+            bottom: gameCanvas.height - 100,
         };
     };
     BoldInvaders.prototype.moveToState = function (state) {
@@ -109,7 +109,6 @@ var BoldInvaders = (function () {
             this.currentState().leave(this);
         }
         //  Set the current state.
-        this.stateOptions.stateStack.pop();
     };
     BoldInvaders.prototype.gameLoop = function (game) {
         var currentState = game.currentState();

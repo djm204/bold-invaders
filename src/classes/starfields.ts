@@ -86,6 +86,8 @@ class StarField {
             var star = this.options.starList[i];
             ctx.fillRect(star.x, star.y, star.size, star.size);
         }
+        
+        
     }
 
 

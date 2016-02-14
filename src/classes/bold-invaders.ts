@@ -18,7 +18,7 @@ class BoldInvaders {
     initialize(gameCanvas: HTMLCanvasElement) {
         this.stateOptions.gameCanvas = gameCanvas;
         gameCanvas.width = 700;
-        gameCanvas.height = 500;
+        gameCanvas.height = 600;
 
         this.stateOptions.height = gameCanvas.height;
         this.stateOptions.width = gameCanvas.width;
@@ -27,7 +27,7 @@ class BoldInvaders {
             left: gameCanvas.width / 2 - this.boldOptions.gameWidth / 2,
             right: gameCanvas.width / 2 + this.boldOptions.gameWidth / 2,
             top: gameCanvas.height / 2 - this.boldOptions.gameHeight / 1.5,
-            bottom: gameCanvas.height,
+            bottom: gameCanvas.height-100,
         };
 
 
@@ -147,7 +147,6 @@ class BoldInvaders {
         }
  
         //  Set the current state.
-        this.stateOptions.stateStack.pop();
 
     }
 

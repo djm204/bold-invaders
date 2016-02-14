@@ -9,7 +9,7 @@ var GameState = (function () {
     GameState.prototype.enter = function () {
         this.game.gameStateOptions.firstEntry = false;
         //instantiate le ship
-        this.game.gameStateOptions.ship = { x: this.game.stateOptions.width / 2, y: this.game.stateOptions.height, width: 20, height: 16 };
+        this.game.gameStateOptions.ship = { x: this.game.stateOptions.width / 2, y: this.game.stateOptions.height - 100, width: 20, height: 16 };
         //create level multipliers
         var levelMultiplier = this.game.stateOptions.level * this.game.boldOptions.levelDifficultyMultiplier;
         var shipSpeed = this.game.boldOptions.shipSpeed;
@@ -50,10 +50,6 @@ var GameState = (function () {
         }
         if (this.game.stateOptions.pressedKeys[32]) {
             this.fireRocket();
-        }
-        if (this.game.stateOptions.pressedKeys[27]) {
-            //  Push the pause state.
-            this.pauseGame();
         }
         //  Keep the ship in bounds.
         if (this.game.gameStateOptions.ship.x < this.game.stateOptions.gameBounds.left) {
@@ -117,8 +113,24 @@ var GameState = (function () {
             ctx.strokeRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
             ctx.strokeRect(this.game.stateOptions.gameBounds.left, this.game.stateOptions.gameBounds.top, this.game.stateOptions.gameBounds.right - this.game.stateOptions.gameBounds.left, this.game.stateOptions.gameBounds.bottom - this.game.stateOptions.gameBounds.top);
         }
+        //draw score and lives and level
+        //  Draw info.
+        var textYpos = this.game.stateOptions.gameBounds.bottom + ((this.game.stateOptions.height - this.game.stateOptions.gameBounds.bottom) / 2 + 20);
+        ctx.font = "14px Arial";
+        ctx.fillStyle = '#ffffff';
+        var info = "Lives: " + this.game.stateOptions.lives;
+        ctx.textAlign = "left";
+        ctx.fillText(info, this.game.stateOptions.gameBounds.left, textYpos);
+        info = "Score: " + this.game.stateOptions.score + ", Level: " + this.game.stateOptions.level;
+        ctx.textAlign = "right";
+        ctx.fillText(info, this.game.stateOptions.gameBounds.right, textYpos);
+        //draw links to github, and props
     };
     GameState.prototype.keyDown = function (game, keyCode) {
+        if (this.game.stateOptions.pressedKeys[27]) {
+            //  Push the pause state.
+            this.pauseGame();
+        }
     };
     GameState.prototype.moveInvaders = function () {
         //Move the invaders
