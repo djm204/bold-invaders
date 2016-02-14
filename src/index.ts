@@ -47,7 +47,7 @@ var BIStateOptions: StateOptions = {
     height: 0,
     gameBounds: { left: 0, top: 0, right: 0, bottom: 0 },
     intervalId: 0,
-    score: 0,
+    
     level: 1,
     stateStack: [],
     pressedKeys: [],
@@ -60,7 +60,9 @@ var BIStateOptions: StateOptions = {
 
 var BIPlayerOptions: PlayerOptions = {
     rocketVelocity: 120,
-    rocketMaxFireRate: 2
+    rocketMaxFireRate: 2,
+    score: 0,
+    timesPlayed: 0
 }
 
 var BIEnemyOptions: EnemyOptions = {

@@ -5,9 +5,9 @@ export = GameState;
 const PAUSE_PREVENTER = 1;
 class GameState {
     constructor(
-        public game: boldInvaders, 
+        public game: boldInvaders,
         public levelIntroState: BoldInvaders.IntroState
-       ) {
+    ) {
 
     }
 
@@ -94,18 +94,21 @@ class GameState {
  
         //  Check for victory
         if (this.game.gameStateOptions.invaders.length === 0) {
-            this.game.stateOptions.score += this.game.stateOptions.level * 50;
+            this.game.playerOptions.timesPlayed++;
+            this.game.playerOptions.score += this.game.stateOptions.level * 50;
             this.game.stateOptions.level += 1;
             this.game.stateOptions.countDown = 3;
-            this.game.stateOptions.countDownMessage = 3;            
-            this.game.pushState(this.levelIntroState);
+            this.game.stateOptions.countDownMessage = 3;
+            this.game.resetGameVariables(false);
             
+            this.game.moveToState(this.levelIntroState);
+
             return;
         }
         
         //  Check for failure
         if (this.game.stateOptions.lives <= 0) {
-            this.game.moveToState(new GameOverState(this.levelIntroState,this.game, this.dt, this.ctx));
+            this.game.moveToState(new GameOverState(this.levelIntroState, this.game, this.dt, this.ctx));
             console.log("Game Over.");
         }
 
@@ -169,12 +172,12 @@ class GameState {
         //draw score and lives and level
         //  Draw info.
         var textYpos = this.game.stateOptions.gameBounds.bottom + ((this.game.stateOptions.height - this.game.stateOptions.gameBounds.bottom) / 2 + 20);
-        ctx.font="14px Arial";
+        ctx.font = "14px Arial";
         ctx.fillStyle = '#ffffff';
         var info = "Lives: " + this.game.stateOptions.lives;
         ctx.textAlign = "left";
         ctx.fillText(info, this.game.stateOptions.gameBounds.left, textYpos);
-        info = "Score: " + this.game.stateOptions.score + ", Level: " + this.game.stateOptions.level;
+        info = "Score: " + this.game.playerOptions.score + ", Level: " + this.game.stateOptions.level;
         ctx.textAlign = "right";
         ctx.fillText(info, this.game.stateOptions.gameBounds.right, textYpos);
         //draw links to github, and props
@@ -186,13 +189,13 @@ class GameState {
             
             this.pauseGame();
         }
-        
+
         if (this.game.stateOptions.pressedKeys[90]) {
             //  Push the pause state.
             
             this.game.stateOptions.lives = 0;
         }
-        
+
         if (this.game.stateOptions.pressedKeys[81]) {
             //  Push the pause state.
             
@@ -269,7 +272,7 @@ class GameState {
                     //  this rocket again.
                     this.game.gameStateOptions.rockets.splice(j--, 1);
                     bang = true;
-                    this.game.stateOptions.score += this.game.enemyOptions.pointsPerInvader;
+                    this.game.playerOptions.score += this.game.enemyOptions.pointsPerInvader;
                     break;
                 }
             }

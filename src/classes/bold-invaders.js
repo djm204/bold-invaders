@@ -41,61 +41,125 @@ var BoldInvaders = (function () {
         //  Start the game loop.
         this.stateOptions.intervalId = setInterval(function () { _this.gameLoop(_this); }, 1000 / this.boldOptions.fps);
     };
-    BoldInvaders.prototype.tryAgain = function () {
-        this.resetGameVariables();
-    };
-    BoldInvaders.prototype.resetGameVariables = function () {
-        // rest config 
-        this.boldOptions = {
-            gameWidth: 400,
-            gameHeight: 300,
-            fps: 50,
-            shipSpeed: 120,
-            debugMode: true,
-            levelDifficultyMultiplier: .2
-        };
-        this.stateOptions = {
-            lives: 3,
-            width: 0,
-            height: 0,
-            gameBounds: { left: 0, top: 0, right: 0, bottom: 0 },
-            intervalId: 0,
-            score: 0,
-            level: 1,
-            stateStack: [],
-            pressedKeys: [],
-            gameCanvas: this.stateOptions.gameCanvas,
-            sounds: [],
-            lastPauseTime: null,
-            countDown: 3,
-            countDownMessage: 3
-        };
-        this.playerOptions = {
-            rocketVelocity: 120,
-            rocketMaxFireRate: 2
-        };
-        this.enemyOptions = {
-            bombRate: 0.05,
-            bombMinVelocity: 50,
-            bombMaxVelocity: 50,
-            invaderInitialVelocity: 25,
-            invaderAcceleration: 0,
-            invaderDropDistance: 20,
-            invaderRanks: 5,
-            invaderFiles: 10,
-            pointsPerInvader: 5
-        };
-        this.gameStateOptions = {
-            ship: null,
-            invaders: [],
-            rockets: [],
-            bombs: [],
-            invaderCurrentVelocity: 1,
-            invaderCurrentDropDistance: 0,
-            invadersAreDropping: false,
-            lastRocketTime: 0,
-            firstEntry: true
-        };
+    BoldInvaders.prototype.resetGameVariables = function (resetAllVariables) {
+        if (!resetAllVariables) {
+            //reset for level advancement
+            this.boldOptions = {
+                gameWidth: 400,
+                gameHeight: 300,
+                fps: 50,
+                shipSpeed: 120,
+                debugMode: false,
+                levelDifficultyMultiplier: .2
+            };
+            this.stateOptions = {
+                lives: 3,
+                width: this.stateOptions.width,
+                height: this.stateOptions.height,
+                gameBounds: {
+                    left: this.stateOptions.gameBounds.left,
+                    top: this.stateOptions.gameBounds.top,
+                    right: this.stateOptions.gameBounds.right,
+                    bottom: this.stateOptions.gameBounds.bottom
+                },
+                intervalId: 0,
+                level: this.stateOptions.level,
+                stateStack: [],
+                pressedKeys: [],
+                gameCanvas: this.stateOptions.gameCanvas,
+                sounds: [],
+                lastPauseTime: null,
+                countDown: 3,
+                countDownMessage: 3
+            };
+            this.playerOptions = {
+                rocketVelocity: 120,
+                rocketMaxFireRate: 2,
+                score: this.playerOptions.score,
+                timesPlayed: this.playerOptions.timesPlayed
+            };
+            this.enemyOptions = {
+                bombRate: 0.05,
+                bombMinVelocity: 50,
+                bombMaxVelocity: 50,
+                invaderInitialVelocity: 25,
+                invaderAcceleration: 0,
+                invaderDropDistance: 20,
+                invaderRanks: 5,
+                invaderFiles: 10,
+                pointsPerInvader: 5
+            };
+            this.gameStateOptions = {
+                ship: null,
+                invaders: [],
+                rockets: [],
+                bombs: [],
+                invaderCurrentVelocity: 1,
+                invaderCurrentDropDistance: 0,
+                invadersAreDropping: false,
+                lastRocketTime: 0,
+                firstEntry: true
+            };
+        }
+        else {
+            // reset all variables to new game
+            this.boldOptions = {
+                gameWidth: 400,
+                gameHeight: 300,
+                fps: 50,
+                shipSpeed: 120,
+                debugMode: false,
+                levelDifficultyMultiplier: .2
+            };
+            this.stateOptions = {
+                lives: 3,
+                width: this.stateOptions.width,
+                height: this.stateOptions.height,
+                gameBounds: {
+                    left: this.stateOptions.gameBounds.left,
+                    top: this.stateOptions.gameBounds.top,
+                    right: this.stateOptions.gameBounds.right,
+                    bottom: this.stateOptions.gameBounds.bottom
+                },
+                intervalId: 0,
+                level: 1,
+                stateStack: [],
+                pressedKeys: [],
+                gameCanvas: this.stateOptions.gameCanvas,
+                sounds: [],
+                lastPauseTime: null,
+                countDown: 3,
+                countDownMessage: 3
+            };
+            this.playerOptions = {
+                rocketVelocity: 120,
+                rocketMaxFireRate: 2,
+                score: 0,
+                timesPlayed: 0
+            };
+            this.enemyOptions = {
+                bombRate: 0.05,
+                bombMinVelocity: 50,
+                bombMaxVelocity: 50,
+                invaderInitialVelocity: 25,
+                invaderAcceleration: 0,
+                invaderDropDistance: 20,
+                invaderRanks: 5,
+                invaderFiles: 10,
+                pointsPerInvader: 5
+            };
+            this.gameStateOptions = {
+                ship: null,
+                invaders: [],
+                rockets: [],
+                bombs: [],
+                invaderCurrentVelocity: 1,
+                invaderCurrentDropDistance: 0,
+                invadersAreDropping: false,
+                lastRocketTime: 0,
+                firstEntry: true
+            };
+        }
     };
     BoldInvaders.prototype.currentState = function () {
         return this.stateOptions.stateStack.length > 0 ? this.stateOptions.stateStack[this.stateOptions.stateStack.length - 1] : null;

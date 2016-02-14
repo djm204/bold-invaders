@@ -66,11 +66,13 @@ var GameState = (function () {
         this.hitShipCheck();
         //  Check for victory
         if (this.game.gameStateOptions.invaders.length === 0) {
-            this.game.stateOptions.score += this.game.stateOptions.level * 50;
+            this.game.playerOptions.timesPlayed++;
+            this.game.playerOptions.score += this.game.stateOptions.level * 50;
             this.game.stateOptions.level += 1;
             this.game.stateOptions.countDown = 3;
             this.game.stateOptions.countDownMessage = 3;
-            this.game.pushState(this.levelIntroState);
+            this.game.resetGameVariables(false);
+            this.game.moveToState(this.levelIntroState);
             return;
         }
         //  Check for failure
@@ -123,7 +125,7 @@ var GameState = (function () {
         var info = "Lives: " + this.game.stateOptions.lives;
         ctx.textAlign = "left";
         ctx.fillText(info, this.game.stateOptions.gameBounds.left, textYpos);
-        info = "Score: " + this.game.stateOptions.score + ", Level: " + this.game.stateOptions.level;
+        info = "Score: " + this.game.playerOptions.score + ", Level: " + this.game.stateOptions.level;
         ctx.textAlign = "right";
         ctx.fillText(info, this.game.stateOptions.gameBounds.right, textYpos);
         //draw links to github, and props
@@ -204,7 +206,7 @@ var GameState = (function () {
                     //  this rocket again.
                     this.game.gameStateOptions.rockets.splice(j--, 1);
                     bang = true;
-                    this.game.stateOptions.score += this.game.enemyOptions.pointsPerInvader;
+                    this.game.playerOptions.score += this.game.enemyOptions.pointsPerInvader;
                     break;
                 }
             }

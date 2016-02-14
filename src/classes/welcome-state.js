@@ -29,7 +29,7 @@ var WelcomeState = (function () {
         if (keyCode == 32) {
             //  Space starts the game. 
             var options = { level: 1, countDown: 3, countDownMessage: 3, ctx: this.ctx };
-            game.moveToState(new levelIntroState(game, this.ctx));
+            game.moveToState(new levelIntroState(game));
         }
     };
     return WelcomeState;

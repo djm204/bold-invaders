@@ -33,7 +33,9 @@ declare namespace BoldInvaders {
 
     export interface Player {
         rocketVelocity: number,
-        rocketMaxFireRate: number
+        rocketMaxFireRate: number,
+        score: number,
+        timesPlayed: number        
     }
 
     export interface Enemy {
@@ -55,7 +57,6 @@ declare namespace BoldInvaders {
         height: number,
         gameBounds: { left: number, top: number, right: number, bottom: number },
         intervalId: any,
-        score: number,
         level: number,
         stateStack: Array<any>,
         pressedKeys: Array<boolean>,

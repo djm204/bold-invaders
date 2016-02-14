@@ -5,30 +5,30 @@ export = LevelIntroState;
 class LevelIntroState {
 
 
-    constructor(
-        public game: boldInvaders,
-        public ctx: CanvasRenderingContext2D
-        ) {
-
+    constructor( game: boldInvaders);
+    constructor(public game: boldInvaders, public gameState?: GameState){
     }
-
+    
+    
 
     draw() {
+        var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
+        
         if (this.game.stateOptions.countDownMessage == null) {
             this.game.stateOptions.countDownMessage = 3;
         }
-        console.log(this.ctx);
+        console.log(ctx);
         //  Clear the background.
-        this.ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
+        ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
 
-        this.ctx.font = "36px Arial";
-        this.ctx.fillStyle = '#ffffff';
-        this.ctx.textBaseline = "middle";
+        ctx.font = "36px Arial";
+        ctx.fillStyle = '#ffffff';
+        ctx.textBaseline = "middle";
 
-        this.ctx.textAlign = "center";
-        this.ctx.fillText("Level " + this.game.stateOptions.level, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2);
-        this.ctx.font = "24px Arial";
-        this.ctx.fillText("Ready in " + this.game.stateOptions.countDownMessage, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2 + 36);
+        ctx.textAlign = "center";
+        ctx.fillText("Level " + this.game.stateOptions.level, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2);
+        ctx.font = "24px Arial";
+        ctx.fillText("Ready in " + this.game.stateOptions.countDownMessage, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2 + 36);
 
     }
 
@@ -48,7 +48,11 @@ class LevelIntroState {
         }
         if (this.game.stateOptions.countDown <= 0) {
             //  Move to the next level, popping this state.
+            
+            
             this.game.moveToState(new GameState(this.game, this));
+                
+            
             console.log("counted to zero");
         }
         console.log(this.game.stateOptions.countDown + " message: " + this.game.stateOptions.countDownMessage);

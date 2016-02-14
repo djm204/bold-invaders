@@ -18,7 +18,7 @@ class GameOverState {
     this.ctx.textAlign="center"; 
     this.ctx.fillText("Game Over!", this.game.stateOptions.width / 2, this.game.stateOptions.height/2 - 40); 
     this.ctx.font="16px Arial";
-    this.ctx.fillText("You scored " + this.game.stateOptions.score + " and got to level " + this.game.stateOptions.level, this.game.stateOptions.width / 2, this.game.stateOptions.height/2);
+    this.ctx.fillText("You scored " + this.game.playerOptions.score + " and got to level " + this.game.stateOptions.level, this.game.stateOptions.width / 2, this.game.stateOptions.height/2);
     this.ctx.font="16px Arial";
     this.ctx.fillText("Press 'Space' to play again.", this.game.stateOptions.width / 2, this.game.stateOptions.height/2 + 40);   
         
@@ -28,7 +28,8 @@ class GameOverState {
 
     keyDown(game: boldInvaders,keyCode: number) {
         if (keyCode == 32) /*space*/ {
-            game.resetGameVariables();
+            game.playerOptions.timesPlayed++;
+            game.resetGameVariables(true);
             console.log(this.gameState);
             game.pushState(this.gameState);
            

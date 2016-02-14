@@ -1,23 +1,24 @@
 var GameState = require('./game-state');
 var LevelIntroState = (function () {
-    function LevelIntroState(game, ctx) {
+    function LevelIntroState(game, gameState) {
         this.game = game;
-        this.ctx = ctx;
+        this.gameState = gameState;
     }
     LevelIntroState.prototype.draw = function () {
+        var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
         if (this.game.stateOptions.countDownMessage == null) {
             this.game.stateOptions.countDownMessage = 3;
         }
-        console.log(this.ctx);
+        console.log(ctx);
         //  Clear the background.
-        this.ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
-        this.ctx.font = "36px Arial";
-        this.ctx.fillStyle = '#ffffff';
-        this.ctx.textBaseline = "middle";
-        this.ctx.textAlign = "center";
-        this.ctx.fillText("Level " + this.game.stateOptions.level, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2);
-        this.ctx.font = "24px Arial";
-        this.ctx.fillText("Ready in " + this.game.stateOptions.countDownMessage, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2 + 36);
+        ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
+        ctx.font = "36px Arial";
+        ctx.fillStyle = '#ffffff';
+        ctx.textBaseline = "middle";
+        ctx.textAlign = "center";
+        ctx.fillText("Level " + this.game.stateOptions.level, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2);
+        ctx.font = "24px Arial";
+        ctx.fillText("Ready in " + this.game.stateOptions.countDownMessage, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2 + 36);
     };
     LevelIntroState.prototype.update = function () {
         //  Update the countDown.
