@@ -131,6 +131,10 @@ var GameState = (function () {
             //  Push the pause state.
             this.pauseGame();
         }
+        if (this.game.stateOptions.pressedKeys[90]) {
+            //  Push the pause state.
+            this.game.stateOptions.lives = 0;
+        }
     };
     GameState.prototype.moveInvaders = function () {
         //Move the invaders

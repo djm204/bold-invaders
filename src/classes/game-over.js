@@ -23,6 +23,7 @@ var GameOverState = (function () {
             game.stateOptions.lives = 3;
             game.stateOptions.score = 0;
             game.stateOptions.level = 1;
+            console.log(this.gameState);
             game.pushState(this.gameState);
         }
     };

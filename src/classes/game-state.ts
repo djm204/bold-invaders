@@ -4,7 +4,7 @@ import GameOverState = require('./game-over');
 export = GameState;
 const PAUSE_PREVENTER = 1;
 class GameState {
-    constructor(public game: boldInvaders, public levelIntroState: BoldInvaders.GameState) {
+    constructor(public game: boldInvaders, public levelIntroState: BoldInvaders.IntroState) {
 
     }
 
@@ -180,6 +180,12 @@ class GameState {
             //  Push the pause state.
             
             this.pauseGame();
+        }
+        
+        if (this.game.stateOptions.pressedKeys[90]) {
+            //  Push the pause state.
+            
+            this.game.stateOptions.lives = 0;
         }
     }
     moveInvaders(): void {
