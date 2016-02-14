@@ -853,12 +853,14 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var PauseState = __webpack_require__(10);
+	var LevelIntroState = __webpack_require__(8);
 	var GameOverState = __webpack_require__(11);
 	var PAUSE_PREVENTER = 1;
 	var GameState = (function () {
 	    function GameState(game) {
 	        this.game = game;
 	        this.dt = 1000 / this.game.boldOptions.fps;
+	        this.ctx = this.game.stateOptions.gameCanvas.getContext("2d");
 	    }
 	    GameState.prototype.enter = function () {
 	        this.game.gameStateOptions.firstEntry = false;
@@ -918,16 +920,14 @@
 	        this.hitShipCheck();
 	        //  Check for failure
 	        if (this.game.stateOptions.lives <= 0) {
-	            var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
-	            this.game.moveToState(new GameOverState(this.game, this.dt, ctx));
+	            this.game.moveToState(new GameOverState(this.game, this.dt, this.ctx));
 	            console.log("Game Over.");
 	        }
 	        //  Check for victory
 	        if (this.game.gameStateOptions.invaders.length === 0) {
 	            this.game.stateOptions.score += this.game.stateOptions.level * 50;
 	            this.game.stateOptions.level += 1;
-	            //this.game.moveToState(new LevelIntroState(game.level));
-	            console.log("Next Level");
+	            this.game.moveToState(new LevelIntroState(1, this.game, 1 / (this.game.boldOptions.fps), this.ctx));
 	            return;
 	        }
 	        this.draw();
