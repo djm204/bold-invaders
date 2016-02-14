@@ -60,7 +60,7 @@ class GameState {
 
     update() {
         /*var ctx = this.game.stateOptions.gameCanvas.getContext("2d");*/
-         if(this.game.stateOptions.pressedKeys[37]) {
+        if (this.game.stateOptions.pressedKeys[37]) {
             this.game.gameStateOptions.ship.x -= this.game.boldOptions.shipSpeed / 100;
         }
         if (this.game.stateOptions.pressedKeys[39]) {
@@ -69,7 +69,7 @@ class GameState {
         if (this.game.stateOptions.pressedKeys[32]) {
             this.fireRocket();
         }
-        if(this.game.stateOptions.pressedKeys[27]) {
+        if (this.game.stateOptions.pressedKeys[27]) {
             //  Push the pause state.
             
             this.pauseGame();
@@ -113,13 +113,13 @@ class GameState {
         //  Clear the background.
         var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
         ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
-        
+
         ctx.strokeStyle = "#FFFFFF";
         ctx.strokeRect(
-            this.game.stateOptions.gameBounds.left,
-        this.game.stateOptions.gameBounds.top, 
-        this.game.stateOptions.gameBounds.right, 
-        this.game.stateOptions.gameBounds.bottom);
+            this.game.stateOptions.gameBounds.left - 13,
+            this.game.stateOptions.gameBounds.top - 20,
+            this.game.stateOptions.gameBounds.right - 120,
+            this.game.stateOptions.gameBounds.bottom - 30);
 
         //  Draw ship.
         ctx.fillStyle = '#ff0000';
@@ -164,8 +164,8 @@ class GameState {
         }
     }
 
-    keyDown(game: boldInvaders, keyCode: number){
-       
+    keyDown(game: boldInvaders, keyCode: number) {
+
     }
     moveInvaders(): void {
         //Move the invaders
@@ -325,16 +325,16 @@ class GameState {
             this.game.gameStateOptions.lastRocketTime = (new Date()).valueOf();
         }
     }
-    
+
     pauseGame() {
-       var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
-       
-       
-       if(this.game.stateOptions.lastPauseTime === null ||  ((new Date()).valueOf() - this.game.gameStateOptions.lastRocketTime) > (1000 / PAUSE_PREVENTER)) {
+        var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
+
+
+        if (this.game.stateOptions.lastPauseTime === null || ((new Date()).valueOf() - this.game.gameStateOptions.lastRocketTime) > (1000 / PAUSE_PREVENTER)) {
             this.game.stateOptions.lastPauseTime = (new Date()).valueOf();
             this.game.pushState(new PauseState(this, this.game, 1000 / this.game.boldOptions.fps, ctx));
-           
-       }
+
+        }
     }
 
 

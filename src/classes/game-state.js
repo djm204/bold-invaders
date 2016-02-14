@@ -87,7 +87,7 @@ var GameState = (function () {
         var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
         ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
         ctx.strokeStyle = "#FFFFFF";
-        ctx.strokeRect(this.game.stateOptions.gameBounds.left, this.game.stateOptions.gameBounds.top, this.game.stateOptions.gameBounds.right, this.game.stateOptions.gameBounds.bottom);
+        ctx.strokeRect(this.game.stateOptions.gameBounds.left - 13, this.game.stateOptions.gameBounds.top - 20, this.game.stateOptions.gameBounds.right - 120, this.game.stateOptions.gameBounds.bottom - 30);
         //  Draw ship.
         ctx.fillStyle = '#ff0000';
         ctx.fillRect(this.game.gameStateOptions.ship.x - (this.game.gameStateOptions.ship.width / 2), this.game.gameStateOptions.ship.y - (this.game.gameStateOptions.ship.height / 2), this.game.gameStateOptions.ship.width, this.game.gameStateOptions.ship.height);
