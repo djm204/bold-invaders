@@ -20,9 +20,7 @@ var GameOverState = (function () {
     };
     GameOverState.prototype.keyDown = function (game, keyCode) {
         if (keyCode == 32) {
-            game.stateOptions.lives = 3;
-            game.stateOptions.score = 0;
-            game.stateOptions.level = 1;
+            game.resetGameVariables();
             console.log(this.gameState);
             game.pushState(this.gameState);
         }

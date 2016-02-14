@@ -53,7 +53,9 @@ var BIStateOptions: StateOptions = {
     pressedKeys: [],
     gameCanvas: null,
     sounds: [],
-    lastPauseTime: null
+    lastPauseTime: null,
+    countDown: 3,
+    countDownMessage: 3
 }
 
 var BIPlayerOptions: PlayerOptions = {
@@ -82,7 +84,8 @@ var BIPlayStateOptions: PlayStateOptions = {
     invaderCurrentDropDistance: 0,
     invadersAreDropping: false,
     lastRocketTime: 0,
-    firstEntry: true
+    firstEntry: true,
+    
 }
 
 var canvas = <HTMLCanvasElement>document.getElementById("gameCanvas");

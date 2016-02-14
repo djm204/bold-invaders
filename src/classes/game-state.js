@@ -68,7 +68,9 @@ var GameState = (function () {
         if (this.game.gameStateOptions.invaders.length === 0) {
             this.game.stateOptions.score += this.game.stateOptions.level * 50;
             this.game.stateOptions.level += 1;
-            this.game.moveToState(this.levelIntroState);
+            this.game.stateOptions.countDown = 3;
+            this.game.stateOptions.countDownMessage = 3;
+            this.game.pushState(this.levelIntroState);
             return;
         }
         //  Check for failure
@@ -134,6 +136,10 @@ var GameState = (function () {
         if (this.game.stateOptions.pressedKeys[90]) {
             //  Push the pause state.
             this.game.stateOptions.lives = 0;
+        }
+        if (this.game.stateOptions.pressedKeys[81]) {
+            //  Push the pause state.
+            this.game.gameStateOptions.invaders = [];
         }
     };
     GameState.prototype.moveInvaders = function () {

@@ -84,7 +84,9 @@
 	    pressedKeys: [],
 	    gameCanvas: null,
 	    sounds: [],
-	    lastPauseTime: null
+	    lastPauseTime: null,
+	    countDown: 3,
+	    countDownMessage: 3
 	};
 	var BIPlayerOptions = {
 	    rocketVelocity: 120,
@@ -110,7 +112,7 @@
 	    invaderCurrentDropDistance: 0,
 	    invadersAreDropping: false,
 	    lastRocketTime: 0,
-	    firstEntry: true
+	    firstEntry: true,
 	};
 	var canvas = document.getElementById("gameCanvas");
 	var boldInvaders = new BoldInvaders(BIOptions, BIPlayerOptions, BIEnemyOptions, BIPlayStateOptions, BIStateOptions);
@@ -637,7 +639,9 @@
 	            pressedKeys: [],
 	            gameCanvas: this.stateOptions.gameCanvas,
 	            sounds: [],
-	            lastPauseTime: null
+	            lastPauseTime: null,
+	            countDown: 3,
+	            countDownMessage: 3
 	        };
 	        this.playerOptions = {
 	            rocketVelocity: 120,
@@ -786,8 +790,9 @@
 	    };
 	    WelcomeState.prototype.keyDown = function (game, keyCode) {
 	        if (keyCode == 32) {
-	            //  Space starts the game.  
-	            game.moveToState(new levelIntroState(this.game.stateOptions.level, game, this.ctx));
+	            //  Space starts the game. 
+	            var options = { level: 1, countDown: 3, countDownMessage: 3, ctx: this.ctx };
+	            game.moveToState(new levelIntroState(game, this.ctx));
 	        }
 	    };
 	    return WelcomeState;
@@ -801,14 +806,13 @@
 
 	var GameState = __webpack_require__(9);
 	var LevelIntroState = (function () {
-	    function LevelIntroState(level, game, ctx) {
-	        this.level = level;
+	    function LevelIntroState(game, ctx) {
 	        this.game = game;
 	        this.ctx = ctx;
 	    }
 	    LevelIntroState.prototype.draw = function () {
-	        if (this.countDownMessage == null) {
-	            this.countDownMessage = 3;
+	        if (this.game.stateOptions.countDownMessage == null) {
+	            this.game.stateOptions.countDownMessage = 3;
 	        }
 	        console.log(this.ctx);
 	        //  Clear the background.
@@ -819,27 +823,27 @@
 	        this.ctx.textAlign = "center";
 	        this.ctx.fillText("Level " + this.game.stateOptions.level, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2);
 	        this.ctx.font = "24px Arial";
-	        this.ctx.fillText("Ready in " + this.countDownMessage, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2 + 36);
+	        this.ctx.fillText("Ready in " + this.game.stateOptions.countDownMessage, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2 + 36);
 	    };
 	    LevelIntroState.prototype.update = function () {
-	        //  Update the countdown.
-	        if (this.countdown == null) {
-	            this.countdown = 3; // countdown from 3 secs
+	        //  Update the countDown.
+	        if (this.game.stateOptions.countDown == null) {
+	            this.game.stateOptions.countDown = 3; // countDown from 3 secs
 	        }
-	        if (this.countdown <= 2) {
-	            this.countDownMessage = 2;
+	        if (this.game.stateOptions.countDown <= 2) {
+	            this.game.stateOptions.countDownMessage = 2;
 	        }
-	        if (this.countdown <= 1) {
-	            this.countDownMessage = 1;
+	        if (this.game.stateOptions.countDown <= 1) {
+	            this.game.stateOptions.countDownMessage = 1;
 	        }
-	        if (this.countdown <= 0) {
+	        if (this.game.stateOptions.countDown <= 0) {
 	            //  Move to the next level, popping this state.
 	            this.game.moveToState(new GameState(this.game, this));
 	            console.log("counted to zero");
 	        }
-	        console.log(this.countdown + " message: " + this.countDownMessage);
+	        console.log(this.game.stateOptions.countDown + " message: " + this.game.stateOptions.countDownMessage);
 	        this.draw();
-	        this.countdown -= .03;
+	        this.game.stateOptions.countDown -= .03;
 	    };
 	    return LevelIntroState;
 	})();
@@ -920,7 +924,9 @@
 	        if (this.game.gameStateOptions.invaders.length === 0) {
 	            this.game.stateOptions.score += this.game.stateOptions.level * 50;
 	            this.game.stateOptions.level += 1;
-	            this.game.moveToState(this.levelIntroState);
+	            this.game.stateOptions.countDown = 3;
+	            this.game.stateOptions.countDownMessage = 3;
+	            this.game.pushState(this.levelIntroState);
 	            return;
 	        }
 	        //  Check for failure
@@ -986,6 +992,10 @@
 	        if (this.game.stateOptions.pressedKeys[90]) {
 	            //  Push the pause state.
 	            this.game.stateOptions.lives = 0;
+	        }
+	        if (this.game.stateOptions.pressedKeys[81]) {
+	            //  Push the pause state.
+	            this.game.gameStateOptions.invaders = [];
 	        }
 	    };
 	    GameState.prototype.moveInvaders = function () {
@@ -1206,9 +1216,7 @@
 	    };
 	    GameOverState.prototype.keyDown = function (game, keyCode) {
 	        if (keyCode == 32) {
-	            game.stateOptions.lives = 3;
-	            game.stateOptions.score = 0;
-	            game.stateOptions.level = 1;
+	            game.resetGameVariables();
 	            console.log(this.gameState);
 	            game.pushState(this.gameState);
 	        }

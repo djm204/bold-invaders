@@ -93,7 +93,9 @@ class BoldInvaders {
             pressedKeys: [],
             gameCanvas: this.stateOptions.gameCanvas,
             sounds: [],
-            lastPauseTime: null
+            lastPauseTime: null,
+            countDown: 3,
+            countDownMessage: 3
         }
 
         this.playerOptions = {

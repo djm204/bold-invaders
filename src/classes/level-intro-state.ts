@@ -3,17 +3,19 @@ import GameState = require('./game-state');
 export = LevelIntroState;
 
 class LevelIntroState {
-    countdown: number;
-    countDownMessage: number;
 
-    constructor(public level: number, public game: boldInvaders, public ctx: CanvasRenderingContext2D) {
+
+    constructor(
+        public game: boldInvaders,
+        public ctx: CanvasRenderingContext2D
+        ) {
 
     }
 
 
     draw() {
-        if (this.countDownMessage == null) {
-            this.countDownMessage = 3;
+        if (this.game.stateOptions.countDownMessage == null) {
+            this.game.stateOptions.countDownMessage = 3;
         }
         console.log(this.ctx);
         //  Clear the background.
@@ -22,36 +24,36 @@ class LevelIntroState {
         this.ctx.font = "36px Arial";
         this.ctx.fillStyle = '#ffffff';
         this.ctx.textBaseline = "middle";
-        
+
         this.ctx.textAlign = "center";
         this.ctx.fillText("Level " + this.game.stateOptions.level, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2);
         this.ctx.font = "24px Arial";
-        this.ctx.fillText("Ready in " + this.countDownMessage, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2 + 36);
+        this.ctx.fillText("Ready in " + this.game.stateOptions.countDownMessage, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2 + 36);
 
     }
 
     update() {
 
-        //  Update the countdown.
-        if (this.countdown == null) {
+        //  Update the countDown.
+        if (this.game.stateOptions.countDown == null) {
 
-            this.countdown = 3; // countdown from 3 secs
+            this.game.stateOptions.countDown = 3; // countDown from 3 secs
         }
 
-        if (this.countdown <= 2) {
-            this.countDownMessage = 2;
+        if (this.game.stateOptions.countDown <= 2) {
+            this.game.stateOptions.countDownMessage = 2;
         }
-        if (this.countdown <= 1) {
-            this.countDownMessage = 1;
+        if (this.game.stateOptions.countDown <= 1) {
+            this.game.stateOptions.countDownMessage = 1;
         }
-        if (this.countdown <= 0) {
+        if (this.game.stateOptions.countDown <= 0) {
             //  Move to the next level, popping this state.
             this.game.moveToState(new GameState(this.game, this));
             console.log("counted to zero");
         }
-        console.log(this.countdown + " message: " + this.countDownMessage);
+        console.log(this.game.stateOptions.countDown + " message: " + this.game.stateOptions.countDownMessage);
         this.draw();
-        this.countdown -= .03;
+        this.game.stateOptions.countDown -= .03;
 
     }
 

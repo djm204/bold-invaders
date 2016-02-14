@@ -1,13 +1,12 @@
 var GameState = require('./game-state');
 var LevelIntroState = (function () {
-    function LevelIntroState(level, game, ctx) {
-        this.level = level;
+    function LevelIntroState(game, ctx) {
         this.game = game;
         this.ctx = ctx;
     }
     LevelIntroState.prototype.draw = function () {
-        if (this.countDownMessage == null) {
-            this.countDownMessage = 3;
+        if (this.game.stateOptions.countDownMessage == null) {
+            this.game.stateOptions.countDownMessage = 3;
         }
         console.log(this.ctx);
         //  Clear the background.
@@ -18,27 +17,27 @@ var LevelIntroState = (function () {
         this.ctx.textAlign = "center";
         this.ctx.fillText("Level " + this.game.stateOptions.level, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2);
         this.ctx.font = "24px Arial";
-        this.ctx.fillText("Ready in " + this.countDownMessage, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2 + 36);
+        this.ctx.fillText("Ready in " + this.game.stateOptions.countDownMessage, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2 + 36);
     };
     LevelIntroState.prototype.update = function () {
-        //  Update the countdown.
-        if (this.countdown == null) {
-            this.countdown = 3; // countdown from 3 secs
+        //  Update the countDown.
+        if (this.game.stateOptions.countDown == null) {
+            this.game.stateOptions.countDown = 3; // countDown from 3 secs
         }
-        if (this.countdown <= 2) {
-            this.countDownMessage = 2;
+        if (this.game.stateOptions.countDown <= 2) {
+            this.game.stateOptions.countDownMessage = 2;
         }
-        if (this.countdown <= 1) {
-            this.countDownMessage = 1;
+        if (this.game.stateOptions.countDown <= 1) {
+            this.game.stateOptions.countDownMessage = 1;
         }
-        if (this.countdown <= 0) {
+        if (this.game.stateOptions.countDown <= 0) {
             //  Move to the next level, popping this state.
             this.game.moveToState(new GameState(this.game, this));
             console.log("counted to zero");
         }
-        console.log(this.countdown + " message: " + this.countDownMessage);
+        console.log(this.game.stateOptions.countDown + " message: " + this.game.stateOptions.countDownMessage);
         this.draw();
-        this.countdown -= .03;
+        this.game.stateOptions.countDown -= .03;
     };
     return LevelIntroState;
 })();

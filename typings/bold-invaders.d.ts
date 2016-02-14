@@ -61,7 +61,9 @@ declare namespace BoldInvaders {
         pressedKeys: Array<boolean>,
         gameCanvas: HTMLCanvasElement,
         sounds: Array<Sounds>,
-        lastPauseTime: number
+        lastPauseTime: number,
+        countDown: number,
+        countDownMessage: number
     }
 
 
@@ -83,6 +85,7 @@ declare namespace BoldInvaders {
         invadersAreDropping: boolean,
         lastRocketTime: number,
         firstEntry: boolean
+        
 
     }
 
@@ -130,15 +133,12 @@ declare namespace BoldInvaders {
     }
 
     interface IntroState {
-        level: number,
-        game: Game,
-        ctx: CanvasRenderingContext2D,
-        countdown: number;
-        countDownMessage: number;
+        
         update: () => any;
         draw: () => any;
         
     }
+    
     
     interface WelcomeState {
         draw: () => any;
@@ -151,13 +151,7 @@ declare namespace BoldInvaders {
         
     }
     
-    interface Game{
-        boldOptions: BoldInvaders.GameOptions;
-        playerOptions: BoldInvaders.Player;
-        enemyOptions: BoldInvaders.Enemy;
-        gameStateOptions: BoldInvaders.GameStateOptions;
-        stateOptions: BoldInvaders.StateOptions;
-    }
+    
 
 type GameState = PlayState | OverState | IntroState | WelcomeState | PauseState;
 

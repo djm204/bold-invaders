@@ -4,7 +4,10 @@ import GameOverState = require('./game-over');
 export = GameState;
 const PAUSE_PREVENTER = 1;
 class GameState {
-    constructor(public game: boldInvaders, public levelIntroState: BoldInvaders.IntroState) {
+    constructor(
+        public game: boldInvaders, 
+        public levelIntroState: BoldInvaders.IntroState
+       ) {
 
     }
 
@@ -93,14 +96,16 @@ class GameState {
         if (this.game.gameStateOptions.invaders.length === 0) {
             this.game.stateOptions.score += this.game.stateOptions.level * 50;
             this.game.stateOptions.level += 1;
-            this.game.moveToState(this.levelIntroState);
+            this.game.stateOptions.countDown = 3;
+            this.game.stateOptions.countDownMessage = 3;            
+            this.game.pushState(this.levelIntroState);
             
             return;
         }
         
         //  Check for failure
         if (this.game.stateOptions.lives <= 0) {
-            this.game.moveToState(new GameOverState(this.levelIntroState, this.game, this.dt, this.ctx));
+            this.game.moveToState(new GameOverState(this.levelIntroState,this.game, this.dt, this.ctx));
             console.log("Game Over.");
         }
 
@@ -186,6 +191,12 @@ class GameState {
             //  Push the pause state.
             
             this.game.stateOptions.lives = 0;
+        }
+        
+        if (this.game.stateOptions.pressedKeys[81]) {
+            //  Push the pause state.
+            
+            this.game.gameStateOptions.invaders = [];
         }
     }
     moveInvaders(): void {

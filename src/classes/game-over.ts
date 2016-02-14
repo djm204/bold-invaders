@@ -2,7 +2,11 @@ import boldInvaders = require('./bold-invaders');
 export = GameOverState;
 class GameOverState {
 
-    constructor(public gameState: BoldInvaders.IntroState, public game: boldInvaders, public dt: number, public ctx: CanvasRenderingContext2D) { }
+    constructor(
+        public gameState: BoldInvaders.IntroState, 
+        public game: boldInvaders, 
+        public dt: number, 
+        public ctx: CanvasRenderingContext2D) { }
     
     draw(){
         //  Clear the background.
@@ -24,9 +28,7 @@ class GameOverState {
 
     keyDown(game: boldInvaders,keyCode: number) {
         if (keyCode == 32) /*space*/ {
-            game.stateOptions.lives = 3;
-            game.stateOptions.score = 0;
-            game.stateOptions.level = 1;
+            game.resetGameVariables();
             console.log(this.gameState);
             game.pushState(this.gameState);
            

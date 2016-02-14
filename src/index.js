@@ -38,7 +38,9 @@ var BIStateOptions = {
     pressedKeys: [],
     gameCanvas: null,
     sounds: [],
-    lastPauseTime: null
+    lastPauseTime: null,
+    countDown: 3,
+    countDownMessage: 3
 };
 var BIPlayerOptions = {
     rocketVelocity: 120,
@@ -64,7 +66,7 @@ var BIPlayStateOptions = {
     invaderCurrentDropDistance: 0,
     invadersAreDropping: false,
     lastRocketTime: 0,
-    firstEntry: true
+    firstEntry: true,
 };
 var canvas = document.getElementById("gameCanvas");
 var boldInvaders = new BoldInvaders(BIOptions, BIPlayerOptions, BIEnemyOptions, BIPlayStateOptions, BIStateOptions);
