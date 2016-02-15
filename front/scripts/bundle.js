@@ -70,7 +70,7 @@
 	    fps: 50,
 	    shipSpeed: 120,
 	    debugMode: true,
-	    levelDifficultyMultiplier: .4
+	    levelDifficultyMultiplier: .6
 	};
 	var BIStateOptions = {
 	    lives: 3,
@@ -91,7 +91,8 @@
 	    rocketVelocity: 120,
 	    rocketMaxFireRate: 2,
 	    score: 0,
-	    timesPlayed: 0
+	    timesPlayed: 0,
+	    win: false
 	};
 	var BIEnemyOptions = {
 	    bombRate: 0.05,
@@ -650,7 +651,8 @@
 	                rocketVelocity: 120,
 	                rocketMaxFireRate: 2,
 	                score: this.playerOptions.score,
-	                timesPlayed: this.playerOptions.timesPlayed
+	                timesPlayed: this.playerOptions.timesPlayed,
+	                win: this.playerOptions.win
 	            };
 	            this.enemyOptions = {
 	                bombRate: 0.05,
@@ -709,7 +711,8 @@
 	                rocketVelocity: 120,
 	                rocketMaxFireRate: 2,
 	                score: 0,
-	                timesPlayed: 0
+	                timesPlayed: 0,
+	                win: false
 	            };
 	            this.enemyOptions = {
 	                bombRate: 0.05,
@@ -874,6 +877,8 @@
 	        if (this.game.stateOptions.countDownMessage == null) {
 	            this.game.stateOptions.countDownMessage = 3;
 	        }
+	        if (this.game.playerOptions.win) {
+	        }
 	        //  Clear the background.
 	        ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
 	        ctx.font = "36px Arial";
@@ -896,7 +901,8 @@
 	            this.game.stateOptions.countDownMessage = 1;
 	        }
 	        if (this.game.stateOptions.countDown <= 0) {
-	            //  Move to the next level, popping this state.  
+	            //  Move to the next level, popping this state.
+	            this.game.playerOptions.win = false;
 	            this.game.moveToState(new GameState(this.game, this));
 	        }
 	        this.draw();
@@ -985,6 +991,7 @@
 	            this.game.stateOptions.countDown = 3;
 	            this.game.stateOptions.countDownMessage = 3;
 	            this.game.resetGameVariables(false);
+	            this.game.playerOptions.win = true;
 	            this.game.moveToState(this.levelIntroState);
 	        }
 	        //  Check for failure
@@ -1038,6 +1045,21 @@
 	        info = "Score: " + this.game.playerOptions.score + ", Level: " + this.game.stateOptions.level;
 	        ctx.textAlign = "right";
 	        ctx.fillText(info, this.game.stateOptions.gameBounds.right, textYpos);
+	        //Draw the pirates
+	        var pirates = Array(8);
+	        var imageAttributes = { offSetX: 50, offSetY: 50, width: 45, height: 57, };
+	        for (var k = 0; k < pirates.length; k++) {
+	            pirates[k] = new Image();
+	            pirates[k].src = "images/pirate" + (k + 1) + ".png";
+	            if (k % 2 === 0) {
+	                imageAttributes.offSetX = 600;
+	                imageAttributes.offSetY += 100;
+	            }
+	            else {
+	                imageAttributes.offSetX = 50;
+	            }
+	            ctx.drawImage(pirates[k], imageAttributes.offSetX, imageAttributes.offSetY, imageAttributes.width, imageAttributes.height);
+	        }
 	    };
 	    GameState.prototype.keyDown = function (game, keyCode) {
 	        if (this.game.stateOptions.pressedKeys[27]) {

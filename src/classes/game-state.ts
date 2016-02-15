@@ -87,6 +87,8 @@ class GameState {
             this.game.stateOptions.countDown = 3;
             this.game.stateOptions.countDownMessage = 3;
             this.game.resetGameVariables(false);
+            this.game.playerOptions.win = true;  
+
             this.game.moveToState(this.levelIntroState);
         }
         
@@ -159,7 +161,30 @@ class GameState {
         ctx.fillText(info, this.game.stateOptions.gameBounds.left, textYpos);
         info = "Score: " + this.game.playerOptions.score + ", Level: " + this.game.stateOptions.level;
         ctx.textAlign = "right";
-        ctx.fillText(info, this.game.stateOptions.gameBounds.right, textYpos);        
+        ctx.fillText(info, this.game.stateOptions.gameBounds.right, textYpos);   
+        
+        //Draw the pirates
+        var pirates = Array(8);
+        var imageAttributes = { offSetX: 50, offSetY: 50, width: 45, height: 57, }
+        for (var k = 0; k < pirates.length; k++) {
+            pirates[k] = new Image();
+            pirates[k].src = "images/pirate" + (k+1) + ".png";
+
+            if (k % 2 === 0) {
+               
+                imageAttributes.offSetX = 600;
+                imageAttributes.offSetY += 100;
+                
+                
+            } else {
+                imageAttributes.offSetX = 50;
+                
+            }
+            
+            
+            
+            ctx.drawImage(pirates[k], imageAttributes.offSetX, imageAttributes.offSetY, imageAttributes.width, imageAttributes.height);
+        }
     }
 
     keyDown(game: boldInvaders, keyCode: number) {
@@ -180,7 +205,7 @@ class GameState {
         }
 
     }
-    
+
     moveInvaders(): void {
         //Move the invaders
         var hitLeft = false, hitRight = false, hitBottom = false;

@@ -14,6 +14,10 @@ class LevelIntroState {
         if (this.game.stateOptions.countDownMessage == null) {
             this.game.stateOptions.countDownMessage = 3;
         }
+        
+        if(this.game.playerOptions.win){
+            
+        }
         //  Clear the background.
         ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
         ctx.font = "36px Arial";
@@ -37,7 +41,8 @@ class LevelIntroState {
             this.game.stateOptions.countDownMessage = 1;
         }
         if (this.game.stateOptions.countDown <= 0) {
-            //  Move to the next level, popping this state.  
+            //  Move to the next level, popping this state.
+            this.game.playerOptions.win = false;  
             this.game.moveToState(new GameState(this.game, this)); 
         }
       

@@ -88,7 +88,8 @@ class BoldInvaders {
                 rocketVelocity: 120,
                 rocketMaxFireRate: 2,
                 score: this.playerOptions.score,
-                timesPlayed: this.playerOptions.timesPlayed
+                timesPlayed: this.playerOptions.timesPlayed,
+                win: this.playerOptions.win
             }
 
             this.enemyOptions = {
@@ -151,7 +152,8 @@ class BoldInvaders {
                 rocketVelocity: 120,
                 rocketMaxFireRate: 2,
                 score: 0,
-                timesPlayed: 0
+                timesPlayed: 0,
+                win: false
             }
 
             this.enemyOptions = {

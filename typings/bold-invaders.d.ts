@@ -34,7 +34,8 @@ declare namespace BoldInvaders {
         rocketVelocity: number,
         rocketMaxFireRate: number,
         score: number,
-        timesPlayed: number        
+        timesPlayed: number,
+        win: boolean        
     }
 
     export interface Enemy {

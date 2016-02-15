@@ -38,7 +38,7 @@ var BIOptions: BoldInvadersOptions = {
     fps: 50,
     shipSpeed: 120,
     debugMode: true,
-    levelDifficultyMultiplier: .4
+    levelDifficultyMultiplier: .6
 };
 
 var BIStateOptions: StateOptions = {
@@ -61,7 +61,8 @@ var BIPlayerOptions: PlayerOptions = {
     rocketVelocity: 120,
     rocketMaxFireRate: 2,
     score: 0,
-    timesPlayed: 0
+    timesPlayed: 0,
+    win: false
 }
 
 var BIEnemyOptions: EnemyOptions = {

@@ -24,7 +24,7 @@ var BIOptions = {
     fps: 50,
     shipSpeed: 120,
     debugMode: true,
-    levelDifficultyMultiplier: .4
+    levelDifficultyMultiplier: .6
 };
 var BIStateOptions = {
     lives: 3,
@@ -45,7 +45,8 @@ var BIPlayerOptions = {
     rocketVelocity: 120,
     rocketMaxFireRate: 2,
     score: 0,
-    timesPlayed: 0
+    timesPlayed: 0,
+    win: false
 };
 var BIEnemyOptions = {
     bombRate: 0.05,
