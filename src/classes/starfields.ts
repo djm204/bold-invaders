@@ -1,15 +1,12 @@
 export = StarField;
-
 const STAR_LIMIT = 100;
 
 class StarField {
     constructor(public options: StarField.Options) {}
 
     initialize(div: HTMLElement) {
-        var containerDiv = div;
-        
+        var containerDiv = div;        
         this.options.starList = [];
-
         this.options.width = window.innerWidth;
         this.options.height = window.innerHeight;
 
@@ -18,8 +15,7 @@ class StarField {
             this.options.width = window.innerWidth;
             this.options.height = window.innerHeight;
             this.options.canvas.width = this.options.width;
-            this.options.canvas.height = this.options.height;
-            
+            this.options.canvas.height = this.options.height;            
             //redraw
             this.draw();
         });
@@ -50,8 +46,7 @@ class StarField {
         }
     }
 
-    start(): void {
-        
+    start(): void {        
         //	Create the stars.
         for (var i = 0; i < STAR_LIMIT; i++) {
             var newStar = {
@@ -70,8 +65,6 @@ class StarField {
         }, 1000 / this.options.fps);
     }
 
-
-
     draw(): void {
         //  Get the drawing context.
         var ctx = this.options.canvas.getContext("2d");
@@ -85,10 +78,6 @@ class StarField {
         for (var i = 0; i < this.options.starList.length; i++) {
             var star = this.options.starList[i];
             ctx.fillRect(star.x, star.y, star.size, star.size);
-        }
-        
-        
+        }     
     }
-
-
 }

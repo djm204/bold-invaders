@@ -14,7 +14,6 @@ class PauseState {
 
     draw() {
         this.ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
-
         this.ctx.font = "35px Arial";
         this.ctx.fillStyle = '#ffffff';
         this.ctx.textBaseline = "middle";
@@ -23,12 +22,7 @@ class PauseState {
     }
 
     leave() {
-        console.log("in leave pause state")
         //move back to the last game state
-        this.game.pushState(this.gameState);
-        
-        //restart the game loop
-        
-
+        this.game.pushState(this.gameState);           
     }
 }

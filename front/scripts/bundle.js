@@ -850,7 +850,7 @@
 	    };
 	    WelcomeState.prototype.keyDown = function (game, keyCode) {
 	        if (keyCode == 32) {
-	            //  Space starts the game. 
+	            //  Space starts the game.             
 	            var options = { level: 1, countDown: 3, countDownMessage: 3, ctx: this.ctx };
 	            game.moveToState(new levelIntroState(game));
 	        }
@@ -875,7 +875,6 @@
 	        if (this.game.stateOptions.countDownMessage == null) {
 	            this.game.stateOptions.countDownMessage = 3;
 	        }
-	        console.log(ctx);
 	        //  Clear the background.
 	        ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
 	        ctx.font = "36px Arial";
@@ -898,11 +897,9 @@
 	            this.game.stateOptions.countDownMessage = 1;
 	        }
 	        if (this.game.stateOptions.countDown <= 0) {
-	            //  Move to the next level, popping this state.
+	            //  Move to the next level, popping this state.  
 	            this.game.moveToState(new GameState(this.game, this));
-	            console.log("counted to zero");
 	        }
-	        console.log(this.game.stateOptions.countDown + " message: " + this.game.stateOptions.countDownMessage);
 	        this.draw();
 	        this.game.stateOptions.countDown -= .03;
 	    };
@@ -1241,10 +1238,8 @@
 	        this.ctx.fillText("Paused", this.game.stateOptions.width / 2, this.game.stateOptions.height / 2);
 	    };
 	    PauseState.prototype.leave = function () {
-	        console.log("in leave pause state");
 	        //move back to the last game state
 	        this.game.pushState(this.gameState);
-	        //restart the game loop
 	    };
 	    return PauseState;
 	})();

@@ -21,10 +21,8 @@ var PauseState = (function () {
         this.ctx.fillText("Paused", this.game.stateOptions.width / 2, this.game.stateOptions.height / 2);
     };
     PauseState.prototype.leave = function () {
-        console.log("in leave pause state");
         //move back to the last game state
         this.game.pushState(this.gameState);
-        //restart the game loop
     };
     return PauseState;
 })();

@@ -35,11 +35,9 @@ class WelcomeState {
     
     keyDown(game: boldInvaders,keyCode: number) {
         if (keyCode == 32) /*space*/ {
-            //  Space starts the game. 
-            
+            //  Space starts the game.             
             var options = {level: 1, countDown: 3, countDownMessage: 3, ctx: this.ctx}; 
-            game.moveToState(new levelIntroState(game));
-            
+            game.moveToState(new levelIntroState(game));            
 
         }
     }

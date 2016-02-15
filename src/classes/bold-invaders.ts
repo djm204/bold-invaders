@@ -1,6 +1,8 @@
 import levelIntroState = require('./level-intro-state');
 import welcomeState = require('./welcome-state');
 export = BoldInvaders;
+const GAME_CANVAS_HEIGHT = 600;
+const GAME_CANVAS_WIDTH = 700;
 
 class BoldInvaders {
 
@@ -14,8 +16,8 @@ class BoldInvaders {
 
     initialize(gameCanvas: HTMLCanvasElement) {
         this.stateOptions.gameCanvas = gameCanvas;
-        gameCanvas.width = 700;
-        gameCanvas.height = 600;
+        gameCanvas.width = GAME_CANVAS_WIDTH;
+        gameCanvas.height = GAME_CANVAS_HEIGHT;
         this.stateOptions.height = gameCanvas.height;
         this.stateOptions.width = gameCanvas.width;
         this.stateOptions.gameBounds = {
