@@ -14,7 +14,7 @@ var GameState = (function () {
         this.game.gameStateOptions.ship = { x: this.game.stateOptions.width / 2, y: this.game.stateOptions.height - 100, width: 20, height: 16 };
         //create level multipliers
         var levelMultiplier = this.game.stateOptions.level * this.game.boldOptions.levelDifficultyMultiplier;
-        var shipSpeed = this.game.boldOptions.shipSpeed;
+        this.game.boldOptions.shipSpeed *= levelMultiplier;
         this.game.enemyOptions.invaderInitialVelocity += (levelMultiplier * this.game.enemyOptions.invaderInitialVelocity);
         this.game.enemyOptions.bombRate += (levelMultiplier * this.game.enemyOptions.bombRate);
         this.game.enemyOptions.bombMinVelocity += (levelMultiplier * this.game.enemyOptions.bombMinVelocity);
@@ -108,7 +108,7 @@ var GameState = (function () {
         for (var i = 0; i < this.game.gameStateOptions.rockets.length; i++) {
             var rocket = this.game.gameStateOptions.rockets[i];
             rocket.y -= 2;
-            ctx.fillRect(rocket.x, rocket.y, 1, 4);
+            ctx.fillRect(rocket.x, rocket.y, 3, 4);
         }
         //check if we are in debug mode
         if (this.game.boldOptions.debugMode) {
@@ -294,7 +294,7 @@ var GameState = (function () {
         if (this.game.gameStateOptions.lastRocketTime === null || ((new Date()).valueOf() - this.game.gameStateOptions.lastRocketTime) > (1000 / this.game.playerOptions.rocketMaxFireRate)) {
             //  Add a rocket.
             this.game.gameStateOptions.rockets.push(this.currentRocket = {
-                x: this.game.gameStateOptions.ship.x + 12,
+                x: this.game.gameStateOptions.ship.x,
                 y: this.game.gameStateOptions.ship.y - 12,
                 velocity: this.game.playerOptions.rocketVelocity
             });
