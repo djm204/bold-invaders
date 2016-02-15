@@ -6,10 +6,7 @@ const PAUSE_PREVENTER = 1;
 class GameState {
     constructor(
         public game: boldInvaders,
-        public levelIntroState: BoldInvaders.IntroState
-    ) {
-
-    }
+        public levelIntroState: BoldInvaders.IntroState) { }
 
     invaderVelocity: { x: number, y: number };
     invaderNextVelocity: { x: number, y: number };
@@ -18,30 +15,26 @@ class GameState {
     dt: number = 1000 / this.game.boldOptions.fps;
     ctx: CanvasRenderingContext2D = this.game.stateOptions.gameCanvas.getContext("2d");
 
-
-
     enter() {
         this.game.gameStateOptions.firstEntry = false;
-        //instantiate le ship
-        this.game.gameStateOptions.ship = { x: this.game.stateOptions.width / 2, y: this.game.stateOptions.height - 100, width: 20, height: 16 };
         
+        //instantiate le ship
+        this.game.gameStateOptions.ship = { x: this.game.stateOptions.width / 2, y: this.game.stateOptions.height - 100, width: 20, height: 16 }; 
+               
         //create level multipliers
         var levelMultiplier = this.game.stateOptions.level * this.game.boldOptions.levelDifficultyMultiplier;
         var shipSpeed = this.game.boldOptions.shipSpeed;
-
         this.game.enemyOptions.invaderInitialVelocity += (levelMultiplier * this.game.enemyOptions.invaderInitialVelocity);
         this.game.enemyOptions.bombRate += (levelMultiplier * this.game.enemyOptions.bombRate);
         this.game.enemyOptions.bombMinVelocity += (levelMultiplier * this.game.enemyOptions.bombMinVelocity);
-        this.game.enemyOptions.bombMaxVelocity += (levelMultiplier * this.game.enemyOptions.bombMinVelocity);
-        
+        this.game.enemyOptions.bombMaxVelocity += (levelMultiplier * this.game.enemyOptions.bombMinVelocity);        
         //invader creation
         this.game.enemyOptions.invaderRanks = 5;
         this.game.enemyOptions.invaderFiles = 10;
         var invaders = [];
+
         for (var rank = 0; rank < this.game.enemyOptions.invaderRanks; rank++) {
-
             for (var file = 0; file < this.game.enemyOptions.invaderFiles; file++) {
-
                 var invader: BoldInvaders.Invader = {
                     x: (this.game.stateOptions.width / 2) + ((this.game.enemyOptions.invaderFiles / 2 - file) * 200 / this.game.enemyOptions.invaderFiles),
                     y: (this.game.stateOptions.gameBounds.top + rank * 20),
@@ -51,7 +44,6 @@ class GameState {
                     width: 18,
                     height: 14
                 };
-
                 invaders.push(invader);
             }
         }
@@ -72,11 +64,9 @@ class GameState {
         }
         if (this.game.stateOptions.pressedKeys[32]) {
             this.fireRocket();
-        }
-        
+        }        
  
-        //  Keep the ship in bounds.
-        
+        //  Keep the ship in bounds.        
         if (this.game.gameStateOptions.ship.x < this.game.stateOptions.gameBounds.left) {
             this.game.gameStateOptions.ship.x = this.game.stateOptions.gameBounds.left;
         }
@@ -84,14 +74,11 @@ class GameState {
             this.game.gameStateOptions.ship.x = this.game.stateOptions.gameBounds.right;
         }
 
-
         this.moveInvaders();
         this.checkForInvaderKills();
         this.dropBombsOnEm();
-        this.hitShipCheck();
+        this.hitShipCheck();  
         
-        
- 
         //  Check for victory
         if (this.game.gameStateOptions.invaders.length === 0) {
             this.game.playerOptions.timesPlayed++;
@@ -100,16 +87,12 @@ class GameState {
             this.game.stateOptions.countDown = 3;
             this.game.stateOptions.countDownMessage = 3;
             this.game.resetGameVariables(false);
-            
             this.game.moveToState(this.levelIntroState);
-
-            return;
         }
         
         //  Check for failure
         if (this.game.stateOptions.lives <= 0) {
             this.game.moveToState(new GameOverState(this.levelIntroState, this.game, this.dt, this.ctx));
-            console.log("Game Over.");
         }
 
         this.draw();
@@ -119,7 +102,6 @@ class GameState {
         //  Clear the background.
         var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
         ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
-
         ctx.strokeStyle = "#FFFFFF";
         ctx.strokeRect(
             this.game.stateOptions.gameBounds.left - 13,
@@ -147,7 +129,6 @@ class GameState {
         ctx.fillStyle = '#ff5555';
         for (var i = 0; i < this.game.gameStateOptions.bombs.length; i++) {
             var bomb = this.game.gameStateOptions.bombs[i];
-
             bomb.y += .5;
             ctx.fillRect(bomb.x, bomb.y, 4, 4);
         }
@@ -170,7 +151,6 @@ class GameState {
         }
         
         //draw score and lives and level
-        //  Draw info.
         var textYpos = this.game.stateOptions.gameBounds.bottom + ((this.game.stateOptions.height - this.game.stateOptions.gameBounds.bottom) / 2 + 20);
         ctx.font = "14px Arial";
         ctx.fillStyle = '#ffffff';
@@ -179,29 +159,28 @@ class GameState {
         ctx.fillText(info, this.game.stateOptions.gameBounds.left, textYpos);
         info = "Score: " + this.game.playerOptions.score + ", Level: " + this.game.stateOptions.level;
         ctx.textAlign = "right";
-        ctx.fillText(info, this.game.stateOptions.gameBounds.right, textYpos);
-        //draw links to github, and props
+        ctx.fillText(info, this.game.stateOptions.gameBounds.right, textYpos);        
     }
 
     keyDown(game: boldInvaders, keyCode: number) {
         if (this.game.stateOptions.pressedKeys[27]) {
-            //  Push the pause state.
-            
+            //  Push the pause state.            
             this.pauseGame();
         }
+        if (this.game.boldOptions.debugMode) {
+            if (this.game.stateOptions.pressedKeys[90]) {
+                //  Push the pause state.            
+                this.game.stateOptions.lives = 0;
+            }
 
-        if (this.game.stateOptions.pressedKeys[90]) {
-            //  Push the pause state.
-            
-            this.game.stateOptions.lives = 0;
+            if (this.game.stateOptions.pressedKeys[81]) {
+                //  Push the pause state.            
+                this.game.gameStateOptions.invaders = [];
+            }
         }
 
-        if (this.game.stateOptions.pressedKeys[81]) {
-            //  Push the pause state.
-            
-            this.game.gameStateOptions.invaders = [];
-        }
     }
+    
     moveInvaders(): void {
         //Move the invaders
         var hitLeft = false, hitRight = false, hitBottom = false;
@@ -223,7 +202,6 @@ class GameState {
             if (!hitLeft && !hitRight && !hitBottom) {
                 invader.x = newx;
                 invader.y = newy;
-
             }
         }
  
@@ -319,7 +297,6 @@ class GameState {
                 this.game.gameStateOptions.bombs.splice(i--, 1);
                 this.game.stateOptions.lives--;
             }
-
         }
         
         //  Check for invader/ship collisions.
@@ -371,6 +348,4 @@ class GameState {
 
         }
     }
-
-
 }

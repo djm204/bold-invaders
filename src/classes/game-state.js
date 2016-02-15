@@ -53,7 +53,7 @@ var GameState = (function () {
         if (this.game.stateOptions.pressedKeys[32]) {
             this.fireRocket();
         }
-        //  Keep the ship in bounds.
+        //  Keep the ship in bounds.        
         if (this.game.gameStateOptions.ship.x < this.game.stateOptions.gameBounds.left) {
             this.game.gameStateOptions.ship.x = this.game.stateOptions.gameBounds.left;
         }
@@ -73,12 +73,10 @@ var GameState = (function () {
             this.game.stateOptions.countDownMessage = 3;
             this.game.resetGameVariables(false);
             this.game.moveToState(this.levelIntroState);
-            return;
         }
         //  Check for failure
         if (this.game.stateOptions.lives <= 0) {
             this.game.moveToState(new GameOverState(this.levelIntroState, this.game, this.dt, this.ctx));
-            console.log("Game Over.");
         }
         this.draw();
     };
@@ -118,7 +116,6 @@ var GameState = (function () {
             ctx.strokeRect(this.game.stateOptions.gameBounds.left, this.game.stateOptions.gameBounds.top, this.game.stateOptions.gameBounds.right - this.game.stateOptions.gameBounds.left, this.game.stateOptions.gameBounds.bottom - this.game.stateOptions.gameBounds.top);
         }
         //draw score and lives and level
-        //  Draw info.
         var textYpos = this.game.stateOptions.gameBounds.bottom + ((this.game.stateOptions.height - this.game.stateOptions.gameBounds.bottom) / 2 + 20);
         ctx.font = "14px Arial";
         ctx.fillStyle = '#ffffff';
@@ -128,20 +125,21 @@ var GameState = (function () {
         info = "Score: " + this.game.playerOptions.score + ", Level: " + this.game.stateOptions.level;
         ctx.textAlign = "right";
         ctx.fillText(info, this.game.stateOptions.gameBounds.right, textYpos);
-        //draw links to github, and props
     };
     GameState.prototype.keyDown = function (game, keyCode) {
         if (this.game.stateOptions.pressedKeys[27]) {
-            //  Push the pause state.
+            //  Push the pause state.            
             this.pauseGame();
         }
-        if (this.game.stateOptions.pressedKeys[90]) {
-            //  Push the pause state.
-            this.game.stateOptions.lives = 0;
-        }
-        if (this.game.stateOptions.pressedKeys[81]) {
-            //  Push the pause state.
-            this.game.gameStateOptions.invaders = [];
+        if (this.game.boldOptions.debugMode) {
+            if (this.game.stateOptions.pressedKeys[90]) {
+                //  Push the pause state.            
+                this.game.stateOptions.lives = 0;
+            }
+            if (this.game.stateOptions.pressedKeys[81]) {
+                //  Push the pause state.            
+                this.game.gameStateOptions.invaders = [];
+            }
         }
     };
     GameState.prototype.moveInvaders = function () {

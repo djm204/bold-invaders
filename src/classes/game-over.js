@@ -23,7 +23,6 @@ var GameOverState = (function () {
         if (keyCode == 32) {
             game.playerOptions.timesPlayed++;
             game.resetGameVariables(true);
-            console.log(this.gameState);
             game.pushState(this.gameState);
         }
     };
