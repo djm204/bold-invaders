@@ -877,17 +877,22 @@
 	        if (this.game.stateOptions.countDownMessage == null) {
 	            this.game.stateOptions.countDownMessage = 3;
 	        }
-	        if (this.game.playerOptions.win) {
-	        }
-	        //  Clear the background.
+	        //  Clear the background. set config for text.
 	        ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
 	        ctx.font = "36px Arial";
 	        ctx.fillStyle = '#ffffff';
-	        ctx.textBaseline = "middle";
 	        ctx.textAlign = "center";
-	        ctx.fillText("Level " + this.game.stateOptions.level, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2);
+	        ctx.textBaseline = "middle";
+	        if (this.game.playerOptions.win) {
+	            var chuckNorris = new Image();
+	            chuckNorris.src = "images/chuckNorris.png";
+	            ctx.drawImage(chuckNorris, this.game.stateOptions.height * .47, this.game.stateOptions.width * .42 - chuckNorris.width, 150, 160);
+	            ctx.fillText("You Win!", this.game.stateOptions.width * .5, this.game.stateOptions.height * .1);
+	            ctx.fillText("Chuck is Proud.", this.game.stateOptions.width * .5, this.game.stateOptions.height * .17);
+	        }
+	        ctx.fillText("Level " + this.game.stateOptions.level, this.game.stateOptions.width * .5, this.game.stateOptions.height * .55);
 	        ctx.font = "24px Arial";
-	        ctx.fillText("Ready in " + this.game.stateOptions.countDownMessage, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2 + 36);
+	        ctx.fillText("Ready in " + this.game.stateOptions.countDownMessage, this.game.stateOptions.width * .5, this.game.stateOptions.height * .6);
 	    };
 	    LevelIntroState.prototype.update = function () {
 	        //  Update the countDown.
@@ -934,6 +939,7 @@
 	        //create level multipliers
 	        var levelMultiplier = this.game.stateOptions.level * this.game.boldOptions.levelDifficultyMultiplier;
 	        this.game.boldOptions.shipSpeed *= levelMultiplier;
+	        console.log(this.game.boldOptions.shipSpeed);
 	        this.game.enemyOptions.invaderInitialVelocity += (levelMultiplier * this.game.enemyOptions.invaderInitialVelocity);
 	        this.game.enemyOptions.bombRate += (levelMultiplier * this.game.enemyOptions.bombRate);
 	        this.game.enemyOptions.bombMinVelocity += (levelMultiplier * this.game.enemyOptions.bombMinVelocity);
