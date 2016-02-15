@@ -118,9 +118,3 @@ window.addEventListener("keyup", function keydown(e) {
     var keyCode = e.which || e.keyCode;
     boldInvaders.keyUp(keyCode);
 });
-
-
-
-
-console.log(boldInvaders.boldOptions.fps);
-

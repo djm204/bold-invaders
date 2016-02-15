@@ -22,7 +22,6 @@ declare namespace StarField {
 declare namespace BoldInvaders {
 
     export interface GameOptions {
-
         gameWidth: number,
         gameHeight: number,
         fps: number,
@@ -51,7 +50,6 @@ declare namespace BoldInvaders {
     }
 
     export interface StateOptions {
-
         lives: number,
         width: number,
         height: number,
@@ -67,14 +65,11 @@ declare namespace BoldInvaders {
         countDownMessage: number
     }
 
-
     export interface Sounds {
         audioContext: AudioContext,
         sounds: Array<any>,
         mute: boolean
     }
-
-
 
     export interface GameStateOptions {
         ship: Ship,
@@ -85,9 +80,7 @@ declare namespace BoldInvaders {
         invaderCurrentDropDistance: number,
         invadersAreDropping: boolean,
         lastRocketTime: number,
-        firstEntry: boolean
-        
-
+        firstEntry: boolean     
     }
 
     export interface Ship {
@@ -123,23 +116,18 @@ declare namespace BoldInvaders {
         firstEntry: boolean;
         enter: () => any;
         update: () => any;
-        draw: () => any;
-        
+        draw: () => any;        
     }
 
     interface OverState {
         leave: () => any;
-        draw: () => any;
-        
+        draw: () => any;        
     }
 
-    interface IntroState {
-        
+    interface IntroState {        
         update: () => any;
-        draw: () => any;
-        
-    }
-    
+        draw: () => any;        
+    }   
     
     interface WelcomeState {
         draw: () => any;
@@ -148,13 +136,8 @@ declare namespace BoldInvaders {
     interface PauseState {
         draw: () => any;
         leave: () => any;
-        
-        
     }
     
-    
-
 type GameState = PlayState | OverState | IntroState | WelcomeState | PauseState;
-
 
 }

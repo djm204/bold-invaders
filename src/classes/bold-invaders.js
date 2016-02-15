@@ -1,4 +1,6 @@
 var welcomeState = require('./welcome-state');
+var GAME_CANVAS_HEIGHT = 600;
+var GAME_CANVAS_WIDTH = 700;
 var BoldInvaders = (function () {
     function BoldInvaders(boldOptions, playerOptions, enemyOptions, gameStateOptions, stateOptions) {
         this.boldOptions = boldOptions;
@@ -9,8 +11,8 @@ var BoldInvaders = (function () {
     }
     BoldInvaders.prototype.initialize = function (gameCanvas) {
         this.stateOptions.gameCanvas = gameCanvas;
-        gameCanvas.width = 700;
-        gameCanvas.height = 600;
+        gameCanvas.width = GAME_CANVAS_WIDTH;
+        gameCanvas.height = GAME_CANVAS_HEIGHT;
         this.stateOptions.height = gameCanvas.height;
         this.stateOptions.width = gameCanvas.width;
         this.stateOptions.gameBounds = {
