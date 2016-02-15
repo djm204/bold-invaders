@@ -11,11 +11,7 @@ class GameOverState {
     draw() {
         //Draw the gameover logos
         var gameOverLogo = new Image();
-        var trollFace = new Image();
         gameOverLogo.src = "images/1gameOverLogo.png";
-        trollFace.src = "images/trollFace.png";
-        
-        
        
         //  Clear the background.
         this.ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);

@@ -8,9 +8,7 @@ var GameOverState = (function () {
     GameOverState.prototype.draw = function () {
         //Draw the gameover logos
         var gameOverLogo = new Image();
-        var trollFace = new Image();
         gameOverLogo.src = "images/1gameOverLogo.png";
-        trollFace.src = "images/trollFace.png";
         //  Clear the background.
         this.ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
         this.ctx.drawImage(gameOverLogo, this.ctx.canvas.width / 2 - gameOverLogo.width / 2, 0, 325, 325);
