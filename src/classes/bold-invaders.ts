@@ -4,7 +4,6 @@ export = BoldInvaders;
 
 class BoldInvaders {
 
-
     constructor(
         public boldOptions: BoldInvaders.GameOptions,
         public playerOptions: BoldInvaders.Player,
@@ -13,38 +12,26 @@ class BoldInvaders {
         public stateOptions: BoldInvaders.StateOptions
     ) { }
 
-
-
     initialize(gameCanvas: HTMLCanvasElement) {
         this.stateOptions.gameCanvas = gameCanvas;
         gameCanvas.width = 700;
         gameCanvas.height = 600;
-
         this.stateOptions.height = gameCanvas.height;
         this.stateOptions.width = gameCanvas.width;
-
         this.stateOptions.gameBounds = {
             left: gameCanvas.width / 2 - this.boldOptions.gameWidth / 2,
             right: gameCanvas.width / 2 + this.boldOptions.gameWidth / 2,
             top: gameCanvas.height / 2 - this.boldOptions.gameHeight / 1.5,
             bottom: gameCanvas.height - 100,
         };
-
-
-
     }
-
 
     moveToState(state) {
         if (this.currentState()) {
-
-
-
             this.stateOptions.stateStack.pop();
         }
 
-        this.chooseStateFunction(state);
- 
+        this.chooseStateFunction(state); 
         //  Set the current state.
         this.stateOptions.stateStack.pop();
         this.stateOptions.stateStack.push(state);
@@ -54,20 +41,15 @@ class BoldInvaders {
         var canvas = this.stateOptions.gameCanvas;
         var ctx = canvas.getContext("2d");
         //  Move into the 'welcome' state.
-        this.moveToState(new welcomeState(this, ctx));
-    
+        this.moveToState(new welcomeState(this, ctx));    
         //  Set the game variables.
         this.stateOptions.lives = 3;
         this.boldOptions.debugMode = /debug=true/.test(window.location.href);
         //  Start the game loop.
         this.stateOptions.intervalId = setInterval(() => { this.gameLoop(this) }, 1000 / this.boldOptions.fps);
-
     }
 
- 
-
     resetGameVariables(resetAllVariables: boolean) {
-
         if (!resetAllVariables) {
             //reset for level advancement
             this.boldOptions = {
@@ -194,14 +176,8 @@ class BoldInvaders {
                 lastRocketTime: 0,
                 firstEntry: true
             }
-
         }
-
-
-
-
     }
-
 
     currentState() {
         return this.stateOptions.stateStack.length > 0 ? this.stateOptions.stateStack[this.stateOptions.stateStack.length - 1] : null;
@@ -218,36 +194,21 @@ class BoldInvaders {
         if (this.currentState().leave) {
             this.currentState().leave(this);
         }
- 
-        //  Set the current state.
-
     }
 
     gameLoop(game: BoldInvaders) {
         var currentState = game.currentState();
         if (currentState) {
             
-            //  Delta t is the time to update/draw.
-            var dt = 1 / game.boldOptions.fps;
-    
-            //  Get the drawing context.
-            var ctx = game.stateOptions.gameCanvas.getContext("2d");
-
             if (currentState.draw) {
                 currentState.draw();
             }
+            
             if (currentState.update) {
                 currentState.update();
-            }
-            
-            //  Update if we have an update function. Also draw
-            //  if we have a draw function.
-          
+            }          
         }
     }
-
-
-
 
     keyDown(keyCode: number): void {
         this.stateOptions.pressedKeys[keyCode] = true;
@@ -269,14 +230,11 @@ class BoldInvaders {
         if (this.isPlayState(state)) {
 
             if (this.gameStateOptions.firstEntry) {
-                console.log("got to State Enter");
-
+                //console.log("got to State Enter");
                 state.enter();
-
             }
             else {
                 state.update();
-
             }
         }
 
@@ -293,18 +251,12 @@ class BoldInvaders {
         }
     }
 
-
-    isPlayState(state: BoldInvaders.GameState): state is BoldInvaders.PlayState {
-        if (this.gameStateOptions.firstEntry) {
-            console.log("got to State isPlayState / it's first entry");
-
+    isPlayState(state: BoldInvaders.GameState): state is BoldInvaders.PlayState {        
+        if (this.gameStateOptions.firstEntry) {            
             return typeof (<BoldInvaders.PlayState>state).enter === 'function';
-
-        }
+                    }
         else {
             return typeof (<BoldInvaders.PlayState>state).update === 'function';
-
-
         }
     }
 
@@ -318,9 +270,5 @@ class BoldInvaders {
 
     isWelcomeState(state: BoldInvaders.GameState): state is BoldInvaders.WelcomeState {
         return typeof (<BoldInvaders.WelcomeState>state).draw === 'function';
-
     }
-
-
-
 }

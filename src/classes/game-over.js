@@ -6,6 +6,7 @@ var GameOverState = (function () {
         this.ctx = ctx;
     }
     GameOverState.prototype.draw = function () {
+        var trollFace = 
         //  Clear the background.
         this.ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
         this.ctx.font = "30px Arial";
