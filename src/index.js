@@ -24,7 +24,7 @@ var BIOptions = {
     fps: 50,
     shipSpeed: 120,
     debugMode: true,
-    levelDifficultyMultiplier: .2
+    levelDifficultyMultiplier: .4
 };
 var BIStateOptions = {
     lives: 3,
@@ -85,5 +85,4 @@ window.addEventListener("keyup", function keydown(e) {
     var keyCode = e.which || e.keyCode;
     boldInvaders.keyUp(keyCode);
 });
-console.log(boldInvaders.boldOptions.fps);
 //# sourceMappingURL=index.js.map

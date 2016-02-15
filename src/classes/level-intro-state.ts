@@ -16,7 +16,6 @@ class LevelIntroState {
         }
         //  Clear the background.
         ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
-
         ctx.font = "36px Arial";
         ctx.fillStyle = '#ffffff';
         ctx.textBaseline = "middle";

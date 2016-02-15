@@ -70,7 +70,7 @@
 	    fps: 50,
 	    shipSpeed: 120,
 	    debugMode: true,
-	    levelDifficultyMultiplier: .2
+	    levelDifficultyMultiplier: .4
 	};
 	var BIStateOptions = {
 	    lives: 3,
@@ -131,7 +131,6 @@
 	    var keyCode = e.which || e.keyCode;
 	    boldInvaders.keyUp(keyCode);
 	});
-	console.log(boldInvaders.boldOptions.fps);
 	//# sourceMappingURL=index.js.map
 
 /***/ },
@@ -613,7 +612,6 @@
 	        this.moveToState(new welcomeState(this, ctx));
 	        //  Set the game variables.
 	        this.stateOptions.lives = 3;
-	        this.boldOptions.debugMode = /debug=true/.test(window.location.href);
 	        //  Start the game loop.
 	        this.stateOptions.intervalId = setInterval(function () { _this.gameLoop(_this); }, 1000 / this.boldOptions.fps);
 	    };
@@ -625,7 +623,7 @@
 	                gameHeight: 300,
 	                fps: 50,
 	                shipSpeed: 120,
-	                debugMode: false,
+	                debugMode: this.boldOptions.debugMode,
 	                levelDifficultyMultiplier: .2
 	            };
 	            this.stateOptions = {
@@ -666,7 +664,7 @@
 	                pointsPerInvader: 5
 	            };
 	            this.gameStateOptions = {
-	                ship: null,
+	                ship: this.gameStateOptions.ship,
 	                invaders: [],
 	                rockets: [],
 	                bombs: [],
@@ -684,7 +682,7 @@
 	                gameHeight: 300,
 	                fps: 50,
 	                shipSpeed: 120,
-	                debugMode: false,
+	                debugMode: this.boldOptions.debugMode,
 	                levelDifficultyMultiplier: .2
 	            };
 	            this.stateOptions = {
@@ -779,7 +777,6 @@
 	    BoldInvaders.prototype.chooseStateFunction = function (state) {
 	        if (this.isPlayState(state)) {
 	            if (this.gameStateOptions.firstEntry) {
-	                //console.log("got to State Enter");
 	                state.enter();
 	            }
 	            else {
@@ -1260,18 +1257,21 @@
 	        this.ctx = ctx;
 	    }
 	    GameOverState.prototype.draw = function () {
-	        var trollFace = 
+	        //Draw the gameover logos
+	        var gameOverLogo = new Image();
+	        var trollFace = new Image();
+	        gameOverLogo.src = "images/1gameOverLogo.png";
+	        trollFace.src = "images/trollFace.png";
 	        //  Clear the background.
 	        this.ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
-	        this.ctx.font = "30px Arial";
+	        this.ctx.drawImage(gameOverLogo, this.ctx.canvas.width / 2 - gameOverLogo.width / 2, 0, 325, 325);
+	        this.ctx.font = "26px Arial";
 	        this.ctx.fillStyle = '#ffffff';
 	        this.ctx.textBaseline = "center";
 	        this.ctx.textAlign = "center";
-	        this.ctx.fillText("Game Over!", this.game.stateOptions.width / 2, this.game.stateOptions.height / 2 - 40);
-	        this.ctx.font = "16px Arial";
-	        this.ctx.fillText("You scored " + this.game.playerOptions.score + " and got to level " + this.game.stateOptions.level, this.game.stateOptions.width / 2, this.game.stateOptions.height / 2);
-	        this.ctx.font = "16px Arial";
-	        this.ctx.fillText("Press 'Space' to play again.", this.game.stateOptions.width / 2, this.game.stateOptions.height / 2 + 40);
+	        this.ctx.fillText("You scored: " + this.game.playerOptions.score, this.game.stateOptions.width / 2, this.game.stateOptions.height * .54);
+	        this.ctx.fillText("Highest level: " + this.game.stateOptions.level, this.game.stateOptions.width / 2, this.game.stateOptions.height * .6);
+	        this.ctx.fillText("Press 'Space' to play again.", this.game.stateOptions.width / 2, this.game.stateOptions.height * .7);
 	    };
 	    GameOverState.prototype.keyDown = function (game, keyCode) {
 	        if (keyCode == 32) {

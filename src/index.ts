@@ -38,7 +38,7 @@ var BIOptions: BoldInvadersOptions = {
     fps: 50,
     shipSpeed: 120,
     debugMode: true,
-    levelDifficultyMultiplier: .2
+    levelDifficultyMultiplier: .4
 };
 
 var BIStateOptions: StateOptions = {
@@ -46,8 +46,7 @@ var BIStateOptions: StateOptions = {
     width: 0,
     height: 0,
     gameBounds: { left: 0, top: 0, right: 0, bottom: 0 },
-    intervalId: 0,
-    
+    intervalId: 0,    
     level: 1,
     stateStack: [],
     pressedKeys: [],

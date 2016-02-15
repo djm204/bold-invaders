@@ -46,7 +46,6 @@ class BoldInvaders {
         this.moveToState(new welcomeState(this, ctx));    
         //  Set the game variables.
         this.stateOptions.lives = 3;
-        this.boldOptions.debugMode = /debug=true/.test(window.location.href);
         //  Start the game loop.
         this.stateOptions.intervalId = setInterval(() => { this.gameLoop(this) }, 1000 / this.boldOptions.fps);
     }
@@ -59,7 +58,7 @@ class BoldInvaders {
                 gameHeight: 300,
                 fps: 50,
                 shipSpeed: 120,
-                debugMode: false,
+                debugMode: this.boldOptions.debugMode,
                 levelDifficultyMultiplier: .2
             };
 
@@ -105,7 +104,7 @@ class BoldInvaders {
             }
 
             this.gameStateOptions = {
-                ship: null,
+                ship: this.gameStateOptions.ship,
                 invaders: [],
                 rockets: [],
                 bombs: [],
@@ -122,7 +121,7 @@ class BoldInvaders {
                 gameHeight: 300,
                 fps: 50,
                 shipSpeed: 120,
-                debugMode: false,
+                debugMode: this.boldOptions.debugMode,
                 levelDifficultyMultiplier: .2
             };
 
@@ -232,7 +231,6 @@ class BoldInvaders {
         if (this.isPlayState(state)) {
 
             if (this.gameStateOptions.firstEntry) {
-                //console.log("got to State Enter");
                 state.enter();
             }
             else {
