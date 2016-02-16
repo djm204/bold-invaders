@@ -68,7 +68,7 @@
 	    gameWidth: 400,
 	    gameHeight: 300,
 	    fps: 50,
-	    shipSpeed: 120,
+	    shipSpeed: 220,
 	    debugMode: false,
 	    levelDifficultyMultiplier: .5
 	};
