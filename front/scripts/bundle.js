@@ -69,7 +69,7 @@
 	    gameHeight: 300,
 	    fps: 50,
 	    shipSpeed: 220,
-	    debugMode: true,
+	    debugMode: false,
 	    levelDifficultyMultiplier: .5
 	};
 	var BIStateOptions = {
