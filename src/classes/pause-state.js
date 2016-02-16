@@ -22,6 +22,7 @@ var PauseState = (function () {
     };
     PauseState.prototype.leave = function () {
         //move back to the last game state
+        this.game.gameStateOptions.firstEntry = false;
         this.game.pushState(this.gameState);
     };
     return PauseState;
