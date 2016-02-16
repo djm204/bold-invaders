@@ -57,7 +57,7 @@ class BoldInvaders {
                 gameWidth: 400,
                 gameHeight: 300,
                 fps: 50,
-                shipSpeed: 120,
+                shipSpeed: this.boldOptions.shipSpeed,
                 debugMode: this.boldOptions.debugMode,
                 levelDifficultyMultiplier: .2
             };
@@ -121,7 +121,7 @@ class BoldInvaders {
                 gameWidth: 400,
                 gameHeight: 300,
                 fps: 50,
-                shipSpeed: 120,
+                shipSpeed: 220,
                 debugMode: this.boldOptions.debugMode,
                 levelDifficultyMultiplier: .2
             };

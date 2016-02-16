@@ -23,7 +23,7 @@ var BIOptions = {
     gameHeight: 300,
     fps: 50,
     shipSpeed: 220,
-    debugMode: false,
+    debugMode: true,
     levelDifficultyMultiplier: .5
 };
 var BIStateOptions = {
