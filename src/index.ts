@@ -1,4 +1,3 @@
-import '../front/css/style.css';
 import StarField = require('./classes/starfields');
 import BoldInvaders = require('./classes/bold-invaders');
 

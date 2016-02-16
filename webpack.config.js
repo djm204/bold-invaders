@@ -11,14 +11,6 @@ var config = {
             {
                 test: /\.jsx$/,
                 loader: 'babel'
-            },
-            {
-                test: /\.css$/, // Only .css files
-                loader: 'style!css' // Run both loaders
-            },
-            {
-                test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-                loader: require.resolve('url-loader')
             }]
     }
 };

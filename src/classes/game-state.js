@@ -1,6 +1,6 @@
 var pauseState = require('./pause-state');
 var GameOverState = require('./game-over');
-var PAUSE_PREVENTER = 1;
+var PAUSE_PER_SECOND = 1;
 var GameState = (function () {
     //private gameMusic = new Audio("sounds/gameMusic.mp3");
     function GameState(game, levelIntroState) {
@@ -177,10 +177,10 @@ var GameState = (function () {
             var invader = this.game.gameStateOptions.invaders[i];
             var newx = invader.x + this.invaderVelocity.x * .025;
             var newy = invader.y + this.invaderVelocity.y * .025;
-            if (hitLeft === false && newx < this.game.stateOptions.gameBounds.left) {
+            if (!hitLeft && newx < this.game.stateOptions.gameBounds.left) {
                 hitLeft = true;
             }
-            else if (hitRight === false && newx > this.game.stateOptions.gameBounds.right) {
+            else if (!hitRight && newx > this.game.stateOptions.gameBounds.right) {
                 hitRight = true;
             }
             else if (hitBottom === false && newy > this.game.stateOptions.gameBounds.bottom) {
@@ -205,7 +205,7 @@ var GameState = (function () {
             this.game.gameStateOptions.invaderCurrentVelocity += this.game.enemyOptions.invaderAcceleration;
             this.invaderVelocity = { x: 0, y: this.game.gameStateOptions.invaderCurrentVelocity };
             this.game.gameStateOptions.invadersAreDropping = true;
-            this.invaderNextVelocity = { x: this.game.gameStateOptions.invaderCurrentVelocity, y: 0 };
+            this.invaderNextVelocity = { x: 0, y: this.game.gameStateOptions.invaderCurrentVelocity };
         }
         //  If we've hit the right, move down then left.
         if (hitRight) {
@@ -279,7 +279,7 @@ var GameState = (function () {
             if (this.hitShip(bomb)) {
                 this.game.gameStateOptions.bombs.splice(i--, 1);
                 this.game.stateOptions.lives--;
-                var explosion = new Audio("sounds/explosion.wav"); // buffers automatically when created
+                var explosion = new Audio("sounds/explosion.wav");
                 explosion.volume = .05;
                 explosion.play();
             }
@@ -323,7 +323,7 @@ var GameState = (function () {
     };
     GameState.prototype.pauseGame = function () {
         var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
-        if (this.game.stateOptions.lastPauseTime === null || ((new Date()).valueOf() - this.game.gameStateOptions.lastRocketTime) > (1000 / PAUSE_PREVENTER)) {
+        if (this.game.stateOptions.lastPauseTime === null || ((new Date()).valueOf() - this.game.gameStateOptions.lastRocketTime) > (1000 / PAUSE_PER_SECOND)) {
             this.game.stateOptions.lastPauseTime = (new Date()).valueOf();
             this.game.pushState(new pauseState(this, this.game, 1000 / this.game.boldOptions.fps, ctx));
         }

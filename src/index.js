@@ -1,4 +1,3 @@
-require('../front/css/style.css');
 var StarField = require('./classes/starfields');
 var BoldInvaders = require('./classes/bold-invaders');
 var GAME_KEYS = [37, 39, 32];
