@@ -3,6 +3,7 @@ var WelcomeState = (function () {
     function WelcomeState(game, ctx) {
         this.game = game;
         this.ctx = ctx;
+        this.introMusic = new Audio("sounds/introMusic.mp3"); // buffers automatically when created
     }
     WelcomeState.prototype.draw = function () {
         var boldLogo = new Image();
@@ -25,11 +26,14 @@ var WelcomeState = (function () {
         //Draw Logo        
         this.ctx.drawImage(boldLogo, this.ctx.canvas.width / 2 - boldLogo.width / 2, 25, 250, 125);
         this.ctx.drawImage(invadersLogo, this.ctx.canvas.width / 2 - invadersLogo.width / 4, 125, 250, 75);
+        this.introMusic.volume = .05;
+        this.introMusic.play();
     };
     WelcomeState.prototype.keyDown = function (game, keyCode) {
         if (keyCode == 32) {
             //  Space starts the game.             
             var options = { level: 1, countDown: 3, countDownMessage: 3, ctx: this.ctx };
+            this.introMusic.pause();
             game.moveToState(new levelIntroState(game));
         }
     };

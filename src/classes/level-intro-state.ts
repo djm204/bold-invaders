@@ -15,8 +15,7 @@ class LevelIntroState {
             this.game.stateOptions.countDownMessage = 3;
         }
         
-        //  Clear the background. set config for text.
-        
+        //  Clear the background. set config for text.        
         ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
         ctx.font = "36px Arial";
         ctx.fillStyle = '#ffffff';
@@ -24,16 +23,17 @@ class LevelIntroState {
         ctx.textBaseline = "middle";
 
         if (this.game.playerOptions.win) {
+
             var chuckNorris = new Image();
             chuckNorris.src = "images/chuckNorris.png";
-            ctx.drawImage(chuckNorris, this.game.stateOptions.height * .47, this.game.stateOptions.width * .42 - chuckNorris.width , 150, 160);
+            ctx.drawImage(chuckNorris, this.game.stateOptions.height * .47, this.game.stateOptions.width * .42 - chuckNorris.width, 150, 160);
             ctx.fillText("You Win!", this.game.stateOptions.width * .5, this.game.stateOptions.height * .1);
             ctx.fillText("Chuck is Proud.", this.game.stateOptions.width * .5, this.game.stateOptions.height * .17);
         }
-       
-        ctx.fillText("Level " + this.game.stateOptions.level, this.game.stateOptions.width * .5, this.game.stateOptions.height *.55);
+
+        ctx.fillText("Level " + this.game.stateOptions.level, this.game.stateOptions.width * .5, this.game.stateOptions.height * .55);
         ctx.font = "24px Arial";
-        ctx.fillText("Ready in " + this.game.stateOptions.countDownMessage, this.game.stateOptions.width *.5, this.game.stateOptions.height *.6);
+        ctx.fillText("Ready in " + this.game.stateOptions.countDownMessage, this.game.stateOptions.width * .5, this.game.stateOptions.height * .6);
     }
 
     update() {

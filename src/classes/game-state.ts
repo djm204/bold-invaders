@@ -4,6 +4,8 @@ import GameOverState = require('./game-over');
 export = GameState;
 const PAUSE_PREVENTER = 1;
 class GameState {
+    //private gameMusic = new Audio("sounds/gameMusic.mp3");
+    
     constructor(
         public game: boldInvaders,
         public levelIntroState: BoldInvaders.IntroState) { }
@@ -16,7 +18,10 @@ class GameState {
     ctx: CanvasRenderingContext2D = this.game.stateOptions.gameCanvas.getContext("2d");
 
     enter() {
-        this.game.gameStateOptions.firstEntry = false;
+        /*this.game.gameStateOptions.firstEntry = false;
+         //play game music
+        this.gameMusic.volume = .025;
+        this.gameMusic.play();*/        
         
         //instantiate le ship
         this.game.gameStateOptions.ship = { x: this.game.stateOptions.width / 2, y: this.game.stateOptions.height - 100, width: 20, height: 16 }; 
@@ -88,20 +93,26 @@ class GameState {
             this.game.stateOptions.countDown = 3;
             this.game.stateOptions.countDownMessage = 3;
             this.game.resetGameVariables(false);
-            this.game.playerOptions.win = true;  
-
+            this.game.playerOptions.win = true;
+            // this.gameMusic.pause();
+            var win = new Audio("sounds/chuckNorris.wav"); // buffers automatically when created
+            win.play();
             this.game.moveToState(this.levelIntroState);
         }
         
         //  Check for failure
         if (this.game.stateOptions.lives <= 0) {
+            //this.gameMusic.pause();            
+            var death = new Audio("sounds/game_over_sound.wav");
+            death.volume = .1;
+            death.play();
             this.game.moveToState(new GameOverState(this.levelIntroState, this.game, this.dt, this.ctx));
         }
-
         this.draw();
     }
 
     draw(): void {
+       
         //  Clear the background.
         var ctx = this.game.stateOptions.gameCanvas.getContext("2d");
         ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
@@ -169,21 +180,21 @@ class GameState {
         var imageAttributes = { offSetX: 50, offSetY: 50, width: 45, height: 57, }
         for (var k = 0; k < pirates.length; k++) {
             pirates[k] = new Image();
-            pirates[k].src = "images/pirate" + (k+1) + ".png";
+            pirates[k].src = "images/pirate" + (k + 1) + ".png";
 
             if (k % 2 === 0) {
-               
+
                 imageAttributes.offSetX = 600;
                 imageAttributes.offSetY += 100;
-                
-                
+
+
             } else {
                 imageAttributes.offSetX = 50;
-                
+
             }
-            
-            
-            
+
+
+
             ctx.drawImage(pirates[k], imageAttributes.offSetX, imageAttributes.offSetY, imageAttributes.width, imageAttributes.height);
         }
     }
@@ -271,7 +282,9 @@ class GameState {
 
                 if (rocket.x >= (invader.x - invader.width / 2) && rocket.x <= (invader.x + invader.width / 2) &&
                     rocket.y >= (invader.y - invader.height / 2) && rocket.y <= (invader.y + invader.height / 2)) {
-                
+                    var invaderKill = new Audio("sounds/invaderKill.wav");
+                    invaderKill.volume = .1;
+                    invaderKill.play();
                     //  Remove the rocket, set 'bang' so we don't process
                     //  this rocket again.
                     this.game.gameStateOptions.rockets.splice(j--, 1);
@@ -322,6 +335,9 @@ class GameState {
             if (this.hitShip(bomb)) {
                 this.game.gameStateOptions.bombs.splice(i--, 1);
                 this.game.stateOptions.lives--;
+                var explosion = new Audio("sounds/explosion.wav"); // buffers automatically when created
+                explosion.volume = .05;
+                explosion.play();
             }
         }
         
@@ -334,7 +350,7 @@ class GameState {
                 (invader.y - invader.height / 2) < (this.game.gameStateOptions.ship.y + this.game.gameStateOptions.ship.height / 2)) {
                 //  Dead by collision!
                 this.game.stateOptions.lives = 0;
-                console.log("Play Death Sound Here");
+                
                 //game.sounds.playSound('explosion');
             }
         }
@@ -361,6 +377,10 @@ class GameState {
                 velocity: this.game.playerOptions.rocketVelocity
             });
             this.game.gameStateOptions.lastRocketTime = (new Date()).valueOf();
+            var fire = new Audio("sounds/lazer_shot.wav"); // buffers automatically when created
+            fire.volume - .05;
+            fire.play();
+
         }
     }
 

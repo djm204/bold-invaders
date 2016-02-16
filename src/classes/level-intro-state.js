@@ -9,7 +9,7 @@ var LevelIntroState = (function () {
         if (this.game.stateOptions.countDownMessage == null) {
             this.game.stateOptions.countDownMessage = 3;
         }
-        //  Clear the background. set config for text.
+        //  Clear the background. set config for text.        
         ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
         ctx.font = "36px Arial";
         ctx.fillStyle = '#ffffff';

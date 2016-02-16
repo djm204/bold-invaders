@@ -2,10 +2,10 @@ export = StarField;
 const STAR_LIMIT = 100;
 
 class StarField {
-    constructor(public options: StarField.Options) {}
+    constructor(public options: StarField.Options) { }
 
     initialize(div: HTMLElement) {
-        var containerDiv = div;        
+        var containerDiv = div;
         this.options.starList = [];
         this.options.width = window.innerWidth;
         this.options.height = window.innerHeight;
@@ -37,7 +37,7 @@ class StarField {
             if (star.y > this.options.height) {
                 var newStar = {
                     x: Math.random() * this.options.width,
-                    y: 0, 
+                    y: 0,
                     size: Math.random() * 3 + 1,
                     velocity: (Math.random() * (this.options.maxVelocity - this.options.minVelocity)) + this.options.minVelocity
                 };
@@ -50,12 +50,12 @@ class StarField {
         //	Create the stars.
         for (var i = 0; i < STAR_LIMIT; i++) {
             var newStar = {
-                    x: Math.random() * this.options.width,
-                    y: Math.random() * this.options.height, 
-                    size: Math.random() * 3 + 1,
-                    velocity: (Math.random() * (this.options.maxVelocity - this.options.minVelocity)) + this.options.minVelocity
-                };
-                this.options.starList.push(newStar);
+                x: Math.random() * this.options.width,
+                y: Math.random() * this.options.height,
+                size: Math.random() * 3 + 1,
+                velocity: (Math.random() * (this.options.maxVelocity - this.options.minVelocity)) + this.options.minVelocity
+            };
+            this.options.starList.push(newStar);
         }
           
         //	Start the timer.
@@ -78,6 +78,6 @@ class StarField {
         for (var i = 0; i < this.options.starList.length; i++) {
             var star = this.options.starList[i];
             ctx.fillRect(star.x, star.y, star.size, star.size);
-        }     
+        }
     }
 }

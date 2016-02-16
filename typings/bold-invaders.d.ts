@@ -35,7 +35,7 @@ declare namespace BoldInvaders {
         rocketMaxFireRate: number,
         score: number,
         timesPlayed: number,
-        win: boolean        
+        win: boolean
     }
 
     export interface Enemy {
@@ -81,7 +81,7 @@ declare namespace BoldInvaders {
         invaderCurrentDropDistance: number,
         invadersAreDropping: boolean,
         lastRocketTime: number,
-        firstEntry: boolean     
+        firstEntry: boolean
     }
 
     export interface Ship {
@@ -90,20 +90,20 @@ declare namespace BoldInvaders {
         width: number,
         height: number
     }
-    
-    export interface Rocket{
+
+    export interface Rocket {
         x: number,
         y: number,
         velocity: number
     }
-    
+
     export interface Bomb {
         x: number,
         y: number,
         velocity: number
     }
-    
-    export interface Invader{
+
+    export interface Invader {
         x: number,
         y: number,
         rank: number,
@@ -112,33 +112,33 @@ declare namespace BoldInvaders {
         width: number,
         height: number
     }
-    
+
     interface PlayState {
         firstEntry: boolean;
         enter: () => any;
         update: () => any;
-        draw: () => any;        
+        draw: () => any;
     }
 
     interface OverState {
         leave: () => any;
-        draw: () => any;        
+        draw: () => any;
     }
 
-    interface IntroState {        
+    interface IntroState {
         update: () => any;
-        draw: () => any;        
-    }   
-    
+        draw: () => any;
+    }
+
     interface WelcomeState {
         draw: () => any;
     }
-    
+
     interface PauseState {
         draw: () => any;
         leave: () => any;
     }
-    
-type GameState = PlayState | OverState | IntroState | WelcomeState | PauseState;
+
+    type GameState = PlayState | OverState | IntroState | WelcomeState | PauseState;
 
 }

@@ -827,6 +827,7 @@
 	    function WelcomeState(game, ctx) {
 	        this.game = game;
 	        this.ctx = ctx;
+	        this.introMusic = new Audio("sounds/introMusic.mp3"); // buffers automatically when created
 	    }
 	    WelcomeState.prototype.draw = function () {
 	        var boldLogo = new Image();
@@ -849,11 +850,14 @@
 	        //Draw Logo        
 	        this.ctx.drawImage(boldLogo, this.ctx.canvas.width / 2 - boldLogo.width / 2, 25, 250, 125);
 	        this.ctx.drawImage(invadersLogo, this.ctx.canvas.width / 2 - invadersLogo.width / 4, 125, 250, 75);
+	        this.introMusic.volume = .05;
+	        this.introMusic.play();
 	    };
 	    WelcomeState.prototype.keyDown = function (game, keyCode) {
 	        if (keyCode == 32) {
 	            //  Space starts the game.             
 	            var options = { level: 1, countDown: 3, countDownMessage: 3, ctx: this.ctx };
+	            this.introMusic.pause();
 	            game.moveToState(new levelIntroState(game));
 	        }
 	    };
@@ -877,7 +881,7 @@
 	        if (this.game.stateOptions.countDownMessage == null) {
 	            this.game.stateOptions.countDownMessage = 3;
 	        }
-	        //  Clear the background. set config for text.
+	        //  Clear the background. set config for text.        
 	        ctx.clearRect(0, 0, this.game.stateOptions.width, this.game.stateOptions.height);
 	        ctx.font = "36px Arial";
 	        ctx.fillStyle = '#ffffff';
@@ -926,6 +930,7 @@
 	var GameOverState = __webpack_require__(11);
 	var PAUSE_PREVENTER = 1;
 	var GameState = (function () {
+	    //private gameMusic = new Audio("sounds/gameMusic.mp3");
 	    function GameState(game, levelIntroState) {
 	        this.game = game;
 	        this.levelIntroState = levelIntroState;
@@ -933,7 +938,10 @@
 	        this.ctx = this.game.stateOptions.gameCanvas.getContext("2d");
 	    }
 	    GameState.prototype.enter = function () {
-	        this.game.gameStateOptions.firstEntry = false;
+	        /*this.game.gameStateOptions.firstEntry = false;
+	         //play game music
+	        this.gameMusic.volume = .025;
+	        this.gameMusic.play();*/
 	        //instantiate le ship
 	        this.game.gameStateOptions.ship = { x: this.game.stateOptions.width / 2, y: this.game.stateOptions.height - 100, width: 20, height: 16 };
 	        //create level multipliers
@@ -998,10 +1006,17 @@
 	            this.game.stateOptions.countDownMessage = 3;
 	            this.game.resetGameVariables(false);
 	            this.game.playerOptions.win = true;
+	            // this.gameMusic.pause();
+	            var win = new Audio("sounds/chuckNorris.wav"); // buffers automatically when created
+	            win.play();
 	            this.game.moveToState(this.levelIntroState);
 	        }
 	        //  Check for failure
 	        if (this.game.stateOptions.lives <= 0) {
+	            //this.gameMusic.pause();            
+	            var death = new Audio("sounds/game_over_sound.wav");
+	            death.volume = .1;
+	            death.play();
 	            this.game.moveToState(new GameOverState(this.levelIntroState, this.game, this.dt, this.ctx));
 	        }
 	        this.draw();
@@ -1141,6 +1156,9 @@
 	                var rocket = this.game.gameStateOptions.rockets[j];
 	                if (rocket.x >= (invader.x - invader.width / 2) && rocket.x <= (invader.x + invader.width / 2) &&
 	                    rocket.y >= (invader.y - invader.height / 2) && rocket.y <= (invader.y + invader.height / 2)) {
+	                    var invaderKill = new Audio("sounds/invaderKill.wav");
+	                    invaderKill.volume = .1;
+	                    invaderKill.play();
 	                    //  Remove the rocket, set 'bang' so we don't process
 	                    //  this rocket again.
 	                    this.game.gameStateOptions.rockets.splice(j--, 1);
@@ -1189,6 +1207,9 @@
 	            if (this.hitShip(bomb)) {
 	                this.game.gameStateOptions.bombs.splice(i--, 1);
 	                this.game.stateOptions.lives--;
+	                var explosion = new Audio("sounds/explosion.wav"); // buffers automatically when created
+	                explosion.volume = .05;
+	                explosion.play();
 	            }
 	        }
 	        //  Check for invader/ship collisions.
@@ -1200,7 +1221,6 @@
 	                (invader.y - invader.height / 2) < (this.game.gameStateOptions.ship.y + this.game.gameStateOptions.ship.height / 2)) {
 	                //  Dead by collision!
 	                this.game.stateOptions.lives = 0;
-	                console.log("Play Death Sound Here");
 	            }
 	        }
 	    };
@@ -1224,6 +1244,9 @@
 	                velocity: this.game.playerOptions.rocketVelocity
 	            });
 	            this.game.gameStateOptions.lastRocketTime = (new Date()).valueOf();
+	            var fire = new Audio("sounds/lazer_shot.wav"); // buffers automatically when created
+	            fire.volume - .05;
+	            fire.play();
 	        }
 	    };
 	    GameState.prototype.pauseGame = function () {

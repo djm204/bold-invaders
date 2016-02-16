@@ -46,7 +46,7 @@ var BIStateOptions: StateOptions = {
     width: 0,
     height: 0,
     gameBounds: { left: 0, top: 0, right: 0, bottom: 0 },
-    intervalId: 0,    
+    intervalId: 0,
     level: 1,
     stateStack: [],
     pressedKeys: [],
@@ -87,18 +87,18 @@ var BIPlayStateOptions: PlayStateOptions = {
     invadersAreDropping: false,
     lastRocketTime: 0,
     firstEntry: true,
-    
+
 }
 
 var canvas = <HTMLCanvasElement>document.getElementById("gameCanvas");
 
 var boldInvaders = new BoldInvaders(
-    BIOptions, 
-    BIPlayerOptions, 
-    BIEnemyOptions, 
-    BIPlayStateOptions, 
+    BIOptions,
+    BIPlayerOptions,
+    BIEnemyOptions,
+    BIPlayStateOptions,
     BIStateOptions
-    );
+);
 
 boldInvaders.initialize(canvas);
 

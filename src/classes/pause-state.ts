@@ -23,6 +23,6 @@ class PauseState {
 
     leave() {
         //move back to the last game state
-        this.game.pushState(this.gameState);           
+        this.game.pushState(this.gameState);
     }
 }

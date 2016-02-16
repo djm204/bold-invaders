@@ -202,14 +202,14 @@ class BoldInvaders {
     gameLoop(game: BoldInvaders) {
         var currentState = game.currentState();
         if (currentState) {
-            
+
             if (currentState.draw) {
                 currentState.draw();
             }
-            
+
             if (currentState.update) {
                 currentState.update();
-            }          
+            }
         }
     }
 
@@ -253,10 +253,10 @@ class BoldInvaders {
         }
     }
 
-    isPlayState(state: BoldInvaders.GameState): state is BoldInvaders.PlayState {        
-        if (this.gameStateOptions.firstEntry) {            
+    isPlayState(state: BoldInvaders.GameState): state is BoldInvaders.PlayState {
+        if (this.gameStateOptions.firstEntry) {
             return typeof (<BoldInvaders.PlayState>state).enter === 'function';
-                    }
+        }
         else {
             return typeof (<BoldInvaders.PlayState>state).update === 'function';
         }
