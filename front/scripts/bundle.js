@@ -169,7 +169,7 @@
 
 
 	// module
-	exports.push([module.id, "*{\r\n    padding: 0px;\r\n    margin: 0px;\r\n}\r\n\r\nbody, html { \r\n    width: 100%;\r\n    height: 100%;\r\n    margin: 0;\r\n    padding: 0;\r\n    overflow: hidden;\r\n    }\r\n            \r\n#container {\r\n    width: 100%;\r\n    height: 100%;\r\n    z-index: -1;\r\n    position: absolute;\r\n    left: 0px;\r\n    top: 0px;\r\n}\r\n\r\n#gamecontainer{\r\n    width: 800px;\r\n    margin: auto;\r\n}\r\n\r\n#gameCanvas {\r\n    display: block;\r\n    margin: 20px auto;\r\n\r\n}\r\n\r\n#info {\r\n    width: 800px;\r\n    margin-left: auto;\r\n    margin-right: auto;\r\n    margin-top: 50px;\r\n    color: white;\r\n    font-family: monospace;\r\n    \r\n}\r\n\r\n#info a{\r\n    color: #5ea2e3;\r\n}", ""]);
+	exports.push([module.id, "*{\r\n    padding: 0px;\r\n    margin: 0px;\r\n}\r\n\r\nbody, html { \r\n    width: 100%;\r\n    height: 100%;\r\n    margin: 0;\r\n    padding: 0;\r\n    overflow: hidden;\r\n    }\r\n            \r\n#container {\r\n    width: 100%;\r\n    height: 100%;\r\n    z-index: -1;\r\n    position: absolute;\r\n    left: 0px;\r\n    top: 0px;\r\n}\r\n\r\n#gamecontainer{\r\n    width: 800px;\r\n    margin: auto;\r\n}\r\n\r\n#gameCanvas {\r\n    display: block;\r\n    margin: 20px auto;\r\n\r\n}\r\n\r\n#info {\r\n    width: 800px;\r\n    margin-left: auto;\r\n    margin-right: auto;\r\n    margin-top: 50px;\r\n    color: white;\r\n    font-family: Arial;\r\n    \r\n}\r\n\r\n#info a{\r\n    color: #5ea2e3;\r\n}", ""]);
 
 	// exports
 
