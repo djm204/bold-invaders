@@ -109,7 +109,7 @@ var BoldInvaders = (function () {
                 gameWidth: 400,
                 gameHeight: 300,
                 fps: 50,
-                shipSpeed: 220,
+                shipSpeed: 120,
                 debugMode: this.boldOptions.debugMode,
                 levelDifficultyMultiplier: .2
             };

@@ -27,7 +27,7 @@ class GameState {
                
         //create level multipliers
         var levelMultiplier = this.game.stateOptions.level * this.game.boldOptions.levelDifficultyMultiplier;
-        this.game.boldOptions.shipSpeed *= levelMultiplier;
+        this.game.boldOptions.shipSpeed += this.game.stateOptions.level * this.game.boldOptions.levelDifficultyMultiplier;
         console.log(this.game.boldOptions.shipSpeed);
         this.game.enemyOptions.invaderInitialVelocity += (levelMultiplier * this.game.enemyOptions.invaderInitialVelocity);
         this.game.enemyOptions.bombRate += (levelMultiplier * this.game.enemyOptions.bombRate);
@@ -248,7 +248,7 @@ class GameState {
             this.game.gameStateOptions.invaderCurrentVelocity += this.game.enemyOptions.invaderAcceleration;
             this.invaderVelocity = { x: 0, y: this.game.gameStateOptions.invaderCurrentVelocity };
             this.game.gameStateOptions.invadersAreDropping = true;
-            this.invaderNextVelocity = { x: this.game.gameStateOptions.invaderCurrentVelocity, y: 0 };
+            this.invaderNextVelocity = { x: this.game.gameStateOptions.invaderCurrentVelocity, y:0 };
         }
         //  If we've hit the right, move down then left.
         if (hitRight) {
