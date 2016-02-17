@@ -31,13 +31,12 @@ class GameState {
         this.game.boldOptions.shipSpeed += this.game.stateOptions.level * this.game.boldOptions.levelDifficultyMultiplier;
         this.game.enemyOptions.invaderInitialVelocity += (levelMultiplier * this.game.enemyOptions.invaderInitialVelocity);
         this.game.enemyOptions.bombRate += (levelMultiplier * this.game.enemyOptions.bombRate);
-        this.game.enemyOptions.bombMaxVelocity += .1;   
-        
-        console.log("levelMultiplier: " + levelMultiplier);
+        this.game.enemyOptions.bombMaxVelocity += .1;           
+        /*console.log("levelMultiplier: " + levelMultiplier);
         console.log("shipspeed: " + this.game.boldOptions.shipSpeed);
         console.log("invader velocity: " + this.game.enemyOptions.invaderInitialVelocity);
         console.log("bmb rate: " + this.game.enemyOptions.bombRate);
-        console.log("bomb velocities: " + this.game.enemyOptions.bombMinVelocity + " Max: " + this.game.enemyOptions.bombMaxVelocity);
+        console.log("bomb velocities: " + this.game.enemyOptions.bombMinVelocity + " Max: " + this.game.enemyOptions.bombMaxVelocity);*/
         
         //invader creation
         this.game.enemyOptions.invaderRanks = 5;
