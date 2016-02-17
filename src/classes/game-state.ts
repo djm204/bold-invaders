@@ -248,7 +248,7 @@ class GameState {
             this.game.gameStateOptions.invaderCurrentVelocity += this.game.enemyOptions.invaderAcceleration;
             this.invaderVelocity = { x: 0, y: this.game.gameStateOptions.invaderCurrentVelocity };
             this.game.gameStateOptions.invadersAreDropping = true;
-            this.invaderNextVelocity = { x: 0, y: this.game.gameStateOptions.invaderCurrentVelocity };
+            this.invaderNextVelocity = { x: this.game.gameStateOptions.invaderCurrentVelocity, y: 0 };
         }
         //  If we've hit the right, move down then left.
         if (hitRight) {
