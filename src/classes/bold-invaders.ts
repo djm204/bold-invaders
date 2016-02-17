@@ -59,7 +59,7 @@ class BoldInvaders {
                 fps: 50,
                 shipSpeed: this.boldOptions.shipSpeed,
                 debugMode: this.boldOptions.debugMode,
-                levelDifficultyMultiplier: .2
+                levelDifficultyMultiplier: this.boldOptions.levelDifficultyMultiplier
             };
 
             this.stateOptions = {
@@ -94,8 +94,8 @@ class BoldInvaders {
 
             this.enemyOptions = {
                 bombRate: 0.05,
-                bombMinVelocity: 50,
-                bombMaxVelocity: 50,
+                bombMinVelocity: this.enemyOptions.bombMinVelocity,
+                bombMaxVelocity: this.enemyOptions.bombMaxVelocity,
                 invaderInitialVelocity: 25,
                 invaderAcceleration: 0,
                 invaderDropDistance: 20,
@@ -123,7 +123,7 @@ class BoldInvaders {
                 fps: 50,
                 shipSpeed: 120,
                 debugMode: this.boldOptions.debugMode,
-                levelDifficultyMultiplier: .2
+                levelDifficultyMultiplier: this.boldOptions.levelDifficultyMultiplier
             };
 
             this.stateOptions = {
@@ -158,8 +158,8 @@ class BoldInvaders {
 
             this.enemyOptions = {
                 bombRate: 0.05,
-                bombMinVelocity: 50,
-                bombMaxVelocity: 50,
+                bombMinVelocity: 25,
+                bombMaxVelocity: 25,
                 invaderInitialVelocity: 25,
                 invaderAcceleration: 0,
                 invaderDropDistance: 20,
