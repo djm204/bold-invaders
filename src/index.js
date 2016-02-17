@@ -21,7 +21,7 @@ var BIOptions = {
     gameWidth: 400,
     gameHeight: 300,
     fps: 50,
-    shipSpeed: 220,
+    shipSpeed: 120,
     debugMode: false,
     levelDifficultyMultiplier: .5
 };

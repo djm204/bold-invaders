@@ -67,7 +67,7 @@
 	    gameWidth: 400,
 	    gameHeight: 300,
 	    fps: 50,
-	    shipSpeed: 220,
+	    shipSpeed: 120,
 	    debugMode: false,
 	    levelDifficultyMultiplier: .5
 	};
@@ -332,7 +332,7 @@
 	                gameWidth: 400,
 	                gameHeight: 300,
 	                fps: 50,
-	                shipSpeed: 220,
+	                shipSpeed: 120,
 	                debugMode: this.boldOptions.debugMode,
 	                levelDifficultyMultiplier: .2
 	            };
@@ -595,7 +595,7 @@
 	        this.game.gameStateOptions.ship = { x: this.game.stateOptions.width / 2, y: this.game.stateOptions.height - 100, width: 20, height: 16 };
 	        //create level multipliers
 	        var levelMultiplier = this.game.stateOptions.level * this.game.boldOptions.levelDifficultyMultiplier;
-	        this.game.boldOptions.shipSpeed *= levelMultiplier;
+	        this.game.boldOptions.shipSpeed += this.game.stateOptions.level * this.game.boldOptions.levelDifficultyMultiplier;
 	        console.log(this.game.boldOptions.shipSpeed);
 	        this.game.enemyOptions.invaderInitialVelocity += (levelMultiplier * this.game.enemyOptions.invaderInitialVelocity);
 	        this.game.enemyOptions.bombRate += (levelMultiplier * this.game.enemyOptions.bombRate);
