@@ -44,3 +44,7 @@ body, html {
 #info a{
     color: #5ea2e3;
 }
+
+#version{
+    float:right
+}

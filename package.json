@@ -1,12 +1,13 @@
 {
   "name": "bold-invaders",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Bold interpretation on the classic Space Invaders",
   "main": "front/index.html",
   "dependencies": {},
   "devDependencies": {
     "browserify": "^13.0.0",
     "css-loader": "^0.23.1",
+    "json-loader": "^0.5.4",
     "mocha": "^2.4.5",
     "style-loader": "^0.13.0",
     "typescript": "^1.7.5",

@@ -16,6 +16,8 @@ var starfield = new StarField(SFOptions);
 var container = document.getElementById('container');
 starfield.initialize(container);
 starfield.start();
+var pkg = require('json!../package.json');
+document.getElementById("version").innerHTML = "Version: " + pkg.version;
 //Bold Invaders 
 var BIOptions = {
     gameWidth: 400,
