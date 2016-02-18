@@ -29,7 +29,10 @@ var container = document.getElementById('container');
 starfield.initialize(container);
 starfield.start();
 
-var pkg = require('../package.json');
+var pkg = require('json!../package.json');
+
+document.getElementById("version").innerHTML = "Version: " + pkg.version;
+
 
 
 //Bold Invaders 

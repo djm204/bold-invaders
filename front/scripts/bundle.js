@@ -62,6 +62,8 @@
 	var container = document.getElementById('container');
 	starfield.initialize(container);
 	starfield.start();
+	var pkg = __webpack_require__(8);
+	document.getElementById("version").innerHTML = "Version: " + pkg.version;
 	//Bold Invaders 
 	var BIOptions = {
 	    gameWidth: 400,
@@ -117,7 +119,6 @@
 	};
 	var canvas = document.getElementById("gameCanvas");
 	var boldInvaders = new BoldInvaders(BIOptions, BIPlayerOptions, BIEnemyOptions, BIPlayStateOptions, BIStateOptions);
-	var pkg = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../package.json\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	boldInvaders.initialize(canvas);
 	boldInvaders.start();
 	window.addEventListener("keydown", function keydown(e) {
@@ -987,6 +988,48 @@
 	})();
 	module.exports = GameOverState;
 	//# sourceMappingURL=game-over.js.map
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"name": "bold-invaders",
+		"version": "1.0.0",
+		"description": "Bold interpretation on the classic Space Invaders",
+		"main": "front/index.html",
+		"dependencies": {},
+		"devDependencies": {
+			"browserify": "^13.0.0",
+			"css-loader": "^0.23.1",
+			"json-loader": "^0.5.4",
+			"mocha": "^2.4.5",
+			"style-loader": "^0.13.0",
+			"typescript": "^1.7.5",
+			"url-loader": "^0.5.7",
+			"webpack": "^1.12.13"
+		},
+		"scripts": {
+			"build": "tsc",
+			"postbuild": "webpack",
+			"test": "echo \"Error: no test specified\" && exit 1"
+		},
+		"repository": {
+			"type": "git",
+			"url": "git+https://github.com/djm204/bold-invaders.git"
+		},
+		"keywords": [
+			"space",
+			"invaders",
+			"bold"
+		],
+		"author": "David Mendez",
+		"license": "MIT",
+		"bugs": {
+			"url": "https://github.com/djm204/bold-invaders/issues"
+		},
+		"homepage": "https://github.com/djm204/bold-invaders#readme"
+	};
 
 /***/ }
 /******/ ]);

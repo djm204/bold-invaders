@@ -16,6 +16,8 @@ var starfield = new StarField(SFOptions);
 var container = document.getElementById('container');
 starfield.initialize(container);
 starfield.start();
+var pkg = require('json!../package.json');
+document.getElementById("version").innerHTML = "Version: " + pkg.version;
 //Bold Invaders 
 var BIOptions = {
     gameWidth: 400,
@@ -71,7 +73,6 @@ var BIPlayStateOptions = {
 };
 var canvas = document.getElementById("gameCanvas");
 var boldInvaders = new BoldInvaders(BIOptions, BIPlayerOptions, BIEnemyOptions, BIPlayStateOptions, BIStateOptions);
-var pkg = require('../package.json');
 boldInvaders.initialize(canvas);
 boldInvaders.start();
 window.addEventListener("keydown", function keydown(e) {
