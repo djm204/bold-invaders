@@ -117,6 +117,7 @@
 	};
 	var canvas = document.getElementById("gameCanvas");
 	var boldInvaders = new BoldInvaders(BIOptions, BIPlayerOptions, BIEnemyOptions, BIPlayStateOptions, BIStateOptions);
+	var pkg = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../package.json\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	boldInvaders.initialize(canvas);
 	boldInvaders.start();
 	window.addEventListener("keydown", function keydown(e) {

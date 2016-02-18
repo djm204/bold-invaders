@@ -29,6 +29,8 @@ var container = document.getElementById('container');
 starfield.initialize(container);
 starfield.start();
 
+var pkg = require('../package.json');
+
 
 //Bold Invaders 
 var BIOptions: BoldInvadersOptions = {
@@ -98,6 +100,7 @@ var boldInvaders = new BoldInvaders(
     BIPlayStateOptions,
     BIStateOptions
 );
+
 
 boldInvaders.initialize(canvas);
 

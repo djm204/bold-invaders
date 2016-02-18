@@ -71,6 +71,7 @@ var BIPlayStateOptions = {
 };
 var canvas = document.getElementById("gameCanvas");
 var boldInvaders = new BoldInvaders(BIOptions, BIPlayerOptions, BIEnemyOptions, BIPlayStateOptions, BIStateOptions);
+var pkg = require('../package.json');
 boldInvaders.initialize(canvas);
 boldInvaders.start();
 window.addEventListener("keydown", function keydown(e) {
