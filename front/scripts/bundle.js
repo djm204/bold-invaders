@@ -69,7 +69,7 @@
 	    fps: 50,
 	    shipSpeed: 120,
 	    debugMode: false,
-	    levelDifficultyMultiplier: .5
+	    levelDifficultyMultiplier: .2
 	};
 	var BIStateOptions = {
 	    lives: 3,
@@ -94,9 +94,9 @@
 	    win: false
 	};
 	var BIEnemyOptions = {
-	    bombRate: 0.05,
-	    bombMinVelocity: 50,
-	    bombMaxVelocity: 50,
+	    bombRate: 0.1,
+	    bombMinVelocity: 1,
+	    bombMaxVelocity: 2,
 	    invaderInitialVelocity: 25,
 	    invaderAcceleration: 0,
 	    invaderDropDistance: 20,
@@ -274,7 +274,7 @@
 	                fps: 50,
 	                shipSpeed: this.boldOptions.shipSpeed,
 	                debugMode: this.boldOptions.debugMode,
-	                levelDifficultyMultiplier: .2
+	                levelDifficultyMultiplier: this.boldOptions.levelDifficultyMultiplier
 	            };
 	            this.stateOptions = {
 	                lives: 3,
@@ -305,8 +305,8 @@
 	            };
 	            this.enemyOptions = {
 	                bombRate: 0.05,
-	                bombMinVelocity: 50,
-	                bombMaxVelocity: 50,
+	                bombMinVelocity: this.enemyOptions.bombMinVelocity,
+	                bombMaxVelocity: this.enemyOptions.bombMaxVelocity,
 	                invaderInitialVelocity: 25,
 	                invaderAcceleration: 0,
 	                invaderDropDistance: 20,
@@ -334,7 +334,7 @@
 	                fps: 50,
 	                shipSpeed: 120,
 	                debugMode: this.boldOptions.debugMode,
-	                levelDifficultyMultiplier: .2
+	                levelDifficultyMultiplier: this.boldOptions.levelDifficultyMultiplier
 	            };
 	            this.stateOptions = {
 	                lives: 3,
@@ -365,8 +365,8 @@
 	            };
 	            this.enemyOptions = {
 	                bombRate: 0.05,
-	                bombMinVelocity: 50,
-	                bombMaxVelocity: 50,
+	                bombMinVelocity: 25,
+	                bombMaxVelocity: 25,
 	                invaderInitialVelocity: 25,
 	                invaderAcceleration: 0,
 	                invaderDropDistance: 20,
@@ -596,11 +596,14 @@
 	        //create level multipliers
 	        var levelMultiplier = this.game.stateOptions.level * this.game.boldOptions.levelDifficultyMultiplier;
 	        this.game.boldOptions.shipSpeed += this.game.stateOptions.level * this.game.boldOptions.levelDifficultyMultiplier;
-	        console.log(this.game.boldOptions.shipSpeed);
 	        this.game.enemyOptions.invaderInitialVelocity += (levelMultiplier * this.game.enemyOptions.invaderInitialVelocity);
 	        this.game.enemyOptions.bombRate += (levelMultiplier * this.game.enemyOptions.bombRate);
-	        this.game.enemyOptions.bombMinVelocity += (levelMultiplier * this.game.enemyOptions.bombMinVelocity);
-	        this.game.enemyOptions.bombMaxVelocity += (levelMultiplier * this.game.enemyOptions.bombMinVelocity);
+	        this.game.enemyOptions.bombMaxVelocity += .1;
+	        /*console.log("levelMultiplier: " + levelMultiplier);
+	        console.log("shipspeed: " + this.game.boldOptions.shipSpeed);
+	        console.log("invader velocity: " + this.game.enemyOptions.invaderInitialVelocity);
+	        console.log("bmb rate: " + this.game.enemyOptions.bombRate);
+	        console.log("bomb velocities: " + this.game.enemyOptions.bombMinVelocity + " Max: " + this.game.enemyOptions.bombMaxVelocity);*/
 	        //invader creation
 	        this.game.enemyOptions.invaderRanks = 5;
 	        this.game.enemyOptions.invaderFiles = 10;
@@ -689,7 +692,7 @@
 	        ctx.fillStyle = '#ff5555';
 	        for (var i = 0; i < this.game.gameStateOptions.bombs.length; i++) {
 	            var bomb = this.game.gameStateOptions.bombs[i];
-	            bomb.y += .5;
+	            bomb.y += (this.game.enemyOptions.bombMaxVelocity - this.game.enemyOptions.bombMinVelocity) / 2;
 	            ctx.fillRect(bomb.x, bomb.y, 4, 4);
 	        }
 	        //  Draw rockets.

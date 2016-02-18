@@ -23,7 +23,7 @@ var BIOptions = {
     fps: 50,
     shipSpeed: 120,
     debugMode: false,
-    levelDifficultyMultiplier: .5
+    levelDifficultyMultiplier: .2
 };
 var BIStateOptions = {
     lives: 3,
@@ -48,9 +48,9 @@ var BIPlayerOptions = {
     win: false
 };
 var BIEnemyOptions = {
-    bombRate: 0.05,
-    bombMinVelocity: 50,
-    bombMaxVelocity: 50,
+    bombRate: 0.1,
+    bombMinVelocity: 1,
+    bombMaxVelocity: 2,
     invaderInitialVelocity: 25,
     invaderAcceleration: 0,
     invaderDropDistance: 20,
